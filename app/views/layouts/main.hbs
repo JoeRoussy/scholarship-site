@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ selectedUserLanguage }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <title>{{ page.title }}</title>
+        <meta name="description" content="{{ page.description }}">
+        <meta property="fb:app_id" content="{{ page.fb_appid }}">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ page.title }}">
+        <meta property="og:url" content="{{ page.url }}">
+        <meta property="og:description" content="{{ page.description }}">
+        <meta property="og:site_name" content="{{ page.site_name }}">
+        {{#if social_image}}
+            <meta property="og:image" content="{{ social_image }}">
+            <meta name="twitter:image" content="{{ social_image }}">
+        {{/if}}
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="{{ page.twitter_handle }}">
+        <meta name="twitter:title" content="{{ page.title }}">
+        <meta name="twitter:description" content="{{ page.description }}">
+        <meta name="twitter:creator" content="{{ page.twitter_handle }}">
+        <link rel="apple-touch-icon" sizes="57x57" href="/public/images/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/public/images/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/public/images/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/public/images/favicon/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/public/images/favicon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/public/images/favicon/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/public/images/favicon/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/public/images/favicon/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="/public/images/favicon/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="/public/images/favicon/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/public/images/favicon/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/public/images/favicon/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="/public/images/favicon/manifest.json">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+        <meta name="theme-color" content="#ffffff">
+
+        {{#each page.assets.scripts.header as |script|}}
+            <script src="{{ script }}"></script>
+        {{/each}}
+    </head>
+    <body>
+        {{{ body }}}
+
+        {{#each page.assets.scripts.footer as |script|}}
+            <script src="{{ script }}"></script>
+        {{/each}}
+
+        <script>
+            var loadDeferredStyles = function() {
+                var addStylesNode = document.getElementById("deferredStyles");
+                var replacement = document.createElement("div");
+                replacement.innerHTML = addStylesNode.textContent;
+                document.body.appendChild(replacement)
+                addStylesNode.parentElement.removeChild(addStylesNode);
+            };
+            var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+                webkitRequestAnimationFrame || msRequestAnimationFrame;
+            if (raf) raf(function() { window.setTimeout(loadDeferredStyles, 0); });
+            else window.addEventListener('load', loadDeferredStyles);
+        </script>
+    </body>
+</html>

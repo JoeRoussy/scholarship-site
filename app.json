@@ -1,0 +1,17 @@
+{
+    "apps": [{
+        "name": "scholarship-site",
+        "script": "app/index.js",
+        "exec_mode": "cluster_mode",
+        "instances": 2,
+        "max_memory_restart": "256M",
+        "autorestart": true,
+        "error_file": "./pm2.log",
+        "env": {
+            "NODE_ENV": "production"
+        },
+        "env_development": {
+            "NODE_ENV": "development"
+        }
+    }]
+}

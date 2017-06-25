@@ -1,0 +1,21 @@
+body {
+    width: 100%;
+    position: relative;
+    font-weight:normal;
+}
+
+*, *:after, *:before {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+@mixin clearfix() {
+    &:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
