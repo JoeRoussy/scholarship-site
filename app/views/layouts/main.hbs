@@ -39,15 +39,19 @@
         <meta name="msapplication-TileImage" content="/mstile-144x144.png">
         <meta name="theme-color" content="#ffffff">
 
-        {{#each page.assets.scripts.header as |script|}}
-            <script src="{{ script }}"></script>
+        {{#each page.assets.stylesheets}}
+            <link rel="stylesheet" href="{{ this }}"/>
+        {{/each}}
+
+        {{#each page.assets.scripts.header}}
+            <script src="{{ this }}"></script>
         {{/each}}
     </head>
     <body>
         {{{ body }}}
 
-        {{#each page.assets.scripts.footer as |script|}}
-            <script src="{{ script }}"></script>
+        {{#each page.assets.scripts.footer}}
+            <script src="{{ this }}"></script>
         {{/each}}
 
         <script>

@@ -63,7 +63,7 @@ gulp.task('styles', () => {
     return gulp.src(stylesGlob)
         .pipe(sass())
         .pipe(postcss(processors))
-        .pipe(concat('styles.css'))
+        .pipe(concat('app.css'))
         .pipe(rename(file => addMinToFileExtension(file)))
         .pipe(gulp.dest(`${serverPublicFolderPath}/css`));
 });
