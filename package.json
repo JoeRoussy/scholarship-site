@@ -4,6 +4,7 @@
   "description": "A site for scholarships",
   "main": "app/index.js",
   "dependencies": {
+    "csv-parse": "^1.2.0",
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0"
   },

@@ -19,8 +19,11 @@ const language = require('./components/language');
 const content = require('./components/content');
 const templateConfig = require('./components/template-config');
 const basicRouteConfig = require('./router/basicRoutes.js');
+const searchRouteConfig = require('./router/searchRoutes.js');
 
 const app = express();
+
+
 
 app.use(language);
 app.use((req, res, next) => {
@@ -43,6 +46,7 @@ app.use((req, res, next) => {
 
 templateConfig(app);
 basicRouteConfig(app);
+searchRouteConfig(app);
 
 
 app.listen(3000, () => console.log('App is listening on port 3000'));
