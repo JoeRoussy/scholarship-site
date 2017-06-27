@@ -1,4 +1,4 @@
-const controller = require('../controller/basicRouteController.js')
+const controller = require('../controller/basicRouteController.js');
 
 module.exports = app => {
 

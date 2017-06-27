@@ -1,0 +1,48 @@
+<div class="searchResults">
+    <h1>Find a Program</h1>
+
+    <form action="/search" method="get">
+        <div class="formInput">
+            <input id="universityInput" type="text" name="university" placeholder="University">
+        </div>
+        <div class="formInput">
+            <input id="nameInput" type="text" name="name" placeholder="Name">
+        </div>
+        <div class="submitWrapper">
+            <input type="submit" value="Search">
+        </div>
+    </form>
+
+    {{#if programs}}
+        <table class="resultsTable">
+            <tr>
+                <th>Province</th>
+                <th>University</th>
+                <th>Program</th>
+                {{!-- <th>International tuition</th>
+                <th>Domestic tuition</th>
+                <th>Minimum average</th>
+                <th>Length Of Program</th>
+                <th>Program Language</th>
+                <th>TOEFL Score</th>
+                <th>Rank</th>
+                <th>Notes</th> --}}
+            </tr>
+            {{#each programs}}
+                <tr>
+                    <td>{{ this.province }}</td>
+                    <td>{{ this.university }}</td>
+                    <td>{{ this.name }}</td>
+                    {{!-- <td>{{ this.internationalTutition }}</td>
+                    <td>{{ this.domesticeTuition }}</td>
+                    <td>{{ this.minimumAverage }}</td>
+                    <td>{{ this.length }}</td>
+                    <td>{{ this.language }}</td>
+                    <td>{{ this.toefl }}</td>
+                    <td>{{ this.rank }}</td>
+                    <td>{{ this.notes }}</td> --}}
+                </tr>
+            {{/each}}
+        </table>
+    {{/if}}
+</div>

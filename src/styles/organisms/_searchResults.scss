@@ -1,0 +1,46 @@
+.searchResults {
+    padding-top: 20px;
+    text-align: center;
+
+    form {
+        margin: 50px 0;
+
+        .formInput {
+            margin-top: 25px;
+            text-align: center;
+
+            input {
+                height: 35px;
+                width: 300px;
+                margin-left: 25px;
+                padding-left: 15px;
+                border: 2px solid #666666;
+                border-radius: 12px;
+            }
+        }
+
+        .submitWrapper {
+            margin-top: 25px;
+            text-align: center;
+
+            input[type="submit"] {
+                padding: 15px 40px;
+                border-radius: 30px;
+                color: white;
+                font-weight: bold;
+                font-size: 14px;
+                background-color: rgb(92, 183, 92);
+            }
+        }
+
+    }
+
+    .resultsTable {
+        display: inline;
+        margin-top: 50px;
+
+        td, th {
+            min-width: 300px;
+        }
+    }
+}

@@ -24,8 +24,10 @@ const searchRouteConfig = require('./router/searchRoutes.js');
 const app = express();
 
 
-
+app.use(express.static('public'))
 app.use(language);
+
+// TODO: This should be its own module
 app.use((req, res, next) => {
     content.load({
         lang: res.locals.selectedUserLanguage,

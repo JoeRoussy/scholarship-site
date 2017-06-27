@@ -2,6 +2,7 @@ const controller = require('../controller/searchRouteController.js');
 
 module.exports = app => {
 
-    app.get('/programs', controller.search);
-
+    app.route('/search')
+        .get(controller.search);
+        
 }
