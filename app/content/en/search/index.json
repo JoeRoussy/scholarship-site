@@ -1,0 +1,17 @@
+{
+    "heading": "Find a program",
+    "form": {
+        "placeholders": {
+            "university": "University",
+            "name": "Name",
+            "submit": "Submit"
+        }
+    },
+    "table": {
+        "headings": {
+            "province": "Province",
+            "university": "University",
+            "program": "Program"
+        }
+    }
+}

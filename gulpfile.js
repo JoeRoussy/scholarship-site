@@ -1,9 +1,14 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence');
 const util = require('gulp-util');
+const es = require('event-stream');
+
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
 
 const rename = require('gulp-rename');
-const babel = require('gulp-babel');
+const browserify = require('browserify');
+const babelify = require('babelify');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const sourcemaps = require('gulp-sourcemaps');
@@ -16,8 +21,8 @@ const nodemon = require('gulp-nodemon');
 
 const frontEndScriptsGlob = './src/scripts/*.js';
 const stylesGlob = './src/styles/**/*.scss';
-const appGlob = './app/**'
-const serverPublicFolderPath = './public'
+const appGlob = './app/**';
+const serverPublicFolderPath = './public';
 
 let isDev = true;
 
@@ -30,16 +35,46 @@ function addMinToFileExtension(file) {
 }
 
 // Concat and transpile all front end js files into bundle.js. Add sourcemaps in dev. Minify in production.
+// gulp.task('scripts', () => {
+//     return gulp.src(frontEndScriptsGlob)
+//         .pipe(isDev ? sourcemaps.init() : util.noop())
+//         .pipe(concat('bundle.js'))
+//         .pipe(babel({
+//             presets: [ 'es2015', 'stage-1' ]
+//         }))
+//         .pipe(isDev ? util.noop() : uglify())
+//         .pipe(isDev ? sourcemaps.write('.') : util.noop())
+//         .pipe(rename(file => addMinToFileExtension(file)))
+//         .pipe(gulp.dest(`${serverPublicFolderPath}/js`));
+// });
+
 gulp.task('scripts', () => {
-    return gulp.src(frontEndScriptsGlob)
-        .pipe(isDev ? sourcemaps.init() : util.noop())
-        .pipe(concat('bundle.js'))
-        .pipe(babel( {presets: ['es2015']} ))
-        .pipe(isDev ? util.noop() : uglify())
-        .pipe(isDev ? sourcemaps.write('.') : util.noop())
-        .pipe(rename(file => addMinToFileExtension(file)))
-        .pipe(gulp.dest(`${serverPublicFolderPath}/js`));
-});
+    return gulp.src(frontEndScriptsGlob, (err, files) => {
+        const tasks = files.map(function(entry) {
+            return browserify({
+                entries: [ entry ],
+                debug: isDev
+            })
+                .transform(babelify, {
+                    presets: [ 'es2015', 'stage-1' ],
+                    compact: false
+                })
+                .bundle()
+                .pipe(source(entry))
+                .pipe(buffer())
+                .pipe(isDev ? buffer() : uglify())
+                .pipe(rename( function(fileObj){
+                    if (fileObj.extname !== '.map') {
+                        fileObj.extname = '.min.js';
+                        fileObj.dirname = '';
+                        fileObj.basename = fileObj.basename.replace('.bundle', '');
+                    }
+                }))
+                .pipe(gulp.dest('./public/js/'));
+            });
+        es.merge(tasks);
+    })
+})
 
 // Transfer styles to the server's public folder. Compile sass, minify for production.
 gulp.task('styles', () => {

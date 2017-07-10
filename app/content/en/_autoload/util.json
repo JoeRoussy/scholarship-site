@@ -1,11 +1,11 @@
 {
     "assets": {
         "stylesheets": [
-            "/public/css/app.min.css"
+            "/css/app.min.css"
         ],
         "scripts": {
             "footer": [
-                "/public/js/bundle.min.js"
+                "/js/app.min.js"
             ]
         }
     }

@@ -15,12 +15,12 @@ exports.load = function (options, callback) {
         _options.page = _options.page.substr(1);
     }
 
-    var autoloadPath = buildContentPath(
+    const autoloadPath = buildContentPath(
         _options.lang,
         '_autoload'
     );
 
-    var contentPath = buildContentPath(
+    const contentPath = buildContentPath(
         _options.lang,
         convertPageURL(_options.page)
     );

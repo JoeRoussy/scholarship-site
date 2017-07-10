@@ -1,24 +1,24 @@
 <div class="searchResults">
-    <h1>Find a Program</h1>
+    <h1>{{ heading }}</h1>
 
     <form action="/search" method="get">
         <div class="formInput">
-            <input id="universityInput" type="text" name="university" placeholder="University">
+            <input id="universityInput" type="text" name="university" placeholder="{{ form.placeholders.university }}">
         </div>
         <div class="formInput">
-            <input id="nameInput" type="text" name="name" placeholder="Name">
+            <input id="nameInput" type="text" name="name" placeholder="{{ form.placeholders.name }}">
         </div>
         <div class="submitWrapper">
-            <input type="submit" value="Search">
+            <input type="submit" value="{{ form.placeholders.submit }}">
         </div>
     </form>
 
     {{#if programs}}
         <table class="resultsTable">
             <tr>
-                <th>Province</th>
-                <th>University</th>
-                <th>Program</th>
+                <th>{{ table.headings.province }}</th>
+                <th>{{ table.headings.university }}</th>
+                <th>{{ table.headings.program }}</th>
                 {{!-- <th>International tuition</th>
                 <th>Domestic tuition</th>
                 <th>Minimum average</th>

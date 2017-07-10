@@ -59,10 +59,10 @@ exports.search = (req, res) => {
                     programs
                 });
 
-                return res.render('search');
+                return res.render('search', res.locals.page);
             });
         });
     } else {
-        return res.render('search');
+        return res.render('search', res.locals.page);
     }
 }
