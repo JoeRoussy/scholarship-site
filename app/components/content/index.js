@@ -3,7 +3,28 @@ import fs from 'fs';
 import path from 'path';
 
 
-export default (options, callback) => {
+export default app => {
+    app.use((req, res, next) => {
+        loadContent({
+            lang: res.locals.selectedUserLanguage,
+            page: req.url
+        }, function (err, content) {
+            const url = req.url.split('?');
+            const slug = url[0];
+
+            res.locals.page = {
+                ...content,
+                url: req.protocol + '://' + req.get('host') + req.url,
+                slug,
+                params: url[1] ? '?' + url[1] : ''
+            };
+
+            return next();
+        });
+    });
+}
+
+function loadContent (options, callback) {
     const _options = {
         lang: 'en',
         page: '/',
