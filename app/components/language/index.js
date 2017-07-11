@@ -1,7 +1,4 @@
-const extend = require('extend');
-
-
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     const segments = req.url
             .split('?')[0] // Strip query params
             .substr(1)     // Strip preceding slash

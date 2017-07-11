@@ -1,10 +1,9 @@
-const express = require('express');
-const extend = require('extend');
-const language = require('./components/language');
-const content = require('./components/content');
-const templateConfig = require('./components/template-config');
-const basicRouteConfig = require('./router/basicRoutes.js');
-const searchRouteConfig = require('./router/searchRoutes.js');
+import express from 'express';
+import language from './components/language';
+import loadContent from './components/content';
+import templateConfig from './components/template-config';
+import basicRouteConfig from './router/basicRoutes.js';
+import searchRouteConfig from './router/searchRoutes.js';
 
 const app = express();
 
@@ -14,18 +13,21 @@ app.use(language);
 
 // TODO: This should be its own module
 app.use((req, res, next) => {
-    content.load({
+    console.log('Value of req.url:');
+    console.log(req.url);
+    loadContent({
         lang: res.locals.selectedUserLanguage,
         page: req.url
     }, function (err, content) {
         const url = req.url.split('?');
         const slug = url[0];
 
-        res.locals.page = extend(content, {
+        res.locals.page = {
+            ...content,
             url: req.protocol + '://' + req.get('host') + req.url,
             slug,
             params: url[1] ? '?' + url[1] : ''
-        });
+        };
 
         return next();
     });

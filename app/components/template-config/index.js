@@ -1,6 +1,6 @@
-const handlebars = require('express-handlebars');
+import handlebars from 'express-handlebars';
 
-module.exports = app => {
+export default app => {
     const hbs = handlebars.create({
         extname: '.hbs',
         defaultLayout: 'main',
