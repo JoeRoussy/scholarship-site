@@ -13,8 +13,6 @@ app.use(language);
 
 // TODO: This should be its own module
 app.use((req, res, next) => {
-    console.log('Value of req.url:');
-    console.log(req.url);
     loadContent({
         lang: res.locals.selectedUserLanguage,
         page: req.url
