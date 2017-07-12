@@ -4,9 +4,13 @@ import loadContentConfig from './components/content';
 import templateConfig from './components/template-config';
 import basicRouteConfig from './router/basicRoutes.js';
 import searchRouteConfig from './router/searchRoutes.js';
+import { getLogger } from './components/log-factory';
 
 const app = express();
 
+global.Logger = getLogger({
+    name: 'scholarship-site'
+});
 
 app.use(express.static('public'));
 app.use(language);
@@ -17,4 +21,4 @@ basicRouteConfig(app);
 searchRouteConfig(app);
 
 
-app.listen(3000, () => console.log('App is listening on port 3000'));
+app.listen(3000, () => Logger.info('App listening on port 3000'));
