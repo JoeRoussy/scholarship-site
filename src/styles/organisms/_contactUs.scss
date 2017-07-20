@@ -1,0 +1,158 @@
+$padding-top:1.5rem;
+$input-background-color:#FBFBFB;
+$input-border-color:#EDEDED;
+$error-color:#ff0000;
+
+form{
+    &:before,&:after{
+        content: " ";
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
+    input[type='submit']{
+        font-family:$roboto;
+        color:black;
+        font-size:1.13rem;
+        width:16.25rem;
+        margin:0 auto;
+        display:block;
+        line-height:normal;
+        height:auto;
+        padding-top:1.19rem;
+        padding-bottom:1.19rem;
+    }
+}
+
+.inputField{
+    width:100%;
+    float:left;
+    position:relative;
+    margin-bottom:1.88rem;
+
+    &:before ,&:after{
+        content: " ";
+        visibility: hidden;
+        display: block;
+        height: 0;
+        clear: both;
+    }
+
+    label{
+        position:absolute;
+        pointer-events:none;
+        left:1.5rem;
+        top:50%;
+        transform:translateY(-50%);
+        margin:auto;
+        transition:font-size 0.2s linear, top 0.2s linear;
+    }
+
+    &.textarea {
+        label{
+            top:$padding-top;
+            transform:none;
+        }
+    }
+
+    input, textarea{
+        background:$input-background-color;
+        border:2px solid $input-border-color;
+        padding:$padding-top 1.31rem 0.75rem 1.31rem;
+        transition:border 0.3s linear, outline 0.3s linear;
+        box-sizing:border-box;
+        font-size:1.13rem;
+        width:100%;
+
+        &.error{
+            border:2px solid $error-color;
+        }
+
+        &:focus, &:active,{
+            border:2px solid blue;
+            outline: blue;
+        }
+
+        &:focus, &:active, &.active{
+            & + label{
+                top:10px;
+                font-size:0.75rem;
+                transform:none;
+            }
+        }
+
+    }
+}
+
+$width:2.5;
+$radio-button-padding:1;
+$_positioning: $width + $radio-button-padding;
+
+.radio, .checkbox{
+    margin-bottom:$width + rem;
+
+    input[type='radio'], input[type='checkbox']{
+        position:absolute;
+
+        &.error + label:before{
+            border:2px solid $error-color;
+        }
+
+        &:focus + label:before{
+            border:4px solid blue;
+        }
+
+        &:focus{
+            outline:none;
+        }
+    }
+
+    input[type='radio']:checked, input[type='checkbox']:checked{
+        & + label:before{
+            background: blue;
+        }
+
+        & + label:after{
+            content:' ';
+            background-repeat:no-repeat;
+            background-position:center;
+            width:$width + rem;
+            height:$width + rem;
+            position:absolute;
+            top:0;
+            left:0;
+            bottom:0;
+            margin:auto;
+            display:block;
+        }
+    }
+
+    label{
+        position:relative;
+        padding-left:$_positioning + rem;
+        cursor:pointer;
+        display:inline-block;
+
+        &:hover:before{
+            border:4px solid blue;
+        }
+
+        &:before{
+            transition:background 0.3s ease-in-out, border 0.1s ease-in-out;
+            transform:translateY(-50%);
+            border:2px solid blue;
+            position:absolute;
+            background: white;
+            top:50%;
+            left:0;
+            content:'';
+            width:$width + rem;
+            height:$width + rem;
+            display:inline-block;
+            border-radius:100%;
+            box-sizing:border-box;
+        }
+    }
+}
