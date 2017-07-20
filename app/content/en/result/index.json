@@ -1,0 +1,15 @@
+{
+    "title": "Scholarship Site",
+    "description": "A site for researching and applying for scholarships in canada",
+    "image": "http://www.backpackers.ca/images/hostellogos/Western%20University.gif",
+    "alt": "Western",
+    "program": "Engineering",
+    "university": "Western",
+    "province": "Ontario",
+    "intTuition": "15,000",
+    "domTuition": "6000",
+    "minAverage": "Low to Mid 80's",
+    "length": "4-6 Years",
+    "language": "English",
+    "score": "580"
+}
