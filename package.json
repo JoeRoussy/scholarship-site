@@ -4,6 +4,7 @@
   "description": "A site for scholarships",
   "main": "app/index.js",
   "dependencies": {
+    "bunyan": "1.8.10",
     "csv-parse": "^1.2.0",
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0"
@@ -36,7 +37,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "gulp"
+    "start": "gulp",
+    "start-production": "echo \"Error: we are not ready for production yet\" && exit 1"
   },
   "repository": {
     "type": "git",

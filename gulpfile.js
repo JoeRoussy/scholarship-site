@@ -34,20 +34,6 @@ function addMinToFileExtension(file) {
     }
 }
 
-// Concat and transpile all front end js files into bundle.js. Add sourcemaps in dev. Minify in production.
-// gulp.task('scripts', () => {
-//     return gulp.src(frontEndScriptsGlob)
-//         .pipe(isDev ? sourcemaps.init() : util.noop())
-//         .pipe(concat('bundle.js'))
-//         .pipe(babel({
-//             presets: [ 'es2015', 'stage-1' ]
-//         }))
-//         .pipe(isDev ? util.noop() : uglify())
-//         .pipe(isDev ? sourcemaps.write('.') : util.noop())
-//         .pipe(rename(file => addMinToFileExtension(file)))
-//         .pipe(gulp.dest(`${serverPublicFolderPath}/js`));
-// });
-
 gulp.task('scripts', () => {
     return gulp.src(frontEndScriptsGlob, (err, files) => {
         const tasks = files.map(function(entry) {

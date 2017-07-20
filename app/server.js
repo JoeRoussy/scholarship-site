@@ -1,39 +1,24 @@
-const express = require('express');
-const extend = require('extend');
-const language = require('./components/language');
-const content = require('./components/content');
-const templateConfig = require('./components/template-config');
-const basicRouteConfig = require('./router/basicRoutes.js');
-const searchRouteConfig = require('./router/searchRoutes.js');
+import express from 'express';
+import language from './components/language';
+import loadContentConfig from './components/content';
+import templateConfig from './components/template-config';
+import basicRouteConfig from './router/basicRoutes.js';
+import searchRouteConfig from './router/searchRoutes.js';
+import { getLogger } from './components/log-factory';
 
 const app = express();
 
+global.Logger = getLogger({
+    name: 'scholarship-site'
+});
 
 app.use(express.static('public'));
 app.use(language);
 
-// TODO: This should be its own module
-app.use((req, res, next) => {
-    content.load({
-        lang: res.locals.selectedUserLanguage,
-        page: req.url
-    }, function (err, content) {
-        const url = req.url.split('?');
-        const slug = url[0];
-
-        res.locals.page = extend(content, {
-            url: req.protocol + '://' + req.get('host') + req.url,
-            slug,
-            params: url[1] ? '?' + url[1] : ''
-        });
-
-        return next();
-    });
-});
-
+loadContentConfig(app);
 templateConfig(app);
 basicRouteConfig(app);
 searchRouteConfig(app);
 
 
-app.listen(3000, () => console.log('App is listening on port 3000'));
+app.listen(3000, () => Logger.info('App listening on port 3000'));
