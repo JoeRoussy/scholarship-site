@@ -1,25 +1,9 @@
-import mongoose from 'mongoose';
 import { RuntimeError } from '../../custom-utils';
+import mongodb from 'mongodb';
 
-// Connects to the db and sets up the schemas.
-// Returns a promise that resolves to undefined of the connection is successful
-// and re
+// Connect to mongodb and return the db connection if everything goes well.
+// Returns a promise that resolves into a DB connection
 export default () => {
-    // Tell mongoose to use native promises
-    mongoose.Promise = Promise;
-
-    return mongoose.connect('mongodb://localhost/scholarship-site')
-        .then(() => {
-            console.log('We are connected!!!!');
-
-            // Setup all the models
-
-            return;
-        })
-        .catch(err => {
-            throw new RuntimeError({
-                msg: 'Error connecting to mongo',
-                err
-            });
-        });
+    const MongoClient = mongodb.MongoClient;
+    return MongoClient.connect('mongodb://127.0.0.1:27017/scholarship-site')
 }

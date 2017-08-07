@@ -26,7 +26,6 @@ const serverPublicFolderPath = './public';
 
 let isDev = true;
 
-
 // Helper for the rename plugin. Doesn't affect the extensions on map files
 function addMinToFileExtension(file) {
     if (file.extname != '.map') {
@@ -100,6 +99,9 @@ gulp.task('nodemon', () => {
     nodemon({
         script: 'app/index.js',
         ext: 'js',
+        execMap: {
+            js: `node --inspect`
+        },
         ignore: [
             'gulpfile.js',
             'public/*',
