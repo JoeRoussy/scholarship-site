@@ -8,6 +8,7 @@ import { ObjectId } from 'mongodb';
 async function getUniversitiesForProvince({
     province,
     provincesCollection,
+    universitiesCollection,
     universityIds
 }) {
     const programProvince = await provincesCollection.findOne({ name: province });
@@ -28,7 +29,7 @@ async function getUniversitiesForProvince({
 
 // Makes a db query based on an optional name search and an optional list of
 // universityIds
-function getFilters(name, universityIds) {
+function getFilters(name, universityIds, isForUniversitiesCollection) {
     let filters = {};
 
     if (name) {
@@ -42,7 +43,7 @@ function getFilters(name, universityIds) {
     if (universityIds.length) {
         filters = {
             ...filters,
-            universityId: {
+            [isForUniversitiesCollection ? '_id' : 'universityId']: {
                 $in: universityIds
             }
         };
@@ -90,6 +91,7 @@ export const getProgramsWithFilter = async ({
             universityIds = await getUniversitiesForProvince({
                 province,
                 provincesCollection,
+                universitiesCollection,
                 universityIds
             });
         } catch (e) {
@@ -198,6 +200,7 @@ export const getUniversitiesWithFilter = async({
             universityIds = await getUniversitiesForProvince({
                 province,
                 provincesCollection,
+                universitiesCollection,
                 universityIds
             });
         } catch (e) {
@@ -209,7 +212,7 @@ export const getUniversitiesWithFilter = async({
     }
 
     // Get universities with optional filters
-    const filters = getFilters(name, universityIds);
+    const filters = getFilters(name, universityIds, true);
 
     try {
         return await universitiesCollection.aggregate([
