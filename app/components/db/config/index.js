@@ -1,4 +1,3 @@
-import { RuntimeError } from '../../custom-utils';
 import mongodb from 'mongodb';
 
 // Returns a promise that resolves into a DB connection
