@@ -29,7 +29,7 @@ async function getUniversitiesForProvince({
 
 // Makes a db query based on an optional name search and an optional list of
 // universityIds
-function getFilters(name, universityIds, isForUniversityCollection) {
+function getFilters(name, universityIds, isForUniversitiesCollection) {
     let filters = {};
 
     if (name) {
@@ -43,7 +43,7 @@ function getFilters(name, universityIds, isForUniversityCollection) {
     if (universityIds.length) {
         filters = {
             ...filters,
-            [isForUniversityCollection ? '_id' : 'universityId']: {
+            [isForUniversitiesCollection ? '_id' : 'universityId']: {
                 $in: universityIds
             }
         };
