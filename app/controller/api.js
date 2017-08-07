@@ -3,7 +3,7 @@
 */
 
 import { required, print } from '../components/custom-utils';
-import { getProgramsWithFilter, getDocById, getProgramById as dataModuleGetProgramById } from '../components/data';
+import { getProgramsWithFilter, getDocById, getProgramById as dataModuleGetProgramById, getUniversitiesWithFilter } from '../components/data';
 
 function transformProgramForOutput(program) {
     // Clean the extra props out of each program
@@ -27,6 +27,28 @@ function transformProgramForOutput(program) {
     };
 }
 
+function transformUniversityForOutput(university) {
+    const {
+        provinces: [
+            {
+                _id: pId,
+                name: pName
+            }
+        ],
+        provinceId,
+        language,
+        ...universityProps
+    } = university;
+
+    return {
+        ...universityProps,
+        province: {
+            _id: pId,
+            name: pName
+        }
+    };
+}
+
 export const programSearch = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
     universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
@@ -39,7 +61,7 @@ export const programSearch = ({
         name
     } = req.query;
 
-    const programs = getProgramsWithFilter({
+    getProgramsWithFilter({
         province,
         university,
         name,
@@ -85,6 +107,36 @@ export const getProgramById = ({
             });
         });
 };
+
+export const universitiesSearch = ({
+    provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
+    universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
+    logger = required('logger', 'You must pass in a logger for this function to use')
+}) => (req, res) => {
+    const {
+        province,
+        name
+    } = req.query;
+
+    getUniversitiesWithFilter({
+        province,
+        name,
+        provincesCollection,
+        universitiesCollection
+    })
+        .then(universities => res.json({
+            count: universities.length,
+            universities: universities.map(transformUniversityForOutput)
+        }))
+        .catch(e => {
+            logger.error(e.err, e.msg);
+
+            return res.json({
+                err: true,
+                message: 'Error getting universities'
+            });
+        })
+}
 
 export const getUniversityById = ({
     universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
