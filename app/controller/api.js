@@ -27,7 +27,27 @@ export const programSearch = ({
     })
         .then(programs => res.json({
             count: programs.length,
-            programs
+            programs: programs.map(program => {
+                // Clean the extra props out of each program
+                const {
+                    university: [
+                        {
+                            name: universityName,
+                            _id: uId
+                        }
+                    ],
+                    universityId,
+                    ...programProps
+                } = program;
+
+                return {
+                    university: {
+                        _id: uId,
+                        name: universityName
+                    },
+                    ...programProps
+                };
+            })
         }))
         .catch(e => {
             logger.error(e.err, e.msg);
@@ -62,4 +82,4 @@ export const getProgramById = ({
                 message: `Could not get a program with id ${id}`
             });
         });
-}
+};

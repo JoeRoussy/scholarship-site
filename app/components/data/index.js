@@ -1,6 +1,7 @@
 import { required, print, RuntimeError } from '../custom-utils';
 import { ObjectId } from 'mongodb';
-import { map as pMap } from 'bluebird';
+
+// NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
 
 // Gets all programs with optional filters. If no province or university matches the filters,
 // they are ignored. Returns a promise.
@@ -81,30 +82,19 @@ export const getProgramsWithFilter = async ({
     }
 
     try {
-        const programs = await programsCollection.find(filters).toArray();
-
-        return pMap(programs, async (program) => {
-            const uni = await getDocById({
-                collection: universitiesCollection,
-                id: program.universityId
-            });
-
-            const {
-                universityId,
-                ...programProps
-            } = program;
-
-            const {
-                language,
-                provinceId,
-                ...universityProps
-            } = uni;
-
-            return {
-                ...programProps,
-                university: universityProps
-            };
-        });
+        return await programsCollection.aggregate([
+            {
+                $match: filters
+            },
+            {
+                $lookup: {
+                    from: 'universities',
+                    localField: 'universityId',
+                    foreignField: '_id',
+                    as: 'university'
+                }
+            }
+        ]).toArray();
     } catch (e) {
         throw new RuntimeError({
             msg: `Error getting programs for filter: ${JSON.stringify(filter, null, 4)}`,
