@@ -4,7 +4,9 @@ import loadContentConfig from './components/content';
 import templateConfig from './components/template-config';
 import basicRouteConfig from './router/basicRoutes.js';
 import searchRouteConfig from './router/searchRoutes.js';
-import { getLogger } from './components/log-factory';
+import { getLogger, getChildLogger } from './components/log-factory';
+import dbConfig from './components/db/config';
+import runDataImport from './components/db/data-import';
 
 const app = express();
 
@@ -12,13 +14,44 @@ global.Logger = getLogger({
     name: 'scholarship-site'
 });
 
-app.use(express.static('public'));
-app.use(language);
+const dbLogger = getChildLogger({
+    baseLogger: Logger,
+    additionalFields: {
+        module: 'db-config'
+    }
+});
 
-loadContentConfig(app);
-templateConfig(app);
-basicRouteConfig(app);
-searchRouteConfig(app);
+dbConfig()
+    .then((db) => {
+        if (!db) {
+            dbLogger.error(null, 'Got null or undefinded for the db connection from the db config');
+            return;
+        }
 
+        // Now that we know the db is connected, continue setting up the app
 
-app.listen(3000, () => Logger.info('App listening on port 3000'));
+        app.use(express.static('public'));
+        app.use(language);
+
+        loadContentConfig(app);
+        templateConfig(app);
+        basicRouteConfig(app);
+        searchRouteConfig(app);
+
+        // Comment this out if we do not want to run data import
+        // TODO: Make this run based on an enviornment variable
+        // runDataImport({
+        //     spreadsheetPath: 'app/files/database_may_28.csv',
+        //     baseLogger: Logger,
+        //     collections: {
+        //         provinces: db.collection('provinces'),
+        //         universities: db.collection('universities'),
+        //         programs: db.collection('programs')
+        //     }
+        // });
+
+        app.listen(3000, () => Logger.info('App listening on port 3000'));
+    })
+    .catch(({ err, msg }) => {
+        dbLogger.error(err, msg);
+    });
