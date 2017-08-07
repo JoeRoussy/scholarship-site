@@ -3,6 +3,8 @@ import { ObjectId } from 'mongodb';
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
 
+// Takes a list of universityIds, finds any other universities for a province, appends them to the list
+// if they are not already there, and returns the list.
 async function getUniversitiesForProvince({
     province,
     provincesCollection,
@@ -24,6 +26,8 @@ async function getUniversitiesForProvince({
     return universityIds;
 };
 
+// Makes a db query based on an optional name search and an optional list of
+// universityIds
 function getFilters(name, universityIds) {
     let filters = {};
 
@@ -122,7 +126,7 @@ export const getProgramsWithFilter = async ({
 };
 
 
-// Get a document by Id for a given collection. Returns a promise. Does not do any population
+// Get a document by Id for a given collection. Returns a promise. Does not do any population.
 // Throws normal errors
 export const getDocById = async ({
     collection = required('collection'),
@@ -136,7 +140,7 @@ export const getDocById = async ({
 };
 
 
-// Get a program by id and populates its university
+// Gets a program by id and populates its university.
 // Returns a promise
 // Throws RuntimeErrors
 export const getProgramById = async ({
