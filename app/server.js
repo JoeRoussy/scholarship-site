@@ -4,6 +4,7 @@ import loadContentConfig from './components/content';
 import templateConfig from './components/template-config';
 import basicRouteConfig from './router/basicRoutes.js';
 import searchRouteConfig from './router/searchRoutes.js';
+import apiRouteConfig from './router/apiRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
@@ -37,6 +38,11 @@ dbConfig()
         templateConfig(app);
         basicRouteConfig(app);
         searchRouteConfig(app);
+        apiRouteConfig({
+            app,
+            db,
+            baseLogger: Logger
+        });
 
         // Comment this out if we do not want to run data import
         // TODO: Make this run based on an enviornment variable
@@ -52,6 +58,6 @@ dbConfig()
 
         app.listen(3000, () => Logger.info('App listening on port 3000'));
     })
-    .catch(({ err, msg }) => {
-        dbLogger.error(err, msg);
+    .catch(e => {
+        dbLogger.error(e, 'Error connecting to database');
     });

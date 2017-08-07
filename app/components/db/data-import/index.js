@@ -50,7 +50,7 @@ const func = async ({
                 'rank',
                 'notes'
             ],
-            from: 1 // Skip the heading row
+            from: 1, // Skip the heading row
             skip_empty_lines: true
         }, (err, data) => {
             if (err) {
@@ -62,7 +62,8 @@ const func = async ({
                 .filter(program => program.university) // Skip the empty lines in the file
                 .reduce((accumulator, program) => {
                     accumulator.push({
-                        ...program
+                        ...program,
+                        language: 'english'
                     });
 
                     return accumulator;
@@ -97,7 +98,8 @@ const func = async ({
                 if (!university) {
                     university = await universities.insertOne({
                         name: universityName,
-                        provinceId: province._id
+                        provinceId: province._id,
+                        language: 'english'
                     });
                 }
 
