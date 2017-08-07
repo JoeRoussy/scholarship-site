@@ -136,7 +136,9 @@ export const getDocById = async ({
 };
 
 
-// Get a program by id and populate its university
+// Get a program by id and populates its university
+// Returns a promise
+// Throws RuntimeErrors
 export const getProgramById = async ({
     programsCollection = required('programsCollection'),
     id = required('id')
@@ -145,21 +147,30 @@ export const getProgramById = async ({
         id = ObjectId(id);
     }
 
-    const result = await programsCollection.aggregate([
-        {
-            $match: {
-                _id: id
+    let result;
+
+    try {
+        result = await programsCollection.aggregate([
+            {
+                $match: {
+                    _id: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'universities',
+                    localField: 'universityId',
+                    foreignField: '_id',
+                    as: 'universities'
+                }
             }
-        },
-        {
-            $lookup: {
-                from: 'universities',
-                localField: 'universityId',
-                foreignField: '_id',
-                as: 'universities'
-            }
-        }
-    ]).toArray();
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: `Could not get program with id: ${id}`,
+            err: e
+        });
+    }
 
     const [ program ] = result;
 
