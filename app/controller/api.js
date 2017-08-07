@@ -3,7 +3,29 @@
 */
 
 import { required, print } from '../components/custom-utils';
-import { getProgramsWithFilter, getDocById } from '../components/data';
+import { getProgramsWithFilter, getDocById, getProgramById as dataModuleGetProgramById } from '../components/data';
+
+function transformProgramForOutput(program) {
+    // Clean the extra props out of each program
+    const {
+        universities: [
+            {
+                name: universityName,
+                _id: uId
+            }
+        ],
+        universityId,
+        ...programProps
+    } = program;
+
+    return {
+        university: {
+            _id: uId,
+            name: universityName
+        },
+        ...programProps
+    };
+}
 
 export const programSearch = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
@@ -27,27 +49,7 @@ export const programSearch = ({
     })
         .then(programs => res.json({
             count: programs.length,
-            programs: programs.map(program => {
-                // Clean the extra props out of each program
-                const {
-                    university: [
-                        {
-                            name: universityName,
-                            _id: uId
-                        }
-                    ],
-                    universityId,
-                    ...programProps
-                } = program;
-
-                return {
-                    university: {
-                        _id: uId,
-                        name: universityName
-                    },
-                    ...programProps
-                };
-            })
+            programs: programs.map(transformProgramForOutput)
         }))
         .catch(e => {
             logger.error(e.err, e.msg);
@@ -67,12 +69,12 @@ export const getProgramById = ({
         id
     } = req.params;
 
-    getDocById({
-        collection: programsCollection,
+    dataModuleGetProgramById({
+        programsCollection,
         id
     })
         .then(program => res.json({
-            program
+            program: transformProgramForOutput(program)
         }))
         .catch(e => {
             logger.error(e, `Error getting program with id: ${id}`);
@@ -83,3 +85,36 @@ export const getProgramById = ({
             });
         });
 };
+
+export const getUniversityById = ({
+    universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    getDocById({
+        collection: universitiesCollection,
+        id
+    })
+        .then(university => {
+            const {
+                provinceId,
+                language,
+                ...props
+            } = university;
+
+            return res.json({
+                university: props
+            });
+        })
+        .catch(e => {
+            logger.error(e, `Error getting university with id: ${id}`);
+
+            res.json({
+                err: true,
+                message: `Could not get a university with id ${id}`
+            });
+        })
+}

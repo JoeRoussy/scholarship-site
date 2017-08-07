@@ -1,5 +1,5 @@
 import express from 'express';
-import { programSearch, getProgramById } from '../controller/api.js';
+import { programSearch, getProgramById, getUniversityById } from '../controller/api.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 
@@ -28,6 +28,16 @@ export default ({
             baseLogger,
             additionalFields: {
                 module: 'api-get-program-by-id'
+            }
+        })
+    }));
+
+    router.get('/universities/:id', getUniversityById({
+        universitiesCollection: db.collection('universities'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-get-university-by-id'
             }
         })
     }));

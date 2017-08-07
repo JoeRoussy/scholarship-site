@@ -91,7 +91,7 @@ export const getProgramsWithFilter = async ({
                     from: 'universities',
                     localField: 'universityId',
                     foreignField: '_id',
-                    as: 'university'
+                    as: 'universities'
                 }
             }
         ]).toArray();
@@ -104,7 +104,7 @@ export const getProgramsWithFilter = async ({
 };
 
 
-// Get a document by Id for a given collection. Returns a promise.
+// Get a document by Id for a given collection. Returns a promise. Does not do any population
 // TODO: Should resolve the university into a name
 // Throws normal errors
 export const getDocById = async ({
@@ -117,3 +117,33 @@ export const getDocById = async ({
 
     return await collection.findOne({ _id: id });
 };
+
+// Get a program by id and populate its university
+export const getProgramById = async ({
+    programsCollection = required('programsCollection'),
+    id = required('id')
+}) => {
+    if (typeof id === 'string') {
+        id = ObjectId(id);
+    }
+
+    const result = await programsCollection.aggregate([
+        {
+            $match: {
+                _id: id
+            }
+        },
+        {
+            $lookup: {
+                from: 'universities',
+                localField: 'universityId',
+                foreignField: '_id',
+                as: 'universities'
+            }
+        }
+    ]).toArray();
+
+    const [ program ] = result;
+
+    return program;
+}
