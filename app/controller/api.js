@@ -4,50 +4,8 @@
 
 import { required, print } from '../components/custom-utils';
 import { getProgramsWithFilter, getDocById, getProgramById as dataModuleGetProgramById, getUniversitiesWithFilter } from '../components/data';
+import { transformProgramForOutput, transformUniversityForOutput } from '../components/transformers';
 
-function transformProgramForOutput(program) {
-    // Clean the extra props out of each program
-    const {
-        universities: [
-            {
-                name: universityName,
-                _id: uId
-            }
-        ],
-        universityId,
-        ...programProps
-    } = program;
-
-    return {
-        university: {
-            _id: uId,
-            name: universityName
-        },
-        ...programProps
-    };
-}
-
-function transformUniversityForOutput(university) {
-    const {
-        provinces: [
-            {
-                _id: pId,
-                name: pName
-            }
-        ],
-        provinceId,
-        language,
-        ...universityProps
-    } = university;
-
-    return {
-        ...universityProps,
-        province: {
-            _id: pId,
-            name: pName
-        }
-    };
-}
 
 export const programSearch = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
