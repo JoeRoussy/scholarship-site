@@ -38,8 +38,8 @@ export const getProgramsWithFilter = async ({
         }
     }
 
-    // If a province was passed, try getting an id associated with it
-    if (province) {
+    // If a province was passed, try getting an id associated with it as long as a university query should not override it
+    if (province && !university) {
         try {
             const programProvince = await provincesCollection.findOne({ name: province });
 
