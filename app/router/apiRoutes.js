@@ -1,5 +1,5 @@
 import express from 'express';
-import { programSearch } from '../controller/api.js';
+import { programSearch, getProgramById } from '../controller/api.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 
@@ -18,6 +18,16 @@ export default ({
             baseLogger,
             additionalFields: {
                 module: 'api-program-search'
+            }
+        })
+    }));
+
+    router.get('/programs/:id', getProgramById({
+        programsCollection: db.collection('programs'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-get-program-by-id'
             }
         })
     }));

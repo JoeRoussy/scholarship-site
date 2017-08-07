@@ -3,7 +3,7 @@
 */
 
 import { required, print } from '../components/custom-utils';
-import { getProgramsWithFilter } from '../components/data';
+import { getProgramsWithFilter, getDocById } from '../components/data';
 
 export const programSearch = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
@@ -35,6 +35,31 @@ export const programSearch = ({
             return res.json({
                 err: true,
                 message: 'Error getting programs'
+            });
+        });
+};
+
+export const getProgramById = ({
+    programsCollection = required('programsCollection', 'You must pass in the programs db collection'),
+    logger = required('logger', 'You must pass a logger for this function to use')
+}) => (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    getDocById({
+        collection: programsCollection,
+        id
+    })
+        .then(program => res.json({
+            program
+        }))
+        .catch(e => {
+            logger.error(e, `Error getting program with id: ${id}`);
+
+            res.json({
+                err: true,
+                message: `Could not get a program with id ${id}`
             });
         });
 }

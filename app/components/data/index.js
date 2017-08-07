@@ -1,7 +1,9 @@
 import { required, print, RuntimeError } from '../custom-utils';
+import { ObjectId } from 'mongodb'
 
 // Gets all programs with optional filters. If no province or university matches the filters,
-// they are ignored
+// they are ignored. Returns a promise.
+// Throws RuntimeErrors
 // TODO: Need to resolve universities into name for the return object
 // TODO: Deal with catches
 export const getProgramsWithFilter = async ({
@@ -83,4 +85,15 @@ export const getProgramsWithFilter = async ({
             err: e
         });
     }
+};
+
+
+// Get a document by Id for a given collection. Returns a promise.
+// TODO: Should resolve the university into a name
+// Throws normal errors
+export const getDocById = async ({
+    collection = required('collection'),
+    id = required('id')
+}) => {
+    return await collection.findOne({ _id: ObjectId(id) });
 };
