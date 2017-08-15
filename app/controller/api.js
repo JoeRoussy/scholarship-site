@@ -5,6 +5,7 @@
 import { required, print } from '../components/custom-utils';
 import { getProgramsWithFilter, getDocById, getProgramById as dataModuleGetProgramById, getUniversitiesWithFilter } from '../components/data';
 import { transformProgramForOutput, transformUniversityForOutput } from '../components/transformers';
+import { ObjectId } from 'mongodb';
 
 
 export const programSearch = ({
@@ -27,15 +28,38 @@ export const programSearch = ({
         universitiesCollection,
         programsCollection
     })
-        .then(programs => res.json({
-            count: programs.length,
-            programs: programs.map(transformProgramForOutput)
-        }))
+        .then(programs => {
+            const count = programs.length;
+
+            if (count === 0) {
+                if (!province && !university && !name) {
+                    // Could not find programs without filter, something must be wrong...
+                    logger.error(null, 'Could not find any programs in the db');
+
+                    return res.status(500).json({
+                        error: true,
+                        message: 'Could not find any programs'
+                    });
+                }
+
+                // Otherwise we just could not find programs for that filter
+                return res.status(404).json({
+                    error: true,
+                    message: `Could not find programs for the query:${province ? ` province=${province}` : ''}${university ? ` university=${university}` : ''}${name ? ` name=${name}` : ''}`
+                });
+            }
+
+            // We got some programs to return so format response and send
+            return res.json({
+                count,
+                programs: programs.map(transformProgramForOutput)
+            });
+        })
         .catch(e => {
             logger.error(e.err, e.msg);
 
-            return res.json({
-                err: true,
+            return res.status(500).json({
+                error: true,
                 message: 'Error getting programs'
             });
         });
@@ -49,19 +73,37 @@ export const getProgramById = ({
         id
     } = req.params;
 
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+            error: true,
+            message: `${id} is not a valid id`
+        });
+    }
+
     dataModuleGetProgramById({
         programsCollection,
         id
     })
-        .then(program => res.json({
-            program: transformProgramForOutput(program)
-        }))
+        .then(program => {
+            if (!program) {
+                logger.warn(null, `Could not find a program with id ${id} (which is a valid format)`);
+
+                return res.status(404).json({
+                    error: true,
+                    message: `Could not find program with id ${id}`
+                });
+            }
+
+            res.json({
+                program: transformProgramForOutput(program)
+            });
+        })
         .catch(e => {
             logger.error(e, `Error getting program with id: ${id}`);
 
-            res.json({
-                err: true,
-                message: `Could not get a program with id ${id}`
+            res.status(500).json({
+                error: true,
+                message: `Error getting a program with id ${id}`
             });
         });
 };
@@ -82,18 +124,40 @@ export const universitiesSearch = ({
         provincesCollection,
         universitiesCollection
     })
-        .then(universities => res.json({
-            count: universities.length,
-            universities: universities.map(transformUniversityForOutput)
-        }))
+        .then(universities => {
+            const count = universities.length;
+
+            if (count === 0) {
+                if (!province && !name) {
+                    // Could not find any universities without a filter, something must be wrong
+                    logger.error(null, 'Could not find any universities in the db');
+
+                    return res.status(500).json({
+                        error: true,
+                        message: `Could not find any universities`
+                    });
+                }
+
+                // Otherwise there are just no universities for this filter
+                return res.status(404).json({
+                    error: true,
+                    message: `Did not find any universities for the query:${province ? ` province=${province}` : ''}${name ? ` name=${name}` : ''}`
+                });
+            }
+
+            res.json({
+                count: universities.length,
+                universities: universities.map(transformUniversityForOutput)
+            });
+        })
         .catch(e => {
             logger.error(e.err, e.msg);
 
-            return res.json({
-                err: true,
+            return res.status(500).json({
+                error: true,
                 message: 'Error getting universities'
             });
-        })
+        });
 }
 
 export const getUniversityById = ({
@@ -104,27 +168,43 @@ export const getUniversityById = ({
         id
     } = req.params;
 
+    if (!ObjectId.isValid(id)) {
+        return res.status(400).json({
+            error: true,
+            message: `${id} is not a valid id`
+        });
+    }
+
     getDocById({
         collection: universitiesCollection,
         id
     })
         .then(university => {
+            if (!university) {
+                logger.warn(null, `Could not find a university with id ${id} (which is a valid format)`);
+
+                return res.status(404).json({
+                    error: true,
+                    message: `Could not find university with id ${id}`
+                });
+            }
+
             const {
                 provinceId,
                 language,
                 ...props
             } = university;
 
-            return res.json({
+            res.json({
                 university: props
             });
         })
         .catch(e => {
             logger.error(e, `Error getting university with id: ${id}`);
 
-            res.json({
-                err: true,
+            res.status(500).json({
+                error: true,
                 message: `Could not get a university with id ${id}`
             });
-        })
+        });
 }
