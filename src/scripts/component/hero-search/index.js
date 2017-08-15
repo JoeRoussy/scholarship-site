@@ -47,7 +47,7 @@ function initializeSearchElements() {
     });
 
     $('#heroProvinceSearch').search({
-        // TODO: Localize this
+        // TODO: Localize this and the the urls go to the search page
         source: [
             {
                 title: 'Ontario',
@@ -94,6 +94,7 @@ function onNameQuery() {
     const query = $('#heroNameSearch input').val();
 
     if (query) {
+        // TODO: Make this go the the search page
         window.location.href = `/api/programs?name=${query}`;
     }
 }
