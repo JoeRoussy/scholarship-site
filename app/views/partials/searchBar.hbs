@@ -1,0 +1,11 @@
+<div id="{{ id }}" class="ui search"{{#if hide}} data-hide-on-init{{/if}}>
+    <div class="ui right icon input">
+        <input class="prompt" type="text" placeholder="{{ placeholder }}">
+        <i class="search icon"></i>
+    </div>
+    {{#if buttonId}}
+        <button id="{{ buttonId }}" class="ui button" type="button" name="{{ buttonId }}">
+            {{ @root.page.forms.placeholders.search }}
+        </button>
+    {{/if}}
+</div>

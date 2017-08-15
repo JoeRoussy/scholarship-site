@@ -11,5 +11,30 @@
                 "/js/app.min.js"
             ]
         }
+    },
+    "forms": {
+        "placeholders": {
+            "university": "University",
+            "province": "Province",
+            "name": "Name",
+            "search": "Search"
+        },
+        "searchTypes": {
+            "placeholder": "Search by ...",
+            "options": [
+                {
+                    "text": "Search by: University",
+                    "value": "university"
+                },
+                {
+                    "text": "Search by: Province",
+                    "value": "province"
+                },
+                {
+                    "text": "Search by: Program Name",
+                    "value": "name"
+                }
+            ]
+        }
     }
 }
