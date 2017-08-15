@@ -1,11 +1,39 @@
 {
     "assets": {
         "stylesheets": [
+            "https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css",
             "/css/app.min.css"
         ],
         "scripts": {
             "footer": [
+                "https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js",
+                "https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js",
                 "/js/app.min.js"
+            ]
+        }
+    },
+    "forms": {
+        "placeholders": {
+            "university": "University",
+            "province": "Province",
+            "name": "Name",
+            "search": "Search"
+        },
+        "searchTypes": {
+            "placeholder": "Search by ...",
+            "options": [
+                {
+                    "text": "Search by: University",
+                    "value": "university"
+                },
+                {
+                    "text": "Search by: Province",
+                    "value": "province"
+                },
+                {
+                    "text": "Search by: Program Name",
+                    "value": "name"
+                }
             ]
         }
     }

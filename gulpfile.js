@@ -19,7 +19,7 @@ const cssnano = require('cssnano');
 const nodemon = require('gulp-nodemon');
 
 
-const frontEndScriptsGlob = './src/scripts/*.js';
+const frontEndScriptsGlob = './src/scripts/**/*.js';
 const stylesGlob = './src/styles/**/*.scss';
 const appGlob = './app/**';
 const serverPublicFolderPath = './public';
