@@ -28,6 +28,8 @@ async function getUniversitiesForProvince({
     }
 };
 
+const objectIdIntersectComparator = (element, array) => array.some(x => x.equals(element));
+
 // Takes the ID for a province and returns the an array of university IDs for it. Returns an empty array
 // if the province cannot be found
 // TODO: Might want to merge this with the function above that does almost the same thing (with the rule that you cannot pass an id and name)
@@ -129,7 +131,7 @@ export const getProgramsWithFilter = async ({
                 universitiesCollection
             });
 
-            universityIds = intersectIfPopulated(universityIds, universityIdsForProvince);
+            universityIds = intersectIfPopulated(universityIds, universityIdsForProvince, objectIdIntersectComparator);
         } catch (e) {
             throw new RuntimeError({
                 msg: `Error getting universities for province: ${province}`,
@@ -144,7 +146,7 @@ export const getProgramsWithFilter = async ({
             universitiesCollection
         });
 
-        universityIds = intersectIfPopulated(universityIds, universityIdsForProvince);
+        universityIds = intersectIfPopulated(universityIds, universityIdsForProvince, objectIdIntersectComparator);
     }
 
     if ((province || university) && !universityIds.length) {
