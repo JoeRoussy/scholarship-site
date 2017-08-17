@@ -65,6 +65,30 @@ function initializeSearchElements() {
             {
                 title: 'Alberta',
                 url: '/api/programs?province=Alberta'
+            },
+            {
+                title: 'Nova Scotia',
+                url: `/api/programs?province=${encodeUrl('Nova Scotia')}`
+            },
+            {
+                title: 'Newfoundland and Labrador',
+                url: `/api/programs?province=${encodeUrl('Newfoundland and Labrador')}`
+            },
+            {
+                title: 'Saskatchewan',
+                url: '/api/programs?province=Saskatchewan'
+            },
+            {
+                title: 'Manitoba',
+                url: '/api/programs?province=Manitoba'
+            },
+            {
+                title: 'New Brunswick',
+                url: `/api/programs?province=${encodeUrl('New Brunswick')}`
+            },
+            {
+                title: 'Prince Edward Island',
+                url: `/api/programs?province=${encodeUrl('Prince Edward Island')}`
             }
         ],
         fields: {
