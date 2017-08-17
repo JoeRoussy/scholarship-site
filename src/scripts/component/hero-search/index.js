@@ -25,7 +25,7 @@ function initializeSearchElements() {
 
                 const formattedUniversities = universities.map(university => ({
                     name: university.name,
-                    programSearch: `/api/programs?university=${encodeUrl(stripWord(university.name, 'university'))}` //TODO: Make this go to the search page
+                    programSearch: `/api/programs?universityId=${university._id}` //TODO: Make this go to the search page
                 }));
 
                 return {
@@ -48,6 +48,7 @@ function initializeSearchElements() {
 
     $('#heroProvinceSearch').search({
         // TODO: Localize this and the the urls go to the search page
+        // TODO: Put all the provinces
         source: [
             {
                 title: 'Ontario',
