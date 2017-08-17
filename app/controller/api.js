@@ -17,13 +17,31 @@ export const programSearch = ({
     const {
         province,
         university,
-        name
+        name,
+        provinceId,
+        universityId
     } = req.query;
+
+    if (provinceId && !ObjectId.isValid(provinceId)) {
+        return res.status(400).json({
+            error: true,
+            message: `${provinceId} is not a valid province id`
+        });
+    }
+
+    if (universityId && !ObjectId.isValid(universityId)) {
+        return res.status(400).json({
+            error: true,
+            message: `${universityId} is not a valid university id`
+        });
+    }
 
     getProgramsWithFilter({
         province,
         university,
         name,
+        provinceId,
+        universityId,
         provincesCollection,
         universitiesCollection,
         programsCollection
@@ -32,7 +50,7 @@ export const programSearch = ({
             const count = programs.length;
 
             if (count === 0) {
-                if (!province && !university && !name) {
+                if (!province && !university && !name && !provinceId && !universityId) {
                     // Could not find programs without filter, something must be wrong...
                     logger.error(null, 'Could not find any programs in the db');
 
@@ -46,7 +64,9 @@ export const programSearch = ({
                 logger.info({
                     province,
                     university,
-                    name
+                    name,
+                    provinceId,
+                    universityId
                 }, 'No programs found for filter');
             }
 

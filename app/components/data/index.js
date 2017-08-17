@@ -1,31 +1,53 @@
-import { required, print, RuntimeError } from '../custom-utils';
-import { ObjectId } from 'mongodb';
+import {
+    required,
+    print,
+    RuntimeError,
+    intersectIfPopulated,
+    convertToObjectId
+} from '../custom-utils';
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
 
-// Takes a list of universityIds, finds any other universities for a province, appends them to the list
-// if they are not already there, and returns the list.
+// Finds the ids of any universities for a province. Returns an empty array if no province can be found
 async function getUniversitiesForProvince({
     province,
     provincesCollection,
-    universitiesCollection,
-    universityIds
+    universitiesCollection
 }) {
-    const programProvince = await provincesCollection.findOne({ name: province });
+    // TODO: This should be a text search (if we even use this endpoint)
+    const provinceDocument = await provincesCollection.findOne({ name: province });
 
-    if (programProvince) {
+    if (provinceDocument) {
         // Now get all the universities for this province and add any new ids to the list
-        const universitiesForProvince = await universitiesCollection.find({ provinceId: programProvince._id }).toArray();
+        const universitiesForProvince = await universitiesCollection.find({ provinceId: provinceDocument._id }).toArray();
 
-        universitiesForProvince.forEach(u => {
-            if (universityIds.indexOf(u._id) === -1) {
-                universityIds.push(u._id);
-            }
-        });
+        return universitiesForProvince.map(x => x._id);
+    } else {
+        // We could not find a province
+        return [];
     }
-
-    return universityIds;
 };
+
+// Takes the ID for a province and returns the an array of university IDs for it. Returns an empty array
+// if the province cannot be found
+// TODO: Might want to merge this with the function above that does almost the same thing (with the rule that you cannot pass an id and name)
+async function getUniversitiesForProvinceId({
+    provinceId,
+    provincesCollection,
+    universitiesCollection
+}) {
+    const province = await provincesCollection.findOne({ _id: provinceId });
+
+    if (province) {
+        // Now get all the universities for this province and add any new ids to the list
+        const universitiesForProvince = await universitiesCollection.find({ provinceId: province._id }).toArray();
+
+        return universitiesForProvince.map(x => x._id);
+    } else {
+        // We could not find a province
+        return [];
+    }
+}
 
 // Makes a db query based on an optional name search and an optional list of
 // universityIds
@@ -59,14 +81,24 @@ export const getProgramsWithFilter = async ({
     province,
     university,
     name,
+    provinceId,
+    universityId,
     provincesCollection = required('provincesCollection'),
     universitiesCollection = required('universitiesCollection'),
     programsCollection = required('programsCollection')
 }) => {
     let universityIds = [];
 
-    // If a university was passed, try getting an id associated with it
+    if (provinceId) {
+        provinceId = convertToObjectId(provinceId);
+    }
+
+    if (universityId) {
+        universityId = convertToObjectId(universityId);
+    }
+
     if (university) {
+        // If a university was passed, try getting an id associated with it
         try {
             const programUniversities = await universitiesCollection.find({
                 $text: {
@@ -83,23 +115,41 @@ export const getProgramsWithFilter = async ({
                 err: e
             });
         }
+    } else if (universityId) {
+        // We got a university ID directly, we should use this
+        universityIds = [ universityId ];
     }
 
-    // If a province was passed, try getting an id associated with it as long as a university query should not override it
-    if (province && !university) {
+    if (province) {
+        // If a province was passed, try getting an id associated with it
         try {
-            universityIds = await getUniversitiesForProvince({
+            const universityIdsForProvince = await getUniversitiesForProvince({
                 province,
                 provincesCollection,
-                universitiesCollection,
-                universityIds
+                universitiesCollection
             });
+
+            universityIds = intersectIfPopulated(universityIds, universityIdsForProvince);
         } catch (e) {
             throw new RuntimeError({
                 msg: `Error getting universities for province: ${province}`,
                 err: e
             });
         }
+    } else if (provinceId) {
+        // We are told to use a province directly so let's get the universities for this province
+        const universityIdsForProvince = await getUniversitiesForProvinceId({
+            provinceId,
+            provincesCollection,
+            universitiesCollection
+        });
+
+        universityIds = intersectIfPopulated(universityIds, universityIdsForProvince);
+    }
+
+    if ((province || university) && !universityIds.length) {
+        // We got some filters for province and university but we did not find any, so there are not programs for these params
+        return [];
     }
 
     // Get programs with the optional filters
@@ -134,11 +184,7 @@ export const getDocById = async ({
     collection = required('collection'),
     id = required('id')
 }) => {
-    if (typeof id === 'string') {
-        id = ObjectId(id);
-    }
-
-    return await collection.findOne({ _id: id });
+    return await collection.findOne({ _id: convertToObjectId(id) });
 };
 
 
@@ -149,9 +195,7 @@ export const getProgramById = async ({
     programsCollection = required('programsCollection'),
     id = required('id')
 }) => {
-    if (typeof id === 'string') {
-        id = ObjectId(id);
-    }
+    id = convertToObjectId(id);
 
     let result;
 
@@ -183,7 +227,7 @@ export const getProgramById = async ({
     return program;
 }
 
-// Gets all universities with optional filters. Ignores invalid provinces in filter.
+// Gets all universities with optional filters.
 // Returns a promise
 // Throws RuntimeErrors
 export const getUniversitiesWithFilter = async({
