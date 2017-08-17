@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 export const required = (param, customMessage) => {
     if (typeof customMessage === 'string') {
         throw new Error(`could not find required param: ${param}. ${customMessage}`);
@@ -21,3 +23,29 @@ export const print = obj => {
 }
 
 export const stringify = obj => JSON.stringify(obj, null, 4);
+
+// Takes a list and intersects and intersects it with another list. However, if the
+// first list is empty, we return the second list.
+// Can pass in a comparator for array of objects. The comparator will be called with the source
+// array and an element from the target array and should return if the element is in the source array
+export const intersectIfPopulated = (target, source, comparator) => {
+    if (!target.length) {
+        return source;
+    }
+
+    return target.filter(x => {
+        if (comparator && typeof comparator === 'function') {
+            return comparator(x, source);
+        }
+
+        return source.indexOf(x) !== -1
+    });
+}
+
+export const convertToObjectId = id => {
+    if (typeof id === 'number' || typeof id === 'string') {
+        return ObjectId(id);
+    }
+
+    return id;
+}

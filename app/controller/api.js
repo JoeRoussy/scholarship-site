@@ -17,13 +17,31 @@ export const programSearch = ({
     const {
         province,
         university,
-        name
+        name,
+        provinceId,
+        universityId
     } = req.query;
+
+    if (provinceId && !ObjectId.isValid(provinceId)) {
+        return res.status(400).json({
+            error: true,
+            message: `${provinceId} is not a valid province id`
+        });
+    }
+
+    if (universityId && !ObjectId.isValid(universityId)) {
+        return res.status(400).json({
+            error: true,
+            message: `${universityId} is not a valid university id`
+        });
+    }
 
     getProgramsWithFilter({
         province,
         university,
         name,
+        provinceId,
+        universityId,
         provincesCollection,
         universitiesCollection,
         programsCollection
@@ -32,7 +50,7 @@ export const programSearch = ({
             const count = programs.length;
 
             if (count === 0) {
-                if (!province && !university && !name) {
+                if (!province && !university && !name && !provinceId && !universityId) {
                     // Could not find programs without filter, something must be wrong...
                     logger.error(null, 'Could not find any programs in the db');
 
@@ -43,13 +61,15 @@ export const programSearch = ({
                 }
 
                 // Otherwise we just could not find programs for that filter
-                return res.status(404).json({
-                    error: true,
-                    message: `Could not find programs for the query:${province ? ` province=${province}` : ''}${university ? ` university=${university}` : ''}${name ? ` name=${name}` : ''}`
-                });
+                logger.info({
+                    province,
+                    university,
+                    name,
+                    provinceId,
+                    universityId
+                }, 'No programs found for filter');
             }
 
-            // We got some programs to return so format response and send
             return res.json({
                 count,
                 programs: programs.map(transformProgramForOutput)
@@ -86,7 +106,9 @@ export const getProgramById = ({
     })
         .then(program => {
             if (!program) {
-                logger.warn(null, `Could not find a program with id ${id} (which is a valid format)`);
+                logger.warn({
+                    id
+                }, 'Could not find a program with by id with valid format');
 
                 return res.status(404).json({
                     error: true,
@@ -94,14 +116,14 @@ export const getProgramById = ({
                 });
             }
 
-            res.json({
+            return res.json({
                 program: transformProgramForOutput(program)
             });
         })
         .catch(e => {
             logger.error(e, `Error getting program with id: ${id}`);
 
-            res.status(500).json({
+            return res.status(500).json({
                 error: true,
                 message: `Error getting a program with id ${id}`
             });
@@ -139,13 +161,13 @@ export const universitiesSearch = ({
                 }
 
                 // Otherwise there are just no universities for this filter
-                return res.status(404).json({
-                    error: true,
-                    message: `Did not find any universities for the query:${province ? ` province=${province}` : ''}${name ? ` name=${name}` : ''}`
-                });
+                logger.info({
+                    province,
+                    name
+                }, 'No province found for filter');
             }
 
-            res.json({
+            return res.json({
                 count: universities.length,
                 universities: universities.map(transformUniversityForOutput)
             });
@@ -181,7 +203,9 @@ export const getUniversityById = ({
     })
         .then(university => {
             if (!university) {
-                logger.warn(null, `Could not find a university with id ${id} (which is a valid format)`);
+                logger.warn({
+                    id
+                }, 'Could not find a university by id with valid format');
 
                 return res.status(404).json({
                     error: true,
@@ -195,14 +219,14 @@ export const getUniversityById = ({
                 ...props
             } = university;
 
-            res.json({
+            return res.json({
                 university: props
             });
         })
         .catch(e => {
             logger.error(e, `Error getting university with id: ${id}`);
 
-            res.status(500).json({
+            return res.status(500).json({
                 error: true,
                 message: `Could not get a university with id ${id}`
             });
