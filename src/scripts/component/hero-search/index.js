@@ -48,7 +48,6 @@ function initializeSearchElements() {
 
     $('#heroProvinceSearch').search({
         // TODO: Localize this and the the urls go to the search page
-        // TODO: Put all the provinces
         source: [
             {
                 title: 'Ontario',
