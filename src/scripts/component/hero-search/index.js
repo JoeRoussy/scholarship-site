@@ -25,7 +25,7 @@ function initializeSearchElements() {
 
                 const formattedUniversities = universities.map(university => ({
                     name: university.name,
-                    programSearch: `/api/programs?universityId=${university._id}` //TODO: Make this go to the search page
+                    programSearch: `/search?universityId=${university._id}`
                 }));
 
                 return {
@@ -51,43 +51,43 @@ function initializeSearchElements() {
         source: [
             {
                 title: 'Ontario',
-                url: '/api/programs?province=Ontario'
+                url: '/search?province=Ontario'
             },
             {
                 title: 'British Columbia',
-                url: `/api/programs?province=${encodeUrl('British Columbia')}`
+                url: `/search?province=${encodeUrl('British Columbia')}`
             },
             {
                 title: 'Quebec',
-                url: '/api/programs?province=Quebec'
+                url: '/search?province=Quebec'
             },
             {
                 title: 'Alberta',
-                url: '/api/programs?province=Alberta'
+                url: '/search?province=Alberta'
             },
             {
                 title: 'Nova Scotia',
-                url: `/api/programs?province=${encodeUrl('Nova Scotia')}`
+                url: `/search?province=${encodeUrl('Nova Scotia')}`
             },
             {
                 title: 'Newfoundland and Labrador',
-                url: `/api/programs?province=${encodeUrl('Newfoundland and Labrador')}`
+                url: `/search?province=${encodeUrl('Newfoundland and Labrador')}`
             },
             {
                 title: 'Saskatchewan',
-                url: '/api/programs?province=Saskatchewan'
+                url: '/search?province=Saskatchewan'
             },
             {
                 title: 'Manitoba',
-                url: '/api/programs?province=Manitoba'
+                url: '/search?province=Manitoba'
             },
             {
                 title: 'New Brunswick',
-                url: `/api/programs?province=${encodeUrl('New Brunswick')}`
+                url: `/search?province=${encodeUrl('New Brunswick')}`
             },
             {
                 title: 'Prince Edward Island',
-                url: `/api/programs?province=${encodeUrl('Prince Edward Island')}`
+                url: `/search?province=${encodeUrl('Prince Edward Island')}`
             }
         ],
         fields: {
@@ -119,7 +119,7 @@ function onNameQuery() {
 
     if (query) {
         // TODO: Make this go the the search page
-        window.location.href = `/api/programs?name=${query}`;
+        window.location.href = `/search?name=${query}`;
     }
 }
 

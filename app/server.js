@@ -37,7 +37,10 @@ dbConfig()
         loadContentConfig(app);
         templateConfig(app);
         basicRouteConfig(app);
-        searchRouteConfig(app);
+        searchRouteConfig({
+            app,
+            db
+        });
         apiRouteConfig({
             app,
             db,

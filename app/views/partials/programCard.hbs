@@ -1,0 +1,39 @@
+{{!--
+    Takes:
+    program: {
+        _id,
+        name,
+        university: {
+            _id,
+            name
+        },
+        internationalTutition,
+        domesticeTuition,
+        length
+    }
+--}}
+{{!-- TODO: Make the data-program-link a link to the university detail page --}}
+<div class="ui card programCard" data-program-link="/api/programs/{{ program._id }}">
+    <div class="content heading">
+        <div class="header">
+            {{ program.name }}
+        </div>
+    </div>
+    <div class="content">
+        {{!-- <a class="ui sub header universityLink" href="/api/universities/{{ program.university._id }}">{{ program.university.name }}</a> --}}
+        <div class="ui sub header">{{ program.university.name }}</div>
+        <div class="text">{{ program.minimumAverage }}</div>
+        <div class="text">{{ program.length }}</div>
+    </div>
+    <div class="content">
+        <div class="ui sub header">{{ tuitionInfomation }}</div>
+        <div class="text">
+            <span class="bold">{{ domestic }}</span>
+            <span>{{ program.domesticeTuition }}</span>
+        </div>
+        <div class="text">
+            <span class="bold">{{ international }}</span>
+            <span>{{ program.internationalTutition }}</span>
+        </div>
+    </div>
+</div>
