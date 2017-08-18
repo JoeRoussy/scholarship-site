@@ -118,7 +118,6 @@ function onNameQuery() {
     const query = $('#heroNameSearch input').val();
 
     if (query) {
-        // TODO: Make this go the the search page
         window.location.href = `/search?name=${query}`;
     }
 }
