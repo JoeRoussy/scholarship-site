@@ -1,17 +1,11 @@
 {
-    "heading": "Find a program",
-    "form": {
-        "placeholders": {
-            "university": "University",
-            "name": "Name",
-            "submit": "Submit"
-        }
-    },
-    "table": {
-        "headings": {
-            "province": "Province",
-            "university": "University",
-            "program": "Program"
-        }
+    "heading": "Your Programs",
+    "provinceSearchHeading": "Programs in {province}",
+    "universitySearchHeading": "Programs at {university}",
+    "nameSearchHeading": "Programs involving {name}",
+    "cards": {
+        "tuitionInfomation": "Tuition",
+        "domestic": "Domestic:",
+        "international": "International:"
     }
 }

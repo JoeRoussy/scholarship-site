@@ -1,46 +1,41 @@
 .searchResults {
-    padding-top: 20px;
-    text-align: center;
+    padding-top: 25px;
 
-    form {
-        margin: 50px 0;
-
-        .formInput {
-            margin-top: 25px;
-            text-align: center;
-
-            input {
-                height: 35px;
-                width: 300px;
-                margin-left: 25px;
-                padding-left: 15px;
-                border: 2px solid #666666;
-                border-radius: 12px;
-            }
-        }
-
-        .submitWrapper {
-            margin-top: 25px;
-            text-align: center;
-
-            input[type="submit"] {
-                padding: 15px 40px;
-                border-radius: 30px;
-                color: white;
-                font-weight: bold;
-                font-size: 14px;
-                background-color: rgb(92, 183, 92);
-            }
-        }
-
+    @media screen and (min-width: $tabletWidth) {
+        padding-top: 50px;
     }
 
-    .resultsTable {
-        display: inline;
-        margin-top: 50px;
+    @media screen and (min-width: $laptopWidth) {
+        padding-top: 75px;
+    }
 
-        td, th {
-            min-width: 300px;
+    h2 {
+        text-align: center;
+
+        @media screen and (min-width: $phoneWidth) {
+            text-align: left;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media screen and (min-width: $desktopWidth) {
+            max-width: 990px;
         }
     }
+
+    .wrapper.lax {
+        margin-top: 35px;
+
+        @media screen and (min-width: $laptopWidth) {
+            margin-top: 50px;
+        }
+
+        .ui.link.cards {
+            .card:hover {
+                box-shadow: 0 5px 20px 0 #BCBDBD, 0 0 0 1px #D4D4D5;
+            }
+        }
+    }
+
 }

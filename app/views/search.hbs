@@ -1,48 +1,23 @@
+{{> navigation}}
+
 <div class="searchResults">
-    <h1>{{ heading }}</h1>
+    <h1 class="ui heading">{{ page.heading }}</h1>
 
-    <form action="/search" method="get">
-        <div class="formInput">
-            <input id="universityInput" type="text" name="university" placeholder="{{ form.placeholders.university }}">
-        </div>
-        <div class="formInput">
-            <input id="nameInput" type="text" name="name" placeholder="{{ form.placeholders.name }}">
-        </div>
-        <div class="submitWrapper">
-            <input type="submit" value="{{ form.placeholders.submit }}">
-        </div>
-    </form>
-
-    {{#if programs}}
-        <table class="resultsTable">
-            <tr>
-                <th>{{ table.headings.province }}</th>
-                <th>{{ table.headings.university }}</th>
-                <th>{{ table.headings.program }}</th>
-                {{!-- <th>International tuition</th>
-                <th>Domestic tuition</th>
-                <th>Minimum average</th>
-                <th>Length Of Program</th>
-                <th>Program Language</th>
-                <th>TOEFL Score</th>
-                <th>Rank</th>
-                <th>Notes</th> --}}
-            </tr>
-            {{#each programs}}
-                <tr>
-                    <td>{{ this.province }}</td>
-                    <td>{{ this.university }}</td>
-                    <td>{{ this.name }}</td>
-                    {{!-- <td>{{ this.internationalTutition }}</td>
-                    <td>{{ this.domesticeTuition }}</td>
-                    <td>{{ this.minimumAverage }}</td>
-                    <td>{{ this.length }}</td>
-                    <td>{{ this.language }}</td>
-                    <td>{{ this.toefl }}</td>
-                    <td>{{ this.rank }}</td>
-                    <td>{{ this.notes }}</td> --}}
-                </tr>
-            {{/each}}
-        </table>
+    {{#if searchInfo.university}}
+        <h2 class="ui heading">{{interpolate page.universitySearchHeading searchInfo}}</h2>
     {{/if}}
+    {{#if searchInfo.province}}
+        <h2 class="ui heading">{{interpolate page.provinceSearchHeading searchInfo}}</h2>
+    {{/if}}
+    {{#if searchInfo.name}}
+        <h2 class="ui heading">{{interpolate page.nameSearchHeading searchInfo}}</h2>
+    {{/if}}
+
+    <div class="wrapper lax">
+        <div class="ui link cards centered">
+            {{#each programs}}
+                {{> programCard @root.page.cards program=this}}
+            {{/each}}
+        </div>
+    </div>
 </div>

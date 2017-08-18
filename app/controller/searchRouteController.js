@@ -1,68 +1,61 @@
-const csvParser = require('csv-parse');
-const fs = require('fs');
-const extend = require('extend');
 
-exports.search = (req, res) => {
+import { getProgramsWithFilter } from '../components/data';
+import { ObjectId } from 'mongodb';
+import { transformProgramForOutput } from '../components/transformers';
+import { print, sortByKey } from '../components/custom-utils';
+
+export const search = ({
+    provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
+    universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
+    programsCollection = required('programsCollection', 'You must pass in the programs db collection'),
+}) => (req, res) => {
     const {
+        province,
         university,
-        name
+        name,
+        provinceId,
+        universityId
     } = req.query;
 
-    if (university || name) {
-        fs.readFile(`${process.cwd()}/app/files/database_may_28.csv`, (err, csv) => {
-            if (err) {
-                return res.json({
-                    err: true,
-                    message: 'Could not read csv file'
-                });
+    if (provinceId && !ObjectId.isValid(provinceId)) {
+        // TODO: Render error
+    }
+
+    if (universityId && !ObjectId.isValid(universityId)) {
+        // TODO: Render error
+    }
+
+    getProgramsWithFilter({
+        province,
+        university,
+        name,
+        provinceId,
+        universityId,
+        provincesCollection,
+        universitiesCollection,
+        programsCollection
+    })
+        .then(programs => {
+            if (programs.count === 0) {
+                // TODO: Render error
             }
 
-            csvParser(csv, {
-                columns: [
-                    'province',
-                    'university',
-                    'name',
-                    'internationalTutition',
-                    'domesticeTuition',
-                    'minimumAverage',
-                    'length',
-                    'language',
-                    'toefl',
-                    'rank',
-                    'notes'
-                ]
-            }, (err, data) => {
-                if (err) {
-                    return res.json({
-                        err: true,
-                        message: 'Could not parse csv'
-                    });
-                }
+            res.locals.programs = programs
+                    .map(transformProgramForOutput)
+                    .sort(sortByKey('name'));
 
-                const programs = data.filter(program => {
-                    if (!program.university) {
-                        return false;
-                    }
+            // Send info about the search to the front end for display purposes
+            const [ firstProgram ] = res.locals.programs;
+            res.locals.searchInfo = {};
 
-                    if (university && program.university != university) {
-                        return false;
-                    }
+            if (universityId) {
+                res.locals.searchInfo.university = firstProgram.university.name;
+            } else if (province) {
+                res.locals.searchInfo.province = province;
+            } else if (name) {
+                res.locals.searchInfo.name = name;
+            }
 
-                    if (name && program.name.search(name) === -1) {
-                        return false;
-                    }
-
-                    return true;
-                });
-
-                extend(res.locals, {
-                    programs
-                });
-
-                return res.render('search', res.locals.page);
-            });
+            return res.render('search', res.locals);
         });
-    } else {
-        return res.render('search', res.locals.page);
-    }
-}
+};

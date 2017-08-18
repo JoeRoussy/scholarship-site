@@ -49,3 +49,17 @@ export const convertToObjectId = id => {
 
     return id;
 }
+
+// Returns a function to sort an array of objects by key
+// Objects in the key must be strings or numbers (comparable using '<' and '>')
+export const sortByKey = key => (a, b) => {
+    if (a[key] > b[key]) {
+        return 1;
+    }
+
+    if (a[key] < b[key]) {
+        return -1;
+    }
+
+    return 0;
+}

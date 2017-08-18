@@ -1,0 +1,16 @@
+.ui.card.programCard {
+    display: inline-flex;
+    margin: 10px 30px;
+    text-align: center;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    >.content {
+        >.ui.sub.header {
+            margin-bottom: 10px;
+            font-size: 0.93em;
+        }
+    }
+}

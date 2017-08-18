@@ -1,8 +1,16 @@
-const controller = require('../controller/searchRouteController.js');
+import { search } from '../controller/searchRouteController.js'
+import { required } from '../components/custom-utils';
 
-module.exports = app => {
+export default ({
+    app = required('app'),
+    db = required('db')
+}) => {
 
     app.route('/search')
-        .get(controller.search);
-        
+        .get(search({
+            provincesCollection: db.collection('provinces'),
+            universitiesCollection: db.collection('universities'),
+            programsCollection: db.collection('programs')
+        }));
+
 }
