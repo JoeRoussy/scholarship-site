@@ -12,6 +12,39 @@
             ]
         }
     },
+    "navigation": {
+        "logo": {
+            "src": "/images/logo.png",
+            "alt": "Canada Higher Education House",
+            "href": "/"
+        },
+        "items": [
+            {
+                "text": "About",
+                "href": "#"
+            },
+            {
+                "text": "Studying in Canada",
+                "href": "#"
+            },
+            {
+                "text": "Contact",
+                "href": "#"
+            },
+            {
+                "text": "Sign In",
+                "href": "#",
+                "customClasses": "right authItem",
+                "isSignIn": true
+            },
+            {
+                "text": "Join",
+                "href": "#",
+                "customClasses": "right authItem",
+                "isJoin": true
+            }
+        ]
+    },
     "forms": {
         "placeholders": {
             "university": "University",

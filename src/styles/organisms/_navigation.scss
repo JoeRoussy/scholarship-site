@@ -1,27 +1,57 @@
 .navigation {
-    background-color: blue;
-    padding-bottom: 75px;
+    .ui.fixed.stackable.menu {
+        max-height: 98px;
+        transition: max-height 0.3s ease-in-out;
+        border: none;
 
-    .links {
-        float: right;
-        padding-top: 27px;
-    }
+        .item {
+            padding-left: 1.8em;
+            padding-right: 1.8em;
 
-    .logo {
-        padding: 14px 10px;
-        float: left;
-        color: white;
-        font-size: 40px;
-    }
+            visibility: hidden;
 
-    .links li {
-        color: white;
-        display: inline;
-        font-size: 18px;
-        padding: 0px 20px;
-    }
+            @media screen and (min-width: $uiTabletWidth) {
+                visibility: initial;
+            }
+        }
 
-    .links li:hover {
-        text-decoration: underline;
+        .item.logo {
+            visibility: initial;
+
+            img {
+                height: 80px;
+                width: auto;
+            }
+        }
+
+        .right.authItem ~ .right.authItem {
+            margin-left: 0 !important;
+        }
+
+        .ui.icon.button.sidebarButton {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin: 0;
+            height: 98px;
+            border-radius: 0;
+            padding-left: 1.5em;
+            padding-right: 1.5em;
+            background-color: rgb(244, 23, 28);
+            color: white;
+            font-size: 1.5em;
+
+            @media screen and (min-width: $uiTabletWidth) {
+                display: none;
+            }
+        }
+
+        &.showMobileMenu {
+            max-height: 300px;
+
+            .item {
+                visibility: initial;
+            }
+        }
     }
 }

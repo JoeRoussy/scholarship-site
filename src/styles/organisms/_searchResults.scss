@@ -1,12 +1,12 @@
 .searchResults {
-    padding-top: 25px;
+    padding-top: 110px;
 
     @media screen and (min-width: $tabletWidth) {
-        padding-top: 50px;
+        padding-top: 135px;
     }
 
     @media screen and (min-width: $laptopWidth) {
-        padding-top: 75px;
+        padding-top: 160px;
     }
 
     h2 {

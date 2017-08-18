@@ -17,10 +17,13 @@ const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 const cssnano = require('cssnano');
 const nodemon = require('gulp-nodemon');
+const newer = require('gulp-newer');
+const imagemin = require('gulp-imagemin');
 
 
 const frontEndScriptsGlob = './src/scripts/**/*.js';
 const stylesGlob = './src/styles/**/*.scss';
+const imagesGlob = './src/images/**/*';
 const appGlob = './app/**';
 const serverPublicFolderPath = './public';
 
@@ -88,6 +91,18 @@ gulp.task('styles', () => {
         .pipe(gulp.dest(`${serverPublicFolderPath}/css`));
 });
 
+// Image processing
+gulp.task('image', function() {
+    return gulp.src(imagesGlob)
+        .pipe(newer('./public/images'))
+        .pipe(imagemin({
+            progressive: true,
+            optimizationLevel: 7,
+            interlaced: true
+        }))
+        .pipe(gulp.dest('./public/images'));
+});
+
 // Watch front end files and recomepile on any changes
 gulp.task('watch', () => {
     gulp.watch(frontEndScriptsGlob, ['scripts']);
@@ -111,11 +126,11 @@ gulp.task('nodemon', () => {
 
 // Build task for dev (is default)
 gulp.task('default', () => {
-    runSequence(['styles', 'scripts', 'watch'], 'nodemon');
+    runSequence(['styles', 'scripts', 'image', 'watch'], 'nodemon');
 });
 
 // Build task for production
 gulp.task('production', () => {
     isDev = false;
-    runSequence(['styles', 'scripts']);
+    runSequence(['styles', 'scripts', 'image']);
 });

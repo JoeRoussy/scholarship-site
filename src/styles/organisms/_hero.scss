@@ -1,7 +1,8 @@
 .hero {
-    background-image:url("https://hdwallsource.com/img/2014/7/background-images-26865-27581-hd-wallpapers.jpg");
-    padding: 150px 0;
+    background-color: #222222;
+    padding: 150px 16px;
     text-align: center;
+    color: white;
 
     h1 {
         font-size: 70px;
@@ -11,5 +12,15 @@
     h2 {
         font-size: 18px;
         padding-top: 20px;
+    }
+
+    .heroSearchWrapper {
+        .ui.search {
+            margin-top: 10px;
+
+            @media screen and (min-width: $phoneWidth) {
+                margin-top: 0;
+            }
+        }
     }
 }
