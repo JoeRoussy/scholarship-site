@@ -1,13 +1,13 @@
 {
     "assets": {
         "stylesheets": [
-            "/css/semantic.min.css",
+            "https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css",
             "/css/app.min.css"
         ],
         "scripts": {
             "footer": [
-                "/js/jquery.min.js",
-                "/js/semantic.min.js",
+                "https://cdn.jsdelivr.net/jquery/3.2.1/jquery.min.js",
+                "https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js",
                 "/js/app.min.js"
             ]
         }
