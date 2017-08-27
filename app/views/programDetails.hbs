@@ -1,0 +1,19 @@
+{{> navigation page.navigation}}
+
+<div class="programDetails">
+    <div class="detailsSection">
+        <h1>{{ program.name }}</h1>
+        <h2>{{ program.university.name }}</h2>
+    </div>
+    <div class="mapsSection">
+        <div id="programMap" class="map"></div>
+    </div>
+</div>
+
+{{> googleMapsScript
+    elementId="programMap"
+    key=config.apiKeys.googleMaps
+    lat=program.university.latitude
+    lng=program.university.longitude
+    zoom=page.map.zoom
+}}

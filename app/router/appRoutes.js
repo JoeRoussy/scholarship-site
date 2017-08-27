@@ -1,4 +1,4 @@
-import { search, home, aboutUs, contact } from '../controller/app.js'
+import { search, home, aboutUs, contact, programDetails } from '../controller/app.js'
 import { required } from '../components/custom-utils';
 
 
@@ -17,5 +17,9 @@ export default ({
             universitiesCollection: db.collection('universities'),
             programsCollection: db.collection('programs')
         }));
+
+    app.get('/programs/:programId', programDetails({
+
+    }));
 
 }

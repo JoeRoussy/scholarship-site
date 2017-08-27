@@ -71,3 +71,35 @@ export const aboutUs = (req, res) => {
 export const contact = (req, res) => {
      res.render('contact');
 };
+
+export const programDetails = ({
+
+}) => (req, res) => {
+    const {
+        programId
+    } = req.params;
+
+    print(res.locals);
+
+    // TODO: Get program details
+
+    res.locals.program = {
+        name: 'Test Program',
+        internationalTuition: '$20000',
+        domesticTuition: '$20000',
+        minimumAverage: "Low to Mid 80s",
+        length: "3-5 years",
+        language: "english",
+        toefl: "580, 5 on the Test of Written English",
+        rank: "",
+        notes: "",
+        university: {
+            name: "A really awesome university",
+            latitude: 43.008289,
+            longitude: -81.271894
+        }
+    };
+
+
+    res.render('programDetails');
+};
