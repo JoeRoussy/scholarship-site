@@ -12,6 +12,11 @@ const searchTypeMapping = {
     name: '#heroNameSearch'
 };
 
+const {
+    noResults: noResultsErrorMessage,
+    serverError: serverErrorMessage
+} = window.globals.errorMessages;
+
 function initializeSearchElements() {
     $('.ui.search[data-hide-on-init]').hide();
 
@@ -40,64 +45,26 @@ function initializeSearchElements() {
         },
         minCharacters: 3,
         error: {
-            // TODO: Localize...
-            noResults: 'No results',
-            serverError: 'Oops, something went wrong.'
+            noResults: noResultsErrorMessage,
+            serverError: serverErrorMessage
         }
     });
 
+    const provinceSearchSource = window.globals.provinces.map(({ title, systemTitle }) => ({
+        title,
+        url: `/search?province=${systemTitle}`
+    }));
+
     $('#heroProvinceSearch').search({
-        // TODO: Localize this and the the urls go to the search page
-        source: [
-            {
-                title: 'Ontario',
-                url: '/search?province=Ontario'
-            },
-            {
-                title: 'British Columbia',
-                url: `/search?province=${encodeUrl('British Columbia')}`
-            },
-            {
-                title: 'Quebec',
-                url: '/search?province=Quebec'
-            },
-            {
-                title: 'Alberta',
-                url: '/search?province=Alberta'
-            },
-            {
-                title: 'Nova Scotia',
-                url: `/search?province=${encodeUrl('Nova Scotia')}`
-            },
-            {
-                title: 'Newfoundland and Labrador',
-                url: `/search?province=${encodeUrl('Newfoundland and Labrador')}`
-            },
-            {
-                title: 'Saskatchewan',
-                url: '/search?province=Saskatchewan'
-            },
-            {
-                title: 'Manitoba',
-                url: '/search?province=Manitoba'
-            },
-            {
-                title: 'New Brunswick',
-                url: `/search?province=${encodeUrl('New Brunswick')}`
-            },
-            {
-                title: 'Prince Edward Island',
-                url: `/search?province=${encodeUrl('Prince Edward Island')}`
-            }
-        ],
+        source: provinceSearchSource,
         fields: {
             title: 'title',
             url: 'url'
         },
+        minCharacters: 3,
         error: {
-            // TODO: Localize...
-            noResults: 'No results',
-            serverError: 'Oops, something went wrong.'
+            noResults: noResultsErrorMessage,
+            serverError: serverErrorMessage
         }
     });
 
