@@ -1,4 +1,5 @@
 import express from 'express';
+import config from './config';
 import language from './components/language';
 import loadContentConfig from './components/content';
 import loadQueryParams from './components/load-query-params';
@@ -49,17 +50,17 @@ dbConfig()
             baseLogger: Logger
         });
 
-        // Comment this out if we do not want to run data import
-        // TODO: Make this run based on an enviornment variable
-        // runDataImport({
-        //     spreadsheetPath: 'app/files/database_may_28.csv',
-        //     baseLogger: Logger,
-        //     collections: {
-        //         provinces: db.collection('provinces'),
-        //         universities: db.collection('universities'),
-        //         programs: db.collection('programs')
-        //     }
-        // });
+        if (config.db.shouldRunDataImport) {
+            runDataImport({
+                spreadsheetPath: 'app/files/database_may_28.csv',
+                baseLogger: Logger,
+                collections: {
+                    provinces: db.collection('provinces'),
+                    universities: db.collection('universities'),
+                    programs: db.collection('programs')
+                }
+            });
+        }
 
         app.listen(3000, () => Logger.info('App listening on port 3000'));
     })
