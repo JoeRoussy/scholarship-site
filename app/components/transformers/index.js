@@ -15,6 +15,7 @@ export const transformProgramForOutput = program => {
             }
         ],
         universityId,
+        language,
         ...programProps
     } = program;
 
