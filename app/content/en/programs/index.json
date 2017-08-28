@@ -4,8 +4,8 @@
     },
     "details": {
         "minimumAverage": "Minimum Average:",
-        "domestic": "Domestic Tuition:",
-        "international": "International Tuition:",
+        "domesticTuition": "Domestic Tuition:",
+        "internationalTuition": "International Tuition:",
         "length": "Length:",
         "language": "Language:",
         "toefl": "TOEFL:",
