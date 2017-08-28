@@ -69,5 +69,51 @@
                 }
             ]
         }
+    },
+    "provinces": [
+        {
+            "title": "Ontario",
+            "systemTitle": "Ontario"
+        },
+        {
+            "title": "British Columbia",
+            "systemTitle": "British Columbia"
+        },
+        {
+            "title": "Quebec",
+            "systemTitle": "Quebec"
+        },
+        {
+            "title": "Alberta",
+            "systemTitle": "Alberta"
+        },
+        {
+            "title": "Nova Scotia",
+            "systemTitle": "Nova Scotia"
+        },
+        {
+            "title": "Newfoundland and Labrador",
+            "systemTitle": "Newfoundland and Labrador"
+        },
+        {
+            "title": "Saskatchewan",
+            "systemTitle": "Saskatchewan"
+        },
+        {
+            "title": "Manitoba",
+            "systemTitle": "Manitoba"
+        },
+        {
+            "title": "New Brunswick",
+            "systemTitle": "New Brunswick"
+        },
+        {
+            "title": "Prince Edward Island",
+            "systemTitle": "Prince Edward Island"
+        }
+    ],
+    "errorMessages": {
+        "serverError": "Oops, something went wrong.",
+        "noResults": "No results"
     }
 }

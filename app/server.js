@@ -1,6 +1,7 @@
 import express from 'express';
 import language from './components/language';
 import loadContentConfig from './components/content';
+import loadQueryParams from './components/load-query-params';
 import loadConfigElements from './components/load-config';
 import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
@@ -34,6 +35,7 @@ dbConfig()
         app.use(express.static('public'));
         app.use(language);
 
+        loadQueryParams(app);
         loadConfigElements(app);
         loadContentConfig(app);
         templateConfig(app);

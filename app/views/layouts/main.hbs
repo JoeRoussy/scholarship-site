@@ -50,6 +50,8 @@
     <body>
         {{{ body }}}
 
+        {{> backEndGlobalImport}}
+
         {{#each page.assets.scripts.footer}}
             <script src="{{ this }}"></script>
         {{/each}}
