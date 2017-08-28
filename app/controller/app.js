@@ -1,5 +1,4 @@
-
-import { getProgramsWithFilter } from '../components/data';
+import { getProgramsWithFilter, getProgramById } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput } from '../components/transformers';
 import { print, sortByKey } from '../components/custom-utils';
@@ -57,5 +56,43 @@ export const search = ({
             }
 
             return res.render('search', res.locals);
+        });
+};
+
+export const home = (req, res) => {
+    res.render('home');
+};
+
+export const aboutUs = (req, res) => {
+     res.render('about');
+};
+
+export const contact = (req, res) => {
+     res.render('contact');
+};
+
+export const programDetails = ({
+    programsCollection = required('programsCollection')
+}) => (req, res) => {
+    const {
+        programId
+    } = req.params;
+
+    if (programId && !ObjectId.isValid(programId)) {
+        // TODO: Render error
+    }
+
+    getProgramById({
+        programsCollection,
+        id: programId
+    })
+        .then(program => {
+            if (!program) {
+                // TODO: Render error
+            }
+
+            res.locals.program = transformProgramForOutput(program);
+
+            res.render('programDetails');
         });
 };

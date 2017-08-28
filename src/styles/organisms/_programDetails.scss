@@ -1,0 +1,44 @@
+.programDetails {
+    $topPaddingMobile: 100px;
+    $topPaddingDesktop: 150px;
+    $innerSectionPadding: 30px;
+
+    position: relative;
+    padding-top: $topPaddingMobile;
+
+    @media screen and (min-width: $laptopWidth) {
+        padding-top: $topPaddingDesktop;
+    }
+
+    .mapsSection {
+        height: 500px;
+        padding: $innerSectionPadding;
+
+        @media screen and (min-width: $laptopWidth) {
+            position: absolute;
+            top: $topPaddingDesktop;
+            right: 0;
+            width: 50%;
+            height: 50vw;
+        }
+
+        @media screen and (min-width: $desktopWidth) {
+            height: 30vw;
+        }
+
+        .map {
+            height: 100%;
+        }
+    }
+
+    .programDetailsSection {
+        padding: $innerSectionPadding;
+
+        @media screen and (min-width: $laptopWidth) {
+            position: absolute;
+            top: $topPaddingDesktop;
+            left: 0;
+            width: 50%;
+        }
+    }
+}

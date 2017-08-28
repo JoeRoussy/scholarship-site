@@ -35,8 +35,11 @@ function loadContent (options, callback) {
         _options.page = _options.page.substr(1);
     }
 
+    // Now strip any inner params
+    const [ page ] = _options.page.split('/');
+
     const autoloadPath = `${process.cwd()}/app/content/${_options.lang}/_autoload`;
-    const contentPath = `${process.cwd()}/app/content/${_options.lang}${convertPageURL(_options.page)}`;
+    const contentPath = `${process.cwd()}/app/content/${_options.lang}${convertPageURL(page)}`;
 
     execFile('find', [ autoloadPath, contentPath, '-type', 'f', '-maxdepth', '1' ], (err, files) => {
         if (err) {

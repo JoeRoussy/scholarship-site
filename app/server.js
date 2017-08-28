@@ -1,9 +1,9 @@
 import express from 'express';
 import language from './components/language';
 import loadContentConfig from './components/content';
+import loadConfigElements from './components/load-config';
 import templateConfig from './components/template-config';
-import basicRouteConfig from './router/basicRoutes.js';
-import searchRouteConfig from './router/searchRoutes.js';
+import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
@@ -34,10 +34,10 @@ dbConfig()
         app.use(express.static('public'));
         app.use(language);
 
+        loadConfigElements(app);
         loadContentConfig(app);
         templateConfig(app);
-        basicRouteConfig(app);
-        searchRouteConfig({
+        appRouteConfig({
             app,
             db
         });
