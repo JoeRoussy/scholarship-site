@@ -1,5 +1,4 @@
-
-import { getProgramsWithFilter } from '../components/data';
+import { getProgramsWithFilter, getProgramById } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput } from '../components/transformers';
 import { print, sortByKey } from '../components/custom-utils';
@@ -73,33 +72,27 @@ export const contact = (req, res) => {
 };
 
 export const programDetails = ({
-
+    programsCollection = required('programsCollection')
 }) => (req, res) => {
     const {
         programId
     } = req.params;
 
-    print(res.locals);
+    if (programId && !ObjectId.isValid(programId)) {
+        // TODO: Render error
+    }
 
-    // TODO: Get program details
+    getProgramById({
+        programsCollection,
+        id: programId
+    })
+        .then(program => {
+            if (!program) {
+                // TODO: Render error
+            }
 
-    res.locals.program = {
-        name: 'Test Program',
-        internationalTuition: '$20000',
-        domesticTuition: '$20000',
-        minimumAverage: "Low to Mid 80s",
-        length: "3-5 years",
-        language: "english",
-        toefl: "580, 5 on the Test of Written English",
-        rank: "",
-        notes: "",
-        university: {
-            name: "A really awesome university",
-            latitude: 43.008289,
-            longitude: -81.271894
-        }
-    };
+            res.locals.program = transformProgramForOutput(program);
 
-
-    res.render('programDetails');
+            res.render('programDetails');
+        });
 };

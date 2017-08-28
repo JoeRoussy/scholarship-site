@@ -19,7 +19,7 @@ export default ({
         }));
 
     app.get('/programs/:programId', programDetails({
-
+        programsCollection: db.collection('programs')
     }));
 
 }

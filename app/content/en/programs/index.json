@@ -1,5 +1,15 @@
 {
     "map": {
         "zoom": 6
+    },
+    "details": {
+        "minimumAverage": "Minimum Average:",
+        "domestic": "Domestic Tuition:",
+        "international": "International Tuition:",
+        "length": "Length:",
+        "language": "Language:",
+        "toefl": "TOEFL:",
+        "rank": "Rank:",
+        "note": "Note:"
     }
 }

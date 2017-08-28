@@ -1,8 +1,14 @@
 .programDetails {
+    $topPaddingMobile: 100px;
     $topPaddingDesktop: 150px;
     $innerSectionPadding: 30px;
+
     position: relative;
-    padding-top: $topPaddingDesktop;
+    padding-top: $topPaddingMobile;
+
+    @media screen and (min-width: $laptopWidth) {
+        padding-top: $topPaddingDesktop;
+    }
 
     .mapsSection {
         height: 500px;
@@ -25,18 +31,14 @@
         }
     }
 
-    .detailsSection {
+    .programDetailsSection {
         padding: $innerSectionPadding;
-        
+
         @media screen and (min-width: $laptopWidth) {
             position: absolute;
             top: $topPaddingDesktop;
             left: 0;
             width: 50%;
-        }
-
-        h2 {
-            text-align: center;
         }
     }
 }

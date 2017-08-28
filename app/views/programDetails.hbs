@@ -1,9 +1,60 @@
 {{> navigation page.navigation}}
 
 <div class="programDetails">
-    <div class="detailsSection">
+    <div class="programDetailsSection">
         <h1>{{ program.name }}</h1>
         <h2>{{ program.university.name }}</h2>
+
+        <div class="innerDetails">
+            {{#if program.minimumAverage}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.minimumAverage }}</span>
+                    <span class="data">{{ program.minimumAverage }}</span>
+                </p>
+            {{/if}}
+            {{#if program.length}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.length }}</span>
+                    <span class="data">{{ program.length }}</span>
+                </p>
+            {{/if}}
+            {{#if program.domesticTuition}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.domesticTuition }}</span>
+                    <span class="data">{{ program.domesticTuition }}</span>
+                </p>
+            {{/if}}
+            {{#if program.internationalTuition}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.internationalTuition }}</span>
+                    <span class="data">{{ program.internationalTuition }}</span>
+                </p>
+            {{/if}}
+            {{#if program.language}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.language }}</span>
+                    <span class="data">{{ program.language }}</span>
+                </p>
+            {{/if}}
+            {{#if program.rank}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.rank }}</span>
+                    <span class="data">{{ program.rank }}</span>
+                </p>
+            {{/if}}
+            {{#if program.toefl}}
+                <p class="detailRow">
+                    <span class="title">{{ page.details.toefl }}</span>
+                    <span class="data">{{ program.toefl }}</span>
+                </p>
+            {{/if}}
+            {{#if program.notes}}
+                <p class="notes">
+                    <span>{{ page.details.note }}</span>
+                    <span>{{ program.notes }}</span>
+                </p>
+            {{/if}}
+        </div>
     </div>
     <div class="mapsSection">
         <div id="programMap" class="map"></div>
