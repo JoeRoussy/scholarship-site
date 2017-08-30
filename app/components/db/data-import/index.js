@@ -50,7 +50,7 @@ const func = async ({
                 'rank',
                 'notes'
             ],
-            from: 1, // Skip the heading row
+            from: 2, // Skip the heading row
             skip_empty_lines: true
         }, (err, data) => {
             if (err) {
