@@ -3,6 +3,7 @@ import csvParser from 'csv-parse';
 import { required, print } from '../../custom-utils';
 import { getChildLogger } from '../../log-factory';
 import { mapSeries } from 'bluebird';
+import { insert } from '../service';
 
 /*
     KNOWN ISSUES:
@@ -26,7 +27,7 @@ const func = async ({
         }
     });
 
-    console.log('Starting data import');
+    logger.info('Starting data import')
 
     const fullFilePath = `${process.cwd()}/${spreadsheetPath}`;
 
@@ -50,7 +51,7 @@ const func = async ({
                 'rank',
                 'notes'
             ],
-            from: 1, // Skip the heading row
+            from: 2, // Skip the heading row
             skip_empty_lines: true
         }, (err, data) => {
             if (err) {
@@ -59,15 +60,11 @@ const func = async ({
             }
 
             const programsToAdd = data
-                .filter(program => program.university) // Skip the empty lines in the file
-                .reduce((accumulator, program) => {
-                    accumulator.push({
-                        ...program,
-                        language: 'english'
-                    });
-
-                    return accumulator;
-                }, []);
+                .filter(program => program.university)
+                .map(program => ({
+                    ...program,
+                    language: 'english'
+                }));
 
             mapSeries(programsToAdd, async (program) => {
                 /*
@@ -87,30 +84,70 @@ const func = async ({
                 let province = await provinces.findOne({ name: provinceName });
 
                 if (!province) {
-                    // Need to make a this province
-                    province = await provinces.insertOne({
-                        name: provinceName
-                    });
+                    // Need to make a this province first
+                    try {
+                        province = await insert({
+                            collection: provinces,
+                            document: {
+                                name: provinceName
+                            },
+                            returnInsertedDocument: true
+                        });
+                    } catch (e) {
+                        const message = `Error inserting province with name: ${provinceName}`
+                        logger.error(e, message);
+                        throw new Error(message);
+                    }
+
+                    logger.info(province, 'Inserted a province');
                 }
 
                 let university = await universities.findOne({ name: universityName });
 
                 if (!university) {
-                    university = await universities.insertOne({
-                        name: universityName,
-                        provinceId: province._id,
-                        language: 'english'
-                    });
+                    // Need to create this university first
+                    try {
+                        university = await insert({
+                            collection: universities,
+                            document: {
+                                name: universityName,
+                                provinceId: province._id,
+                                language: 'english'
+                            },
+                            returnInsertedDocument: true
+                        });
+                    } catch (e) {
+                        const message = `Error inserting university with name: ${universityName}`
+                        logger.error(e, message);
+                        throw new Error(message);
+                    }
+
+                    logger.info(university, 'Inserted a university')
                 }
 
-                let programInsertResponse = await programs.insertOne({
-                    name: programName,
-                    ...programProperties,
-                    universityId: university._id
-                });
+                // Now we can save the program
+                let programDocument;
+
+                try {
+                    programDocument = await insert({
+                        collection: programs,
+                        document: {
+                            name: programName,
+                            ...programProperties,
+                            universityId: university._id
+                        },
+                        returnInsertedDocument: true
+                    });
+                } catch (e) {
+                    const message = `Error inserting program with name: ${programName}`
+                    logger.error(e, message);
+                    throw new Error(message);
+                }
+
+                logger.info(programDocument, 'Inserted a program');
             });
 
-            console.log('Done data import!');
+            logger.info('Done data import')
         });
     });
 }

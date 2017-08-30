@@ -18,7 +18,11 @@ export class RuntimeError extends Error {
     }
 }
 
-export const print = obj => {
+export const print = (obj, message) => {
+    if (message) {
+        console.log(message);
+    }
+    
     console.log(JSON.stringify(obj, null, 4));
 }
 
