@@ -86,28 +86,16 @@ function getFilters(name, universityIds, isForUniversitiesCollection) {
     return filters;
 }
 
-// Gets all programs with optional filters. If no province or university matches the filters,
-// they are ignored. Returns a promise.
-// Throws RuntimeErrors
-export const getProgramsWithFilter = async ({
+// Takes some options and builds up an array of university ids associated with those options
+const getUniversityIdsForOptions = async ({
     province,
     university,
-    name,
     provinceId,
     universityId,
-    provincesCollection = required('provincesCollection'),
-    universitiesCollection = required('universitiesCollection'),
-    programsCollection = required('programsCollection')
+    universitiesCollection,
+    provincesCollection
 }) => {
     let universityIds = [];
-
-    if (provinceId) {
-        provinceId = convertToObjectId(provinceId);
-    }
-
-    if (universityId) {
-        universityId = convertToObjectId(universityId);
-    }
 
     if (university) {
         // If a university was passed, try getting an id associated with it
@@ -159,6 +147,41 @@ export const getProgramsWithFilter = async ({
         universityIds = intersectIfPopulated(universityIds, universityIdsForProvince, objectIdIntersectComparator);
     }
 
+    return universityIds;
+}
+
+// Gets all programs with optional filters. If no province or university matches the filters,
+// they are ignored. Returns a promise.
+// Throws RuntimeErrors
+export const getProgramsWithFilter = async ({
+    province,
+    university,
+    name,
+    provinceId,
+    universityId,
+    limit,
+    skip,
+    provincesCollection = required('provincesCollection'),
+    universitiesCollection = required('universitiesCollection'),
+    programsCollection = required('programsCollection')
+}) => {
+    if (provinceId) {
+        provinceId = convertToObjectId(provinceId);
+    }
+
+    if (universityId) {
+        universityId = convertToObjectId(universityId);
+    }
+
+    const universityIds = await getUniversityIdsForOptions({
+        province,
+        university,
+        provinceId,
+        universityId,
+        universitiesCollection,
+        provincesCollection
+    });
+
     if ((province || university) && !universityIds.length) {
         // We got some filters for province and university but we did not find any, so there are not programs for these params
         return [];
@@ -167,20 +190,40 @@ export const getProgramsWithFilter = async ({
     // Get programs with the optional filters
     const filters = getFilters(name, universityIds);
 
-    try {
-        return await programsCollection.aggregate([
-            {
-                $match: filters
-            },
-            {
-                $lookup: {
-                    from: 'universities',
-                    localField: 'universityId',
-                    foreignField: '_id',
-                    as: 'universities'
-                }
+    // Build up the aggregation Operatiors
+    const aggregationOperators = [
+        {
+            $match: filters
+        },
+        {
+            $lookup: {
+                from: 'universities',
+                localField: 'universityId',
+                foreignField: '_id',
+                as: 'universities'
             }
-        ]).toArray();
+        },
+        {
+            $sort: {
+                name: 1
+            }
+        }
+    ];
+
+    if (skip) {
+        aggregationOperators.push({
+            $skip: skip
+        });
+    }
+
+    if (limit) {
+        aggregationOperators.push({
+            $limit: limit
+        });
+    }
+
+    try {
+        return await programsCollection.aggregate(aggregationOperators).toArray();
     } catch (e) {
         throw new RuntimeError({
             msg: `Error getting programs for filters: ${JSON.stringify(filters, null, 4)}`,
@@ -188,6 +231,53 @@ export const getProgramsWithFilter = async ({
         });
     }
 };
+
+export const countProgramsForFilter = async ({
+    province,
+    university,
+    name,
+    provinceId,
+    universityId,
+    provincesCollection = required('provincesCollection'),
+    universitiesCollection = required('universitiesCollection'),
+    programsCollection = required('programsCollection')
+}) => {
+    if (provinceId) {
+        provinceId = convertToObjectId(provinceId);
+    }
+
+    if (universityId) {
+        universityId = convertToObjectId(universityId);
+    }
+
+    const universityIds = await getUniversityIdsForOptions({
+        province,
+        university,
+        provinceId,
+        universityId,
+        universitiesCollection,
+        provincesCollection
+    });
+
+    if ((province || university) && !universityIds.length) {
+        // We got some filters for province and university but we did not find any, so there are not programs for these params
+        return 0;
+    }
+
+    // Get programs with the optional filters
+    const filters = getFilters(name, universityIds);
+
+    try {
+        const results = await programsCollection.aggregate([ { $match: filters } ]).toArray();
+
+        return results.length;
+    } catch (e) {
+        throw new RuntimeError({
+            msg: `Error getting programs for filters: ${JSON.stringify(filters, null, 4)}`,
+            err: e
+        });
+    }
+}
 
 
 // Get a document by Id for a given collection. Returns a promise. Does not do any population.
