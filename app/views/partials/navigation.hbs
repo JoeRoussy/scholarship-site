@@ -1,13 +1,11 @@
-<div class="navigation">
-    <div id="navigationMenu" class="ui fixed stackable menu">
-        <a class="item logo" href="{{ logo.href }}">
-            <img src="{{ logo.src }}" alt="{{ logo.alt }}">
-        </a>
-        {{#each items}}
-            <a class="item{{#if this.customClasses}} {{ this.customClasses }}{{/if}}" href="{{ this.href }}">{{ this.text }}</a>
-        {{/each}}
-        <button id="hamburgerButton" class="ui icon button sidebarButton">
-            <i class="sidebar icon"></i>
-        </button>
-    </div>
+<div id="navigationMenu" class="ui fixed stackable menu navigation">
+    <a class="item logo" href="{{ logo.href }}">
+        <img src="{{ logo.src }}" alt="{{ logo.alt }}">
+    </a>
+    {{#each items}}
+        <a class="item{{#if this.customClasses}} {{ this.customClasses }}{{/if}}" href="{{ this.href }}">{{ this.text }}</a>
+    {{/each}}
+    <button id="hamburgerButton" class="ui icon button sidebarButton">
+        <i class="sidebar icon"></i>
+    </button>
 </div>
