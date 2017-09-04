@@ -1,19 +1,26 @@
-import { getProgramsWithFilter, getProgramById } from '../components/data';
+import { wrap as coroutine } from 'co';
+import { getProgramsWithFilter, getProgramById, countProgramsForFilter } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput } from '../components/transformers';
 import { print, sortByKey } from '../components/custom-utils';
+import config from '../config';
+
+if (!config) {
+    throw new Error('Could not load config');
+}
 
 export const search = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
     universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
     programsCollection = required('programsCollection', 'You must pass in the programs db collection'),
-}) => (req, res) => {
+}) => coroutine(function* (req, res) {
     const {
         province,
         university,
         name,
         provinceId,
-        universityId
+        universityId,
+        page = 0
     } = req.query;
 
     if (provinceId && !ObjectId.isValid(provinceId)) {
@@ -24,7 +31,11 @@ export const search = ({
         // TODO: Render error
     }
 
-    getProgramsWithFilter({
+    const resultsPerPage = config.api.search.resultsPerPage
+    const limit = resultsPerPage;
+    const skip = page ? resultsPerPage * page : 0;
+
+    const count = yield countProgramsForFilter({
         province,
         university,
         name,
@@ -33,31 +44,44 @@ export const search = ({
         provincesCollection,
         universitiesCollection,
         programsCollection
-    })
-        .then(programs => {
-            if (programs.count === 0) {
-                // TODO: Render error
-            }
+    });
 
-            res.locals.programs = programs
-                    .map(transformProgramForOutput)
-                    .sort(sortByKey('name'));
+    if (count === 0) {
+        // TODO: Render error
+    }
 
-            // Send info about the search to the front end for display purposes
-            const [ firstProgram ] = res.locals.programs;
-            res.locals.searchInfo = {};
+    const programs = yield getProgramsWithFilter({
+        province,
+        university,
+        name,
+        provinceId,
+        universityId,
+        provincesCollection,
+        universitiesCollection,
+        programsCollection,
+        limit,
+        skip
+    });
 
-            if (universityId) {
-                res.locals.searchInfo.university = firstProgram.university.name;
-            } else if (province) {
-                res.locals.searchInfo.province = province;
-            } else if (name) {
-                res.locals.searchInfo.name = name;
-            }
+    res.locals.count = count;
+    res.locals.programs = programs
+            .map(transformProgramForOutput)
+            .sort(sortByKey('name'));
 
-            return res.render('search', res.locals);
-        });
-};
+    // Send info about the search to the front end for display purposes
+    const [ firstProgram ] = res.locals.programs;
+    res.locals.searchInfo = {};
+
+    if (universityId) {
+        res.locals.searchInfo.university = firstProgram.university.name;
+    } else if (province) {
+        res.locals.searchInfo.province = province;
+    } else if (name) {
+        res.locals.searchInfo.name = name;
+    }
+
+    return res.render('search', res.locals);
+});
 
 export const home = (req, res) => {
     res.render('home');
@@ -73,7 +97,7 @@ export const contact = (req, res) => {
 
 export const programDetails = ({
     programsCollection = required('programsCollection')
-}) => (req, res) => {
+}) => coroutine(function* (req, res) {
     const {
         programId
     } = req.params;
@@ -82,17 +106,16 @@ export const programDetails = ({
         // TODO: Render error
     }
 
-    getProgramById({
+    const program = yield getProgramById({
         programsCollection,
         id: programId
     })
-        .then(program => {
-            if (!program) {
-                // TODO: Render error
-            }
 
-            res.locals.program = transformProgramForOutput(program);
+    if (!program) {
+        // TODO: Render error
+    }
 
-            res.render('programDetails');
-        });
-};
+    res.locals.program = transformProgramForOutput(program);
+
+    res.render('programDetails');
+});
