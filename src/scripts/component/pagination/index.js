@@ -12,8 +12,6 @@ export default () => {
                 const pageValue = element.getAttribute('data-page');
 
                 element.addEventListener('click', () => {
-                    // TODO: Change the active state
-
                     const url = urlHelper.parse(window.location.href, true);
                     url.query.page = pageValue;
                     url.search = null; // If this is present the query object will not be used
