@@ -1,8 +1,5 @@
 import urlHelper from 'url';
 
-// TODO: If there are too many pagination items, then put a ... pagination item in the markup
-// Might need to do this with some middleware in the back end
-
 export default () => {
     const pagination = document.getElementById('dataPaginationMenu');
 

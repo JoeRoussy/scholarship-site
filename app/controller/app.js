@@ -98,7 +98,6 @@ export const setupSearchPagination = (req, res) => {
 
     const lastPage = Math.floor(count / resultsPerPage);
     const rangeLow = page * resultsPerPage + 1;
-    //const rangeHigh = page ? page * 2 * resultsPerPage : resultsPerPage;
     const rangeHigh = lastPage == page ? count : rangeLow + resultsPerPage - 1;
 
     res.locals.isFirstPage = page == 0;
