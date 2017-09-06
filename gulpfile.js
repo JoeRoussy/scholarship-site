@@ -135,10 +135,6 @@ gulp.task('default', () => {
     runSequence(['styles', 'scripts', 'image', 'watch'], 'nodemon');
 });
 
-gulp.task('withSemantic', () => {
-    runSequence(['styles', 'scripts', 'image', 'watch'], 'nodemon');
-});
-
 // Build task for production
 gulp.task('production', () => {
     isDev = false;
