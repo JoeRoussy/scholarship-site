@@ -20,6 +20,8 @@ const nodemon = require('gulp-nodemon');
 const newer = require('gulp-newer');
 const imagemin = require('gulp-imagemin');
 
+const semanticWatch = require('./semantic/tasks/watch');
+const semanticBuild = require('./semantic/tasks/build');
 
 const frontEndScriptsGlob = './src/scripts/**/*.js';
 const stylesGlob = './src/styles/**/*.scss';
@@ -124,13 +126,21 @@ gulp.task('nodemon', () => {
     });
 });
 
+gulp.task('semanticWatch', semanticWatch);
+
+gulp.task('semanticBuild', semanticBuild);
+
 // Build task for dev (is default)
 gulp.task('default', () => {
+    runSequence(['styles', 'scripts', 'image', 'watch'], 'nodemon');
+});
+
+gulp.task('withSemantic', () => {
     runSequence(['styles', 'scripts', 'image', 'watch'], 'nodemon');
 });
 
 // Build task for production
 gulp.task('production', () => {
     isDev = false;
-    runSequence(['styles', 'scripts', 'image']);
+    runSequence(['styles', 'scripts', 'image', 'semanticBuild']);
 });
