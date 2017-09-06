@@ -13,7 +13,7 @@ export const search = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
     universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
     programsCollection = required('programsCollection', 'You must pass in the programs db collection'),
-}) => coroutine(function* (req, res) {
+}) => coroutine(function* (req, res, next) {
     const {
         province,
         university,
@@ -80,8 +80,34 @@ export const search = ({
         res.locals.searchInfo.name = name;
     }
 
-    return res.render('search', res.locals);
+    return next();
 });
+
+export const setupSearchPagination = (req, res) => {
+    const {
+        page = 0
+    } = req.query;
+
+    const {
+        count
+    } = res.locals;
+
+    const {
+        resultsPerPage
+    } = config.api.search;
+
+    const lastPage = Math.floor(count / resultsPerPage);
+    const rangeLow = page * resultsPerPage + 1;
+    const rangeHigh = lastPage == page ? count : rangeLow + resultsPerPage - 1;
+
+    res.locals.isFirstPage = page == 0;
+    res.locals.isLastPage = page == lastPage;
+    res.locals.currentPage = page;
+    res.locals.rangeLow = rangeLow;
+    res.locals.rangeHigh = rangeHigh > count ? count : rangeHigh;
+
+    return res.render('search', res.locals);
+}
 
 export const home = (req, res) => {
     res.render('home');

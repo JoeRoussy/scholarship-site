@@ -1,4 +1,5 @@
 import handlebars from 'express-handlebars';
+import marked from 'marked';
 
 export default app => {
     const hbs = handlebars.create({
@@ -41,8 +42,7 @@ export default app => {
                     supressParagraph = false;
                 }
 
-                var marked = require('marked'),
-                    renderer = new marked.Renderer();
+                const renderer = new marked.Renderer();
 
                 if (supressParagraph) {
                     renderer.paragraph = function (text) {
@@ -112,7 +112,7 @@ export default app => {
                 for (var i=1; i<=totalPages; i++) {
                     out += block.fn({
                         current:i,
-                        active:(currentPage === i)
+                        active:(currentPage == i)
                     });
                 }
 

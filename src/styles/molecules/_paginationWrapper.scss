@@ -1,0 +1,22 @@
+.paginationWrapper {
+    margin-top: 50px;
+    text-align: center;
+
+    .ui.pagination.menu {
+        .item {
+            cursor: pointer;
+
+            &.disabled {
+                cursor: default;
+            }
+        }
+    }
+
+    .paginationInfo {
+        margin-top: 25px;
+
+        .value {
+            font-weight: bold;
+        }
+    }
+}

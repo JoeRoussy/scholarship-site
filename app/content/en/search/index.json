@@ -1,11 +1,16 @@
 {
     "heading": "Your Programs",
-    "provinceSearchHeading": "Programs in {province}",
-    "universitySearchHeading": "Programs at {university}",
-    "nameSearchHeading": "Programs involving {name}",
+    "provinceSearchHeading": "Programs in _{province}_",
+    "universitySearchHeading": "Programs at _{university}_",
+    "nameSearchHeading": "Programs involving _{name}_",
     "cards": {
         "tuitionInfomation": "Tuition",
         "domestic": "Domestic:",
         "international": "International:"
+    },
+    "pagination": {
+        "results": "Results",
+        "divider": "-",
+        "of": "of"
     }
 }

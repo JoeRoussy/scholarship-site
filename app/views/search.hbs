@@ -4,13 +4,13 @@
     <h1 class="ui heading">{{ page.heading }}</h1>
 
     {{#if searchInfo.university}}
-        <h2 class="ui heading">{{interpolate page.universitySearchHeading searchInfo}}</h2>
+        <h2 class="ui heading">{{{md (interpolate page.universitySearchHeading searchInfo) true}}}</h2>
     {{/if}}
     {{#if searchInfo.province}}
-        <h2 class="ui heading">{{interpolate page.provinceSearchHeading searchInfo}}</h2>
+        <h2 class="ui heading">{{{md (interpolate page.provinceSearchHeading searchInfo) true}}}</h2>
     {{/if}}
     {{#if searchInfo.name}}
-        <h2 class="ui heading">{{interpolate page.nameSearchHeading searchInfo}}</h2>
+        <h2 class="ui heading">{{{md (interpolate page.nameSearchHeading searchInfo) true}}}</h2>
     {{/if}}
 
     <div class="wrapper lax">
@@ -18,6 +18,34 @@
             {{#each programs}}
                 {{> programCard @root.page.cards program=this}}
             {{/each}}
+        </div>
+    </div>
+
+    <div class="paginationWrapper">
+        <div id="dataPaginationMenu" class="ui pagination menu">
+            {{#unless isFirstPage}}
+                <div class="icon item" data-page="{{math currentPage '-' 1}}">
+                    <i class="left arrow icon"></i>
+                </div>
+            {{/unless}}
+
+            <div class="item active">
+                {{math currentPage '+' 1}}
+            </div>
+
+            {{#unless isLastPage}}
+                <div class="icon item" data-page="{{math currentPage '+' 1}}">
+                    <i class="right arrow icon"></i>
+                </div>
+            {{/unless}}
+        </div>
+        <div class="paginationInfo">
+            <span>{{ page.pagination.results }}</span>
+            <span class="value">{{ rangeLow }}</span>
+            <span>{{ page.pagination.divider }}</span>
+            <span class="value">{{ rangeHigh }}</span>
+            <span>{{ page.pagination.of }}</span>
+            <span class="value">{{ count }}</span>
         </div>
     </div>
 </div>
