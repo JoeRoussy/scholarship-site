@@ -4,3 +4,4 @@ node_modules/
 public/
 .vscode/
 app/config
+semantic/dist
