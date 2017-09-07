@@ -1,34 +1,36 @@
 <div class="hero">
-    <h1> {{ title }} </h1>
+    <div class="ui container">
+        <h1> {{ title }} </h1>
 
-    <div class="heroSearchWrapper">
-        <div id="heroSearchDropdown" class="ui selection dropdown">
-            <input type="hidden" name="searchType">
-            <i class="dropdown icon"></i>
-            <div class="text">{{ @root.page.forms.searchTypes.options.0.text }}</div>
-            <div class="menu">
-                {{#each @root.page.forms.searchTypes.options}}
+        <div class="heroSearchWrapper">
+            <div id="heroSearchDropdown" class="ui selection dropdown">
+                <input type="hidden" name="searchType">
+                <i class="dropdown icon"></i>
+                <div class="text">{{ @root.page.forms.searchTypes.options.0.text }}</div>
+                <div class="menu">
+                    {{#each @root.page.forms.searchTypes.options}}
                     <div class="item" data-value="{{ this.value }}">{{ this.text }}</div>
-                {{/each}}
+                    {{/each}}
+                </div>
             </div>
-        </div>
 
-        {{> searchBar
-            id='heroUniversitySearch'
-            placeholder=@root.page.forms.placeholders.university
-            hide=false
-        }}
-        {{> searchBar
-            id='heroProvinceSearch'
-            placeholder=@root.page.forms.placeholders.province
-            hide=true
-        }}
-        {{> searchBar
-            id='heroNameSearch'
-            placeholder=@root.page.forms.placeholders.name
-            hide=true
-            buttonId='nameSearchButton'
-        }}
+            {{> searchBar
+                id='heroUniversitySearch'
+                placeholder=@root.page.forms.placeholders.university
+                hide=false
+            }}
+            {{> searchBar
+                id='heroProvinceSearch'
+                placeholder=@root.page.forms.placeholders.province
+                hide=true
+            }}
+            {{> searchBar
+                id='heroNameSearch'
+                placeholder=@root.page.forms.placeholders.name
+                hide=true
+                buttonId='nameSearchButton'
+            }}
+        </div>
+        <h2> {{ subtitle }} </h2>
     </div>
-    <h2> {{ subtitle }} </h2>
 </div>
