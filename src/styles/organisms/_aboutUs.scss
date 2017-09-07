@@ -1,0 +1,46 @@
+.aboutUs {
+    margin-top: 75px;
+
+    h2 {
+        text-align: center;
+    }
+
+    .content {
+        margin-top: 50px;
+
+        @media screen and (min-width: $laptopWidth) {
+            display: table;
+        }
+
+        .image, .paragraph {
+            @media screen and (min-width: $laptopWidth) {
+                display: table-cell;
+                width: 50%;
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+
+        .image {
+            img {
+                width: 100%;
+
+                @media screen and (min-width: $laptopWidth) {
+                    max-width: 500px;
+                }
+            }
+        }
+
+        .paragraph {
+            padding: 15px 32px 0;
+
+            @media screen and (min-width: $laptopWidth) {
+                padding-top: 0;
+            }
+
+            p {
+             line-height: 1.5;
+            }
+        }
+    }
+}
