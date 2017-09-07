@@ -1,8 +1,8 @@
 {
     "heading": "Your Programs",
-    "provinceSearchHeading": "Programs in _{province}_",
-    "universitySearchHeading": "Programs at _{university}_",
-    "nameSearchHeading": "Programs involving _{name}_",
+    "provinceSearchHeading": "Programs in: _{province}_",
+    "universitySearchHeading": "Programs at: _{university}_",
+    "nameSearchHeading": "Programs involving: _{name}_",
     "cards": {
         "tuitionInfomation": "Tuition",
         "domestic": "Domestic:",
