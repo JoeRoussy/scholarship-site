@@ -1,4 +1,4 @@
-import { search, setupSearchPagination, home, aboutUs, contact, programDetails } from '../controller/app.js'
+import { search, setupSearchPagination, home, contact, programDetails } from '../controller/app.js'
 import { required } from '../components/custom-utils';
 
 
@@ -8,7 +8,6 @@ export default ({
 }) => {
 
     app.get('/', home);
-    app.get('/about-us', aboutUs);
     app.get('/contact', contact);
 
     app.route('/search')

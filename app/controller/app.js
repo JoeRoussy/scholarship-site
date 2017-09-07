@@ -113,10 +113,6 @@ export const home = (req, res) => {
     res.render('home');
 };
 
-export const aboutUs = (req, res) => {
-     res.render('about');
-};
-
 export const contact = (req, res) => {
      res.render('contact');
 };
