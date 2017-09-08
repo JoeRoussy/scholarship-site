@@ -13,7 +13,7 @@
         <h2 class="ui heading">{{{md (interpolate page.nameSearchHeading searchInfo) true}}}</h2>
     {{/if}}
 
-    <div class="wrapper lax">
+    <div class="ui container">
         <div class="ui link cards centered">
             {{#each programs}}
                 {{> programCard @root.page.cards program=this}}
