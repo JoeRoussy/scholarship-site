@@ -62,8 +62,3 @@ export const insert = async ({
         }
     }
 };
-
-export default {
-    insert,
-    validateInsertion
-};
