@@ -25,10 +25,15 @@ export const sendMessage = async ({
         } = {},
         addresses: {
             noReply
+        } = {},
+        messages: {
+            contact: {
+                subject
+            } = {}
         } = {}
     } = config.email;
 
-    if (!smtpPort || !smtpHost || !noReply || !username || !password) {
+    if (!smtpPort || !smtpHost || !noReply || !username || !password || !subject) {
         throw new Error('Could not find config elements for emailing');
     }
 
@@ -44,5 +49,12 @@ export const sendMessage = async ({
         tls: {
             ciphers: tlsCipher
         }
+    });
+
+    return transporter.sendMail({
+        from: noReply,
+        to,
+        subject,
+        text: message
     });
 };
