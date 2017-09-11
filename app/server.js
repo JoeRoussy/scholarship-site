@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import config from './config';
 import language from './components/language';
 import loadContentConfig from './components/content';
@@ -34,6 +35,10 @@ dbConfig()
         // Now that we know the db is connected, continue setting up the app
 
         app.use(express.static('public'));
+        app.use(bodyParser.urlencoded({
+            extended: true
+        }));
+        app.use(bodyParser.json());
         app.use(language);
 
         loadQueryParams(app);

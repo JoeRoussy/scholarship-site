@@ -2,19 +2,27 @@
 <div class="contactUs">
     <div class="ui container">
         <h1 class="heading">{{ page.heading }}</h1>
-        <form id="contactForm" class="ui form contact{{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}">
-            <div class="ui error message">
-                <div class="header">
-                    <span>{{ page.errorMessage.heading }}</span>
+        <form
+            id="contactForm"
+            class="ui form contact{{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
+            method="post"
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ page.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ page.errorMessage.body }}</p>
                 </div>
-                <p>{{ page.errorMessage.body }}</p>
-            </div>
-            <div class="ui success message">
-                <div class="header">
-                    <span>{{interpolate page.successMessage.heading request}}</span>
+            {{/if}}
+            {{#if requestSuccess}}
+                <div class="ui success message">
+                    <div class="header">
+                        <span>{{ page.successMessage.heading }}</span>
+                    </div>
+                    <p>{{interpolate page.successMessage.body request}}</p>
                 </div>
-                <p>{{ page.successMessage.body }}</p>
-            </div>
+            {{/if}}
             <div class="field">
                 <label>{{ page.nameInput.label }}</label>
                 <input type="text" name="{{ page.nameInput.name }}" placeholder="{{ page.nameInput.placeholder }}">
@@ -28,7 +36,8 @@
                 <textarea name="{{ page.messageInput.name }}" rows="{{ page.messageInput.rows }}" placeholder="{{ page.messageInput.placeholder }}"></textarea>
             </div>
             <div class="field">
-                <div class="ui submit button green">{{ page.submit }}</div>
+                {{!-- <div class="ui submit button green">{{ page.submit }}</div> --}}
+                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
             </div>
         </form>
     </div>
