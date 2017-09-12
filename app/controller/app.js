@@ -2,7 +2,7 @@ import { wrap as coroutine } from 'co';
 import { getProgramsWithFilter, getProgramById, countProgramsForFilter } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput } from '../components/transformers';
-import { print, sortByKey } from '../components/custom-utils';
+import { print, sortByKey, required } from '../components/custom-utils';
 import config from '../config';
 
 if (!config) {
@@ -140,4 +140,66 @@ export const programDetails = ({
     res.locals.program = transformProgramForOutput(program);
 
     res.render('programDetails');
+});
+
+export const processContact = ({
+    contactCollection = required('contactCollection'),
+    getMailMessage = required('getMailMessage'),
+    sendMailMessage = required('sendMailMessage'),
+    insertInDb = required('insertInDb')
+}) => coroutine(function* (req, res, next) {
+    const {
+        name,
+        email,
+        message
+    } = req.body;
+
+    if (!name || !email || !message) {
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    try {
+        yield insertInDb({
+            collection: contactCollection,
+            document: {
+                name,
+                email,
+                message
+            }
+        });
+    } catch (e) {
+        // TODO: Log error
+        //logger.error(e, 'Error saving contact info to db');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    const mailMessage = getMailMessage({
+        name,
+        email,
+        message
+    });
+
+    try {
+        yield sendMailMessage({
+            to: config.email.addresses.admin,
+            message: mailMessage
+        });
+    } catch (e) {
+        // TODO: Log error
+        // logger.error(e, 'Error sending mail message');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    res.locals.request = {
+        email
+    };
+    res.locals.requestSuccess = true;
+
+    return next();
 });

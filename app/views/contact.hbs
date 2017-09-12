@@ -1,11 +1,43 @@
 {{> navigation page.navigation}}
-<div>
-    <form class="contactUs">
-        <fieldset class="contactUs">
-            <input type="text" name="firstname"><br>
-            <input type="email" name="email"><br>
-            <textarea name="message" rows="10" cols="30"></textarea>
-            <input type="submit" value="Submit">
-      </fieldset>
-    </form>
+<div class="contactUs">
+    <div class="ui container">
+        <h1 class="heading">{{ page.heading }}</h1>
+        <form
+            id="contactForm"
+            class="ui form contact{{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
+            method="post"
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ page.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ page.errorMessage.body }}</p>
+                </div>
+            {{/if}}
+            {{#if requestSuccess}}
+                <div class="ui success message">
+                    <div class="header">
+                        <span>{{ page.successMessage.heading }}</span>
+                    </div>
+                    <p>{{interpolate page.successMessage.body request}}</p>
+                </div>
+            {{/if}}
+            <div class="field">
+                <label>{{ page.nameInput.label }}</label>
+                <input type="text" name="{{ page.nameInput.name }}" placeholder="{{ page.nameInput.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ page.emailInput.label }}</label>
+                <input type="text" name="{{ page.emailInput.name }}" placeholder="{{ page.emailInput.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ page.messageInput.label }}</label>
+                <textarea name="{{ page.messageInput.name }}" rows="{{ page.messageInput.rows }}" placeholder="{{ page.messageInput.placeholder }}"></textarea>
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
+            </div>
+        </form>
+    </div>
 </div>

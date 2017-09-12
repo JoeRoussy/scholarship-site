@@ -15,7 +15,7 @@ const searchTypeMapping = {
 const {
     noResults: noResultsErrorMessage,
     serverError: serverErrorMessage
-} = window.globals.errorMessages;
+} = window.globals.page.errorMessages;
 
 function initializeSearchElements() {
     $('.ui.search[data-hide-on-init]').hide();

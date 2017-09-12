@@ -1,4 +1,30 @@
 {
     "title": "Scholarship Site",
-    "description": "A site for researching and applying for scholarships in canada"
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Contact Us",
+    "errorMessage": {
+        "heading": "Something went wrong",
+        "body": "We could not complete your request, please email admin@canadahighereducationhouse.ca"
+    },
+    "successMessage": {
+        "heading": "We got your message!",
+        "body": "We're looking into your request now and will contact you via {email}!"
+    },
+    "nameInput": {
+        "label": "Name",
+        "name": "name",
+        "placeholder": "Name"
+    },
+    "emailInput": {
+        "label": "Email",
+        "name": "email",
+        "placeholder": "Email"
+    },
+    "messageInput": {
+        "label": "Message",
+        "name": "message",
+        "placeholder": "What is on your mind?",
+        "rows": "10"
+    },
+    "submit": "Submit"
 }
