@@ -6,7 +6,7 @@ export const getMailMessage = ({
     message,
     email
 }) => `
-    Message from ${name} (${email}).
+    Message from ${name} (${email}):
 
     ${message}
 `;
