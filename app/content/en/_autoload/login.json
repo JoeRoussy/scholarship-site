@@ -1,0 +1,28 @@
+{
+    "login": {
+        "header": "Please login",
+        "image": {
+            "src": "/images/logo.png",
+            "alt": "canada higher education house"
+        },
+        "form": {
+            "errorMessage": {
+                "header": "Login failed",
+                "body": "We could not log you in with that username and password"
+            },
+            "inputs": {
+                "user": {
+                    "label": "Username",
+                    "name": "username",
+                    "placeholder": "Username"
+                },
+                "pass": {
+                    "label": "Password",
+                    "name": "password",
+                    "placeholder": "Password"
+                },
+                "submit": "Login"
+            }
+        }
+    }
+}

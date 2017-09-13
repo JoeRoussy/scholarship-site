@@ -35,13 +35,16 @@
                 "text": "Sign In",
                 "href": "#",
                 "customClasses": "right authItem",
-                "isSignIn": true
+                "isSignIn": true,
+                "isButton": true,
+                "modal": "loginModal"
             },
             {
                 "text": "Join",
                 "href": "#",
                 "customClasses": "right authItem",
-                "isJoin": true
+                "isJoin": true,
+                "isButton": true
             }
         ]
     },

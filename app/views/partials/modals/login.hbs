@@ -1,0 +1,35 @@
+<div id="loginModal" class="ui modal small login">
+    <div class="imageWrapper">
+        <img src="{{ image.src }}" alt="{{ image.alt }}">
+    </div>
+    <div class="header">
+        <span>{{ header }}</span>
+    </div>
+    <div class="content">
+        <form
+            id="loginForm"
+            class="ui form{{#if loginError}} error{{/if}}"
+            method="post"
+        >
+            {{#if loginError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ form.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ form.errorMessage.body }}</p>
+                </div>
+            {{/if}}
+            <div class="field">
+                <label>{{ form.inputs.user.label }}</label>
+                <input type="text" name="{{ form.inputs.user.name }}" value="" placeholder="{{ form.inputs.user.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.pass.label }}</label>
+                <input type="text" name="{{ form.inputs.pass.name }}" value="" placeholder="{{ form.inputs.pass.placeholder }}">
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">
+            </div>
+        </form>
+    </div>
+</div>

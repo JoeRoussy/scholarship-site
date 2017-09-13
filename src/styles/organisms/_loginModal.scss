@@ -1,0 +1,32 @@
+.ui.modal.login {
+    .imageWrapper {
+        max-width: 200px;
+        margin: 0 auto;
+        padding-top: 30px;
+
+        @media screen and (min-width: $tabletWidth) {
+            max-width: 300px;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .header {
+        text-align: center;
+    }
+
+    .content {
+        .ui.form {
+            width: 80%;
+            margin: 0 auto;
+
+            .field {
+                .ui.submit {
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
