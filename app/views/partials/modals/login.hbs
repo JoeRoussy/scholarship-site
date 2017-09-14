@@ -1,4 +1,4 @@
-<div id="loginModal" class="ui modal small login">
+<div id="loginModal" class="ui modal small authentication">
     <div class="imageWrapper">
         <img src="{{ image.src }}" alt="{{ image.alt }}">
     </div>
@@ -21,11 +21,11 @@
             {{/if}}
             <div class="field">
                 <label>{{ form.inputs.user.label }}</label>
-                <input type="text" name="{{ form.inputs.user.name }}" value="" placeholder="{{ form.inputs.user.placeholder }}">
+                <input type="text" name="{{ form.inputs.user.name }}" placeholder="{{ form.inputs.user.placeholder }}">
             </div>
             <div class="field">
                 <label>{{ form.inputs.pass.label }}</label>
-                <input type="text" name="{{ form.inputs.pass.name }}" value="" placeholder="{{ form.inputs.pass.placeholder }}">
+                <input type="text" name="{{ form.inputs.pass.name }}" placeholder="{{ form.inputs.pass.placeholder }}">
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">

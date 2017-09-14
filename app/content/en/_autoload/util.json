@@ -44,7 +44,8 @@
                 "href": "#",
                 "customClasses": "right authItem",
                 "isJoin": true,
-                "isButton": true
+                "isButton": true,
+                "modal": "signInModal"
             }
         ]
     },

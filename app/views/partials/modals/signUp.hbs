@@ -1,0 +1,47 @@
+<div id="signInModal" class="ui modal authentication">
+    <div class="imageWrapper">
+        <img src="{{ image.src }}" alt="{{ image.alt }}">
+    </div>
+    <div class="header">
+        <span>{{ header }}</span>
+    </div>
+    <div class="content">
+        <form
+            id="signInForm"
+            class="ui form{{#if loginError}} error{{/if}}"
+            method="post"
+        >
+            {{#if loginError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ form.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ form.errorMessage.body }}</p>
+                </div>
+            {{/if}}
+            <div class="field">
+                <label>{{ form.inputs.name.label }}</label>
+                <input type="text" name="{{ form.inputs.name.name }}" placeholder="{{ form.inputs.name.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.email.label }}</label>
+                <input type="text" name="{{ form.inputs.email.name }}" placeholder="{{ form.inputs.email.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.confirmEmail.label }}</label>
+                <input type="text" name="{{ form.inputs.confirmEmail.name }}" placeholder="{{ form.inputs.confirmEmail.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.password.label }}</label>
+                <input type="text" name="{{ form.inputs.password.name }}" placeholder="{{ form.inputs.password.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.confirmPassword.label }}</label>
+                <input type="text" name="{{ form.inputs.confirmPassword.name }}" placeholder="{{ form.inputs.confirmPassword.placeholder }}">
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">
+            </div>
+        </form>
+    </div>
+</div>

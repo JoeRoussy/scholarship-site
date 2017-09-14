@@ -1,0 +1,43 @@
+{
+    "signUp": {
+        "header": "Join Us",
+        "image": {
+            "src": "/images/logo.png",
+            "alt": "canada higher education house"
+        },
+        "form": {
+            "errorMessage": {
+                "header": "Something went wrong",
+                "body": "We could not sign you up, please try again later"
+            },
+            "inputs": {
+                "name": {
+                    "label": "Name",
+                    "name": "name",
+                    "placeholder": "Name"
+                },
+                "email": {
+                    "label": "Email",
+                    "name": "email",
+                    "placeholder": "Email"
+                },
+                "confirmEmail": {
+                    "label": "Confirm Email",
+                    "name": "confirmEmail",
+                    "placeholder": "Confirm Email"
+                },
+                "password": {
+                    "label": "Password",
+                    "name": "password",
+                    "placeholder": "Password"
+                },
+                "confirmPassword": {
+                    "label": "Confirm Password",
+                    "name": "confirmPassword",
+                    "placeholder": "Confirm Password"
+                },
+                "submit": "Login"
+            }
+        }
+    }
+}
