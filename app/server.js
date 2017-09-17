@@ -1,4 +1,6 @@
 import express from 'express';
+import session from 'express-session';
+import passport from 'passport';
 import bodyParser from 'body-parser';
 import config from './config';
 import language from './components/language';
@@ -33,7 +35,13 @@ dbConfig()
         }
 
         // Now that we know the db is connected, continue setting up the app
-
+        app.use(session({
+            secret: config.session.secret,
+            resave: false,
+            saveUninitialized: false
+        }));
+        app.use(passport.initialize());
+        app.use(passport.session());
         app.use(express.static('public'));
         app.use(bodyParser.urlencoded({
             extended: true

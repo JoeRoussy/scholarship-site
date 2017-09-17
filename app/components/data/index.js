@@ -381,3 +381,17 @@ export const getUniversitiesWithFilter = async({
         });
     }
 };
+
+export const getUserByEmail = async({
+    usersCollection = required('usersCollection'),
+    email = required('email')
+}) => {
+    try {
+        return await usersCollection.findOne({ username });
+    } catch (e) {
+        throw new RuntimeError({
+            msg: `Error getting a user with the email ${email}`,
+            err: e
+        });
+    }
+};
