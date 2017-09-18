@@ -1,20 +1,29 @@
-import bcrypt from 'bcrypt-nodejs';
-import config from '../config';
+import bcrypt from 'bcrypt';
+import config from '../../config';
 import { wrap as coroutine } from 'co';
 import { getDocById, getUserByEmail } from '../data';
 import { insert as saveToDb } from '../db/service';
 import passportLocal from 'passport-local';
+import { required } from '../custom-utils';
 
+const {
+    saltRounds,
+    local: {
+        login: {
+            strategy: loginStrategy,
+            errorMessages: loginErrorMessages
+        } = {}
+    } = {}
+} = config.authentication;
 
-async function generateHash(password) {
-    return await bcrypt.hash(password, config.authentication.saltRounds);
-}
+export const generateHash = async (password) => await bcrypt.hash(password, saltRounds);
 
-async function comparePasswords(password, hash) {
-    return await bycrypt.compare(password, hash);
-}
+export const comparePasswords = async (password, hash) => await bcrypt.compare(password, hash);
 
-export default passport => {
+export default ({
+    passport = required('passport'),
+    db = required('db')
+}) => {
     const LocalStrategy = passportLocal.Strategy;
 
     passport.serializeUser((user, done) => {
@@ -26,7 +35,7 @@ export default passport => {
 
         try {
             user = yield getDocById({
-                collection: 'user',
+                collection: db.collection('users'),
                 id
             });
         } catch (e) {
@@ -36,59 +45,39 @@ export default passport => {
         return done(null, user);
     }));
 
-    passport.use(config.authentication.local.signUpStrategy, new LocalStrategy({}, coroutine(function* (username, password, done) {
-        // First see if a user with this username exists
+    passport.use(loginStrategy, new LocalStrategy({
+        usernameField : 'email',
+        passwordField : 'password',
+    }, coroutine(function* (email, password, done) {
         let user = null;
 
         try {
-            user = await getUserByEmail({
-                usersCollection,
-                email: username
-            });
-        } catch (e) {
-            return done(e);
-        }
-
-        if (user) {
-            // TODO: Throw an error saying that a user with this email already exists
-        }
-
-        // No User esists with this email so lets make a user.
-        const hashedPassword = yield generateHash(password);
-        const newUser = {
-            username,
-            password
-        };
-
-        try {
-            yield saveToDb(newUser);
-        } catch (e) {
-            return done(e);
-        }
-
-        return done(null, newUser);
-    })));
-
-    passport.use(config.authentication.local.loginStrategy, new LocalStrategy({}. coroutine(function* (username, password, done) {
-        const user = null;
-
-        try {
-            user = await getUserByEmail({
-                usersCollection,
-                email: username
+            user = yield getUserByEmail({
+                usersCollection: db.collection('users'),
+                email
             });
         } catch (e) {
             return done(e);
         }
 
         if (!user) {
-            // There was no user found, return this error
+            return done(null, false, {
+                errorKey: loginErrorMessages.invalidEmail
+            });
         }
 
-        const isValidPassword = yield comaprePasswords(password, user.password);
+        let isValidPassword = false;
+
+        try {
+            isValidPassword = yield comparePasswords(password, user.password);
+        } catch (e) {
+            return done(e);
+        }
 
         if (!isValidPassword) {
-            // Invalid password, so return this error
+            return done(null, false, {
+                errorKey: loginErrorMessages.invalidPassword
+            });
         }
 
         return done(null, user);

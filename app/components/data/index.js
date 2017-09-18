@@ -387,7 +387,7 @@ export const getUserByEmail = async({
     email = required('email')
 }) => {
     try {
-        return await usersCollection.findOne({ username });
+        return await usersCollection.findOne({ email });
     } catch (e) {
         throw new RuntimeError({
             msg: `Error getting a user with the email ${email}`,

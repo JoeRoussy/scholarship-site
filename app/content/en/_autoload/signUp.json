@@ -8,7 +8,11 @@
         "form": {
             "errorMessage": {
                 "header": "Something went wrong",
-                "body": "We could not sign you up, please try again later"
+                "body": {
+                    "generic": "We could not sign you up, please try again later",
+                    "existingEmail": "A user with this email already exists",
+                    "contact": "Please use our [contact page](/contact) to reach out to us so we can resolve the issue."
+                }
             },
             "inputs": {
                 "name": {

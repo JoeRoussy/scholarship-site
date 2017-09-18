@@ -8,13 +8,17 @@
         "form": {
             "errorMessage": {
                 "header": "Login failed",
-                "body": "We could not log you in with that username and password"
+                "body": {
+                    "generic": "Something went wrong logging you in. Please try again later or [reach out to us](/contact)",
+                    "invalidEmail": "We could not find a user with that email",
+                    "invalidPassword": "That password was incorrect"
+                }
             },
             "inputs": {
                 "user": {
-                    "label": "Username",
-                    "name": "username",
-                    "placeholder": "Username"
+                    "label": "Email",
+                    "name": "email",
+                    "placeholder": "Email"
                 },
                 "pass": {
                     "label": "Password",

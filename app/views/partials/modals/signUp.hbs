@@ -8,15 +8,16 @@
     <div class="content">
         <form
             id="signInForm"
-            class="ui form{{#if loginError}} error{{/if}}"
+            class="ui form{{#if @root.queryParams.signupError}} error{{/if}}"
             method="post"
+            action="/signup"
         >
-            {{#if loginError}}
+            {{#if @root.queryParams.signupError}}
                 <div class="ui error message">
                     <div class="header">
-                        <span>{{ form.errorMessage.heading }}</span>
+                        <span>{{ form.errorMessage.header }}</span>
                     </div>
-                    <p>{{ form.errorMessage.body }}</p>
+                    {{{md (lookup form.errorMessage.body @root.queryParams.signupError)}}}
                 </div>
             {{/if}}
             <div class="field">

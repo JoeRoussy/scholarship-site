@@ -10,9 +10,12 @@ import loadConfigElements from './components/load-config';
 import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
+import authRouteConfig from './router/authRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
+import configureAuth from './components/authentication';
+import { print } from './components/custom-utils';
 
 const app = express();
 
@@ -48,6 +51,17 @@ dbConfig()
         }));
         app.use(bodyParser.json());
         app.use(language);
+
+        configureAuth({
+            passport,
+            db
+        });
+        authRouteConfig({
+            app,
+            passport,
+            db,
+            baseLogger: Logger
+        });
 
         loadQueryParams(app);
         loadConfigElements(app);
