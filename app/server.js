@@ -7,6 +7,7 @@ import language from './components/language';
 import loadContentConfig from './components/content';
 import loadQueryParams from './components/load-query-params';
 import loadConfigElements from './components/load-config';
+import loadUser from './components/load-user';
 import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
@@ -66,6 +67,7 @@ dbConfig()
         loadQueryParams(app);
         loadConfigElements(app);
         loadContentConfig(app);
+        loadUser(app);
         templateConfig(app);
         appRouteConfig({
             app,

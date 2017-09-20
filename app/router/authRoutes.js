@@ -1,4 +1,4 @@
-import { login, signup } from '../controller/auth';
+import { login, signup, logout } from '../controller/auth';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
 
@@ -27,4 +27,6 @@ export default ({
             }
         })
     }));
+
+    app.get('/logout', logout);
 }
