@@ -3,23 +3,19 @@
         <img src="{{ logo.src }}" alt="{{ logo.alt }}">
     </a>
     {{#each items}}
-        {{#if this.isButton}}
-            <button
-                class="item{{#if this.customClasses}} {{ this.customClasses }}{{/if}}"
-                type="button"
-                {{#if this.modal}}
-                    data-modal="{{ this.modal }}"
-                {{/if}}
-            >
-                {{ this.text }}
-            </button>
-        {{else}}
-            <a
-                class="item{{#if this.customClasses}} {{ this.customClasses }}{{/if}}"
-                href="{{ this.href }}"
-            >
-                {{ this.text }}
-            </a>
+        {{> navigationItem this}}
+    {{/each}}
+    {{#each authItems}}
+        {{#if this.showOnUser}}
+        {{#if @root.user}}
+            {{> navigationItem this}}
+        {{/if}}
+        {{/if}}
+
+        {{#if hideOnUser}}
+        {{#unless @root.user}}
+            {{> navigationItem this}}
+        {{/unless}}
         {{/if}}
     {{/each}}
     <button id="hamburgerButton" class="ui icon button sidebarButton">

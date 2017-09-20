@@ -6,10 +6,13 @@
 
     .item {
         padding: 0.92em 1.8em;
-        cursor: pointer;
 
-        &:hover {
-            background: rgba(0, 0, 0, 0.03);
+        &:not(span) {
+            cursor: pointer;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.03);
+            }
         }
     }
 

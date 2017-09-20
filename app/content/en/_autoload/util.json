@@ -30,12 +30,15 @@
             {
                 "text": "Contact",
                 "href": "/contact"
-            },
+            }
+
+        ],
+        "authItems": [
             {
                 "text": "Sign In",
                 "href": "#",
                 "customClasses": "right authItem",
-                "isSignIn": true,
+                "hideOnUser": true,
                 "isButton": true,
                 "modal": "loginModal"
             },
@@ -43,9 +46,21 @@
                 "text": "Join",
                 "href": "#",
                 "customClasses": "right authItem",
-                "isJoin": true,
+                "hideOnUser": true,
                 "isButton": true,
                 "modal": "signInModal"
+            },
+            {
+                "text": "Welcome {name}",
+                "customClasses": "right authItem",
+                "interpolateFromRoot": "user",
+                "showOnUser": true
+            },
+            {
+                "text": "Logout",
+                "customClasses": "right authItem",
+                "href": "/logout",
+                "showOnUser": true
             }
         ]
     },
