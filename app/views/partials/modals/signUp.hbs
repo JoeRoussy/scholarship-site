@@ -34,11 +34,34 @@
             </div>
             <div class="field">
                 <label>{{ form.inputs.password.label }}</label>
-                <input type="text" name="{{ form.inputs.password.name }}" placeholder="{{ form.inputs.password.placeholder }}">
+                <div class="passwordInputWrapper">
+                    <input id="signUpPassword" type="password" name="{{ form.inputs.password.name }}" placeholder="{{ form.inputs.password.placeholder }}">
+                    <div
+                        class="iconWrapper"
+                        data-tooltip="{{ form.inputs.password.tooltip }}"
+                        data-password-toggle-target-id="signUpPassword"
+                    >
+                        <i class="eye icon"></i>
+                    </div>
+                </div>
             </div>
             <div class="field">
                 <label>{{ form.inputs.confirmPassword.label }}</label>
-                <input type="text" name="{{ form.inputs.confirmPassword.name }}" placeholder="{{ form.inputs.confirmPassword.placeholder }}">
+                <div class="passwordInputWrapper">
+                    <input
+                        id="signUpConfirmPassword"
+                        type="password"
+                        name="{{ form.inputs.confirmPassword.name }}"
+                        placeholder="{{ form.inputs.confirmPassword.placeholder }}"
+                    >
+                    <div
+                        class="iconWrapper"
+                        data-tooltip="{{ form.inputs.confirmPassword.tooltip }}"
+                        data-password-toggle-target-id="signUpConfirmPassword"
+                    >
+                        <i class="eye icon"></i>
+                    </div>
+                </div>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">

@@ -26,6 +26,35 @@
                 .ui.submit {
                     margin-top: 10px;
                 }
+
+                .passwordInputWrapper {
+                    display: table;
+                    width: 100%;
+
+                    input {
+                        display: table-cell;
+                        width: 95%;
+
+                        @media screen and (min-width: $tabletWidth) {
+                            width: 100%; // Deals with wierd margin to the right of the input at 95%
+                        }
+                    }
+
+                    .iconWrapper {
+                        display: table-cell;
+                        width: 5%;
+                        vertical-align: middle;
+                        text-align: center;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+
+                        .icon {
+                            margin: 0;
+                        }
+                    }
+                }
             }
         }
     }

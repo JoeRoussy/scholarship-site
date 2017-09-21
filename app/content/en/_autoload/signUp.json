@@ -33,12 +33,14 @@
                 "password": {
                     "label": "Password",
                     "name": "password",
-                    "placeholder": "Password"
+                    "placeholder": "Password",
+                    "tooltip": "Toggle display"
                 },
                 "confirmPassword": {
                     "label": "Confirm Password",
                     "name": "confirmPassword",
-                    "placeholder": "Confirm Password"
+                    "placeholder": "Confirm Password",
+                    "tooltip": "Toggle display"
                 },
                 "submit": "Login"
             }

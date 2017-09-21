@@ -26,7 +26,21 @@
             </div>
             <div class="field">
                 <label>{{ form.inputs.pass.label }}</label>
-                <input type="text" name="{{ form.inputs.pass.name }}" placeholder="{{ form.inputs.pass.placeholder }}">
+                <div class="passwordInputWrapper">
+                    <input
+                        id="loginPassword"
+                        type="text"
+                        name="{{ form.inputs.pass.name }}"
+                        placeholder="{{ form.inputs.pass.placeholder }}"
+                    >
+                    <div
+                        class="iconWrapper"
+                        data-tooltip="{{ form.inputs.pass.tooltip }}"
+                        data-password-toggle-target-id="loginPassword"
+                    >
+                        <i class="eye icon"></i>
+                    </div>
+                </div>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">

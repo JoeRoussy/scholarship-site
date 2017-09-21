@@ -39,7 +39,8 @@ dbConfig()
         }
 
         // Now that we know the db is connected, continue setting up the app
-        app.use(session({
+        // TODO: Use secure cookies in production along with setting 'trust proxy' to 1 on the app
+         app.use(session({
             secret: config.session.secret,
             resave: false,
             saveUninitialized: false
