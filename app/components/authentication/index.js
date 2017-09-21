@@ -27,7 +27,7 @@ export default ({
     const LocalStrategy = passportLocal.Strategy;
 
     passport.serializeUser((user, done) => {
-        done(null, user._id)
+        done(null, user._id);
     });
 
     passport.deserializeUser(coroutine(function* (id, done) {
