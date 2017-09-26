@@ -1,5 +1,5 @@
-// Finds elements with a data-password-toggle-target-name attr and binds a click event listener
-// on them. This listener finds the element with a name equal to the data attribute value and
+// Finds elements with a data-password-toggle-target-id attr and binds a click event listener
+// on them. This listener finds the element with a id equal to the data attribute value and
 // toggles the type of the input as approriate
 
 export default () => {
