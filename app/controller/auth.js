@@ -44,7 +44,8 @@ export const login = ({
                     errorKey
                 } = info;
 
-                logger.info(info, {
+                logger.info({
+                    ...info,
                     email
                 }, 'Issue with credentials when attempting login');
                 let errorMessage = errorKey ? loginErrorMessages[errorKey] : loginErrorMessages.generic;
@@ -61,7 +62,10 @@ export const login = ({
         // Otherwise we have a valid user so we should try and log them in
         req.login(user, err => {
             if (err) {
-                logger.error(err, 'Error authenticating user');
+                logger.error({
+                    err: err,
+                    ...user
+                }, 'Error authenticating user');
 
                 return res.redirect(`/?loginError=${loginErrorMessages.generic}`);
             }
@@ -90,7 +94,9 @@ export const signup = ({
             email: email
         });
     } catch (e) {
-        logger.error(e.err, e.msg);
+        logger.error({
+            err: e.err
+        }, e.msg);
 
         return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
     }
@@ -121,7 +127,10 @@ export const signup = ({
             returnInsertedDocument: true
         });
     } catch (e) {
-        logger.error(e, 'Error saving new user to db');
+        logger.error({
+            err: e,
+            ...savedUser
+        }, 'Error saving new user to db');
 
         return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
     }
