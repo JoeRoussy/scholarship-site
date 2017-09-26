@@ -1,0 +1,71 @@
+<div id="signInModal" class="ui modal authentication">
+    <div class="imageWrapper">
+        <img src="{{ image.src }}" alt="{{ image.alt }}">
+    </div>
+    <div class="header">
+        <span>{{ header }}</span>
+    </div>
+    <div class="content">
+        <form
+            id="signInForm"
+            class="ui form{{#if @root.queryParams.signupError}} error{{/if}}"
+            method="post"
+            action="/signup"
+        >
+            {{#if @root.queryParams.signupError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ form.errorMessage.header }}</span>
+                    </div>
+                    {{{md (lookup form.errorMessage.body @root.queryParams.signupError)}}}
+                </div>
+            {{/if}}
+            <div class="field">
+                <label>{{ form.inputs.name.label }}</label>
+                <input type="text" name="{{ form.inputs.name.name }}" placeholder="{{ form.inputs.name.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.email.label }}</label>
+                <input type="text" name="{{ form.inputs.email.name }}" placeholder="{{ form.inputs.email.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.confirmEmail.label }}</label>
+                <input type="text" name="{{ form.inputs.confirmEmail.name }}" placeholder="{{ form.inputs.confirmEmail.placeholder }}">
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.password.label }}</label>
+                <div class="passwordInputWrapper">
+                    <input id="signUpPassword" type="password" name="{{ form.inputs.password.name }}" placeholder="{{ form.inputs.password.placeholder }}">
+                    <div
+                        class="iconWrapper"
+                        data-tooltip="{{ form.inputs.password.tooltip }}"
+                        data-password-toggle-target-id="signUpPassword"
+                    >
+                        <i class="eye icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>{{ form.inputs.confirmPassword.label }}</label>
+                <div class="passwordInputWrapper">
+                    <input
+                        id="signUpConfirmPassword"
+                        type="password"
+                        name="{{ form.inputs.confirmPassword.name }}"
+                        placeholder="{{ form.inputs.confirmPassword.placeholder }}"
+                    >
+                    <div
+                        class="iconWrapper"
+                        data-tooltip="{{ form.inputs.confirmPassword.tooltip }}"
+                        data-password-toggle-target-id="signUpConfirmPassword"
+                    >
+                        <i class="eye icon"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">
+            </div>
+        </form>
+    </div>
+</div>

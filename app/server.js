@@ -1,16 +1,22 @@
 import express from 'express';
+import session from 'express-session';
+import passport from 'passport';
 import bodyParser from 'body-parser';
 import config from './config';
 import language from './components/language';
 import loadContentConfig from './components/content';
 import loadQueryParams from './components/load-query-params';
 import loadConfigElements from './components/load-config';
+import loadUser from './components/load-user';
 import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
+import authRouteConfig from './router/authRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
+import configureAuth from './components/authentication';
+import { print } from './components/custom-utils';
 
 const app = express();
 
@@ -33,7 +39,14 @@ dbConfig()
         }
 
         // Now that we know the db is connected, continue setting up the app
-
+        // TODO: Use secure cookies in production along with setting 'trust proxy' to 1 on the app
+         app.use(session({
+            secret: config.session.secret,
+            resave: false,
+            saveUninitialized: false
+        }));
+        app.use(passport.initialize());
+        app.use(passport.session());
         app.use(express.static('public'));
         app.use(bodyParser.urlencoded({
             extended: true
@@ -41,9 +54,21 @@ dbConfig()
         app.use(bodyParser.json());
         app.use(language);
 
+        configureAuth({
+            passport,
+            db
+        });
+        authRouteConfig({
+            app,
+            passport,
+            db,
+            baseLogger: Logger
+        });
+
         loadQueryParams(app);
         loadConfigElements(app);
         loadContentConfig(app);
+        loadUser(app);
         templateConfig(app);
         appRouteConfig({
             app,

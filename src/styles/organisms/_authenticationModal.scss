@@ -1,0 +1,61 @@
+.ui.modal.authentication {
+    .imageWrapper {
+        max-width: 200px;
+        margin: 0 auto;
+        padding-top: 30px;
+
+        @media screen and (min-width: $tabletWidth) {
+            max-width: 300px;
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .header {
+        text-align: center;
+    }
+
+    .content {
+        .ui.form {
+            width: 80%;
+            margin: 0 auto;
+
+            .field {
+                .ui.submit {
+                    margin-top: 10px;
+                }
+
+                .passwordInputWrapper {
+                    display: table;
+                    width: 100%;
+
+                    input {
+                        display: table-cell;
+                        width: 95%;
+
+                        @media screen and (min-width: $tabletWidth) {
+                            width: 100%; // Deals with wierd margin to the right of the input at 95%
+                        }
+                    }
+
+                    .iconWrapper {
+                        display: table-cell;
+                        width: 5%;
+                        vertical-align: middle;
+                        text-align: center;
+
+                        &:hover {
+                            cursor: pointer;
+                        }
+
+                        .icon {
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

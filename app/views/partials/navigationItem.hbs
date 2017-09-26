@@ -1,0 +1,28 @@
+{{#if isButton}}
+    <button
+        class="item{{#if customClasses}} {{ customClasses }}{{/if}}"
+        type="button"
+        {{#if modal}}
+            data-modal="{{ modal }}"
+        {{/if}}
+    >
+        {{ text }}
+    </button>
+{{else}}
+    {{#if href}}
+        <a
+            class="item{{#if customClasses}} {{ customClasses }}{{/if}}"
+            href="{{ href }}"
+        >
+            {{ text }}
+        </a>
+    {{else}}
+        <span class="item{{#if customClasses}} {{ customClasses }}{{/if}}">
+            {{#if interpolateFromRoot}}
+                {{interpolate text (lookup @root interpolateFromRoot)}}
+            {{else}}
+                {{ text }}
+            {{/if}}
+        </span>
+    {{/if}}
+{{/if}}

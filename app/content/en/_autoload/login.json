@@ -1,0 +1,33 @@
+{
+    "login": {
+        "header": "Please login",
+        "image": {
+            "src": "/images/logo.png",
+            "alt": "canada higher education house"
+        },
+        "form": {
+            "errorMessage": {
+                "header": "Login failed",
+                "body": {
+                    "generic": "Something went wrong logging you in. Please try again later or [reach out to us](/contact)",
+                    "invalidEmail": "We could not find a user with that email",
+                    "invalidPassword": "That password was incorrect"
+                }
+            },
+            "inputs": {
+                "user": {
+                    "label": "Email",
+                    "name": "email",
+                    "placeholder": "Email"
+                },
+                "pass": {
+                    "label": "Password",
+                    "name": "password",
+                    "placeholder": "Password",
+                    "tooltip": "Toggle display"
+                },
+                "submit": "Login"
+            }
+        }
+    }
+}
