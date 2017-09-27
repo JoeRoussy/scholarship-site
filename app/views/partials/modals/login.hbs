@@ -11,6 +11,7 @@
             class="ui form{{#if @root.queryParams.loginError}} error{{/if}}"
             method="post"
             action="/login"
+            data-validate-form
         >
             {{#if @root.queryParams.loginError}}
                 <div class="ui error message">
@@ -22,16 +23,25 @@
             {{/if}}
             <div class="field">
                 <label>{{ form.inputs.user.label }}</label>
-                <input type="text" name="{{ form.inputs.user.name }}" placeholder="{{ form.inputs.user.placeholder }}">
+                <input
+                    type="text"
+                    name="{{ form.inputs.user.name }}"
+                    placeholder="{{ form.inputs.user.placeholder }}"
+                    data-validate="email"
+                    data-error-element-id="loginUsernameError"
+                >
+                <span id="loginUsernameError" class="formErrorMessage">{{ form.inputs.user.error }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.pass.label }}</label>
                 <div class="passwordInputWrapper">
                     <input
                         id="loginPassword"
-                        type="text"
+                        type="password"
                         name="{{ form.inputs.pass.name }}"
                         placeholder="{{ form.inputs.pass.placeholder }}"
+                        data-validate="text"
+                        data-error-element-id="loginPasswordError"
                     >
                     <div
                         class="iconWrapper"
@@ -41,6 +51,7 @@
                         <i class="eye icon"></i>
                     </div>
                 </div>
+                <span id="loginPasswordError" class="formErrorMessage">{{ form.inputs.pass.error }}</span>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">

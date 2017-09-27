@@ -18,13 +18,15 @@
                 "user": {
                     "label": "Email",
                     "name": "email",
-                    "placeholder": "Email"
+                    "placeholder": "Email",
+                    "error": "Please enter an email"
                 },
                 "pass": {
                     "label": "Password",
                     "name": "password",
                     "placeholder": "Password",
-                    "tooltip": "Toggle display"
+                    "tooltip": "Toggle display",
+                    "error": "Please enter your password"
                 },
                 "submit": "Login"
             }

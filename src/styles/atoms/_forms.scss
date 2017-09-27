@@ -9,6 +9,23 @@ form {
     }
 
     &.ui.form {
+        .field {
+            input.error {
+                border-color: #ea212d;
+            }
+
+            .formErrorMessage {
+                display: none;
+                font-style: italic;
+                color: #ea212d;
+
+                &.show {
+                    display: block;
+                }
+            }
+        }
+
+
         &.error {
             .ui.error.message {
                 p {
