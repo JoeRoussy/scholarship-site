@@ -16,11 +16,6 @@ export default () => {
                 return;
             }
 
-            // Set errors after user leaves a field
-            input.on('blur', (e) => {
-                setErrorStates(input, validateInput(input));
-            });
-
             // Always clear errors on focus
             input.on('focus', () => {
                 setErrorStates(input, true);
