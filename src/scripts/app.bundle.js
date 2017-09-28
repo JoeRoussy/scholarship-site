@@ -4,6 +4,7 @@ import navigation from './component/navigation';
 import pagination from './component/pagination';
 import modal from './component/modal';
 import passwordToggle from './component/password-toggle';
+import formValidation from './component/form-validation';
 
 // Generic semantic UI setup
 
@@ -15,3 +16,4 @@ navigation();
 pagination();
 modal();
 passwordToggle();
+formValidation();

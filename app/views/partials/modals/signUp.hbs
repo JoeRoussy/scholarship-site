@@ -11,6 +11,7 @@
             class="ui form{{#if @root.queryParams.signupError}} error{{/if}}"
             method="post"
             action="/signup"
+            data-validate-form
         >
             {{#if @root.queryParams.signupError}}
                 <div class="ui error message">
@@ -22,46 +23,81 @@
             {{/if}}
             <div class="field">
                 <label>{{ form.inputs.name.label }}</label>
-                <input type="text" name="{{ form.inputs.name.name }}" placeholder="{{ form.inputs.name.placeholder }}">
+                <input
+                    type="{{ form.inputs.name.type }}"
+                    name="{{ form.inputs.name.name }}"
+                    placeholder="{{ form.inputs.name.placeholder }}"
+                    data-validate="{{ form.inputs.name.validationType }}"
+                    data-error-element-id="{{ form.inputs.name.errorElement.id }}"
+                >
+                <span id="{{ form.inputs.name.errorElement.id }}" class="formErrorMessage">{{ form.inputs.name.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.email.label }}</label>
-                <input type="text" name="{{ form.inputs.email.name }}" placeholder="{{ form.inputs.email.placeholder }}">
+                <input
+                    id="{{ form.inputs.email.id }}"
+                    type="{{ form.inputs.email.type }}"
+                    name="{{ form.inputs.email.name }}"
+                    placeholder="{{ form.inputs.email.placeholder }}"
+                    data-validate="{{ form.inputs.email.validationType }}"
+                    data-error-element-id="{{ form.inputs.email.errorElement.id }}"
+                >
+                <span id="{{ form.inputs.email.errorElement.id }}" class="formErrorMessage">{{ form.inputs.email.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.confirmEmail.label }}</label>
-                <input type="text" name="{{ form.inputs.confirmEmail.name }}" placeholder="{{ form.inputs.confirmEmail.placeholder }}">
+                <input
+                    type="{{ form.inputs.confirmEmail.type }}"
+                    name="{{ form.inputs.confirmEmail.name }}"
+                    placeholder="{{ form.inputs.confirmEmail.placeholder }}"
+                    data-validate="{{ form.inputs.confirmEmail.validationType }}"
+                    data-error-element-id="{{ form.inputs.confirmEmail.errorElement.id }}"
+                    data-validation-target-id="{{ form.inputs.email.id }}"
+                >
+                <span id="{{ form.inputs.confirmEmail.errorElement.id }}" class="formErrorMessage">{{ form.inputs.confirmEmail.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.password.label }}</label>
                 <div class="passwordInputWrapper">
-                    <input id="signUpPassword" type="password" name="{{ form.inputs.password.name }}" placeholder="{{ form.inputs.password.placeholder }}">
+                    <input
+                        id="{{ form.inputs.password.id }}"
+                        type="{{ form.inputs.password.type }}"
+                        name="{{ form.inputs.password.name }}"
+                        placeholder="{{ form.inputs.password.placeholder }}"
+                        data-validate="{{ form.inputs.password.validationType }}"
+                        data-error-element-id="{{ form.inputs.password.errorElement.id }}"
+                    >
                     <div
                         class="iconWrapper"
                         data-tooltip="{{ form.inputs.password.tooltip }}"
-                        data-password-toggle-target-id="signUpPassword"
+                        data-password-toggle-target-id="{{ form.inputs.password.id }}"
                     >
                         <i class="eye icon"></i>
                     </div>
                 </div>
+                <span id="{{ form.inputs.password.errorElement.id }}" class="formErrorMessage">{{ form.inputs.password.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.confirmPassword.label }}</label>
                 <div class="passwordInputWrapper">
                     <input
-                        id="signUpConfirmPassword"
-                        type="password"
+                        id="{{ form.inputs.confirmPassword.id }}"
+                        type="{{ form.inputs.confirmPassword.type }}"
                         name="{{ form.inputs.confirmPassword.name }}"
                         placeholder="{{ form.inputs.confirmPassword.placeholder }}"
+                        data-validate="{{ form.inputs.confirmPassword.validationType }}"
+                        data-error-element-id="{{ form.inputs.confirmPassword.errorElement.id }}"
+                        data-validation-target-id="{{ form.inputs.password.id }}"
                     >
                     <div
                         class="iconWrapper"
                         data-tooltip="{{ form.inputs.confirmPassword.tooltip }}"
-                        data-password-toggle-target-id="signUpConfirmPassword"
+                        data-password-toggle-target-id="{{ form.inputs.confirmPassword.id }}"
                     >
                         <i class="eye icon"></i>
                     </div>
                 </div>
+                <span id="{{ form.inputs.confirmPassword.errorElement.id }}" class="formErrorMessage">{{ form.inputs.confirmPassword.errorElement.text }}</span>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">

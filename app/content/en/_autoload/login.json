@@ -17,14 +17,26 @@
             "inputs": {
                 "user": {
                     "label": "Email",
+                    "type": "text",
                     "name": "email",
-                    "placeholder": "Email"
+                    "placeholder": "Email",
+                    "validationType": "email",
+                    "errorElement": {
+                        "id": "loginEmailError",
+                        "text": "Please enter an email"
+                    }
                 },
                 "pass": {
                     "label": "Password",
                     "name": "password",
+                    "type": "password",
                     "placeholder": "Password",
-                    "tooltip": "Toggle display"
+                    "validationType": "text",
+                    "tooltip": "Toggle display",
+                    "errorElement": {
+                        "id": "loginPasswordError",
+                        "text": "Please enter your password"
+                    }
                 },
                 "submit": "Login"
             }

@@ -13,18 +13,35 @@
     "nameInput": {
         "label": "Name",
         "name": "name",
-        "placeholder": "Name"
+        "type": "text",
+        "placeholder": "Name",
+        "validationType": "text",
+        "errorElement": {
+            "id": "contactNameError",
+            "text": "Please enter your name"
+        }
     },
     "emailInput": {
         "label": "Email",
         "name": "email",
-        "placeholder": "Email"
+        "type": "text",
+        "placeholder": "Email",
+        "validationType": "email",
+        "errorElement": {
+            "id": "contactEmailError",
+            "text": "Please enter an email"
+        }
     },
     "messageInput": {
         "label": "Message",
         "name": "message",
         "placeholder": "What is on your mind?",
-        "rows": "10"
+        "rows": "10",
+        "validationType": "text",
+        "errorElement": {
+            "id": "contactMessageError",
+            "text": "Please enter a message"
+        }
     },
     "submit": "Submit"
 }

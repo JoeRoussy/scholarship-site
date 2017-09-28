@@ -11,6 +11,7 @@
             class="ui form{{#if @root.queryParams.loginError}} error{{/if}}"
             method="post"
             action="/login"
+            data-validate-form
         >
             {{#if @root.queryParams.loginError}}
                 <div class="ui error message">
@@ -22,16 +23,25 @@
             {{/if}}
             <div class="field">
                 <label>{{ form.inputs.user.label }}</label>
-                <input type="text" name="{{ form.inputs.user.name }}" placeholder="{{ form.inputs.user.placeholder }}">
+                <input
+                    type="{{ form.inputs.user.type }}"
+                    name="{{ form.inputs.user.name }}"
+                    placeholder="{{ form.inputs.user.placeholder }}"
+                    data-validate="{{ form.inputs.user.validationType }}"
+                    data-error-element-id="{{ form.inputs.user.errorElement.id }}"
+                >
+                <span id="{{ form.inputs.user.errorElement.id }}" class="formErrorMessage">{{ form.inputs.user.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.pass.label }}</label>
                 <div class="passwordInputWrapper">
                     <input
                         id="loginPassword"
-                        type="text"
+                        type="{{ form.inputs.pass.type }}"
                         name="{{ form.inputs.pass.name }}"
                         placeholder="{{ form.inputs.pass.placeholder }}"
+                        data-validate="{{ form.inputs.pass.validationType }}"
+                        data-error-element-id="{{ form.inputs.pass.errorElement.id }}"
                     >
                     <div
                         class="iconWrapper"
@@ -41,6 +51,7 @@
                         <i class="eye icon"></i>
                     </div>
                 </div>
+                <span id="{{ form.inputs.pass.errorElement.id }}" class="formErrorMessage">{{ form.inputs.pass.errorElement.text }}</span>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">
