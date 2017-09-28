@@ -183,18 +183,16 @@ export const processContact = ({
         message
     });
 
-    try {
-        yield sendMailMessage({
-            to: config.email.addresses.admin,
-            message: mailMessage
-        });
-    } catch (e) {
-        // TODO: Log error
-        // logger.error(e, 'Error sending mail message');
-        res.locals.formHandlingError = true;
-
-        return next();
-    }
+    // Do not wait for the message to send because this takes a long time
+    // Log an error if the email fails to send
+    sendMailMessage({
+        to: config.email.addresses.admin,
+        message: mailMessage
+    })
+        .catch((e) => {
+            // TODO: Log error with the information about the message
+            // logger.error(e, 'Error sending mail message');
+        })
 
     res.locals.request = {
         email
