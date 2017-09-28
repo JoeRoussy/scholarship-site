@@ -1,5 +1,10 @@
 import { required, print } from '../../custom-utils';
 
+const addDate = (doc) => ({
+    ...doc,
+    createdAt: new Date()
+});
+
 const validateInsertion = ({
     result = required('result'),
     expectedDocumentsInserted
@@ -36,17 +41,20 @@ export const insert = async ({
     let insertionResult;
     let isValid;
 
-    if (document) {
-        insertionResult = await collection.insertOne(document);
+    const documentToInsert = document ? addDate(document) : null;
+    const documentsToInsert = documents ? documents.map(addDate) : null;
+
+    if (documentToInsert) {
+        insertionResult = await collection.insertOne(documentToInsert);
         isValid = validateInsertion({
             result: insertionResult,
             expectedDocumentsInserted: 1
         });
     } else {
-        insertionResult = await collection.insertOMany(documents);
+        insertionResult = await collection.insertMany(documentsToInsert);
         isValid = validateInsertion({
             result: insertionResult,
-            expectedDocumentsInserted: documents.length
+            expectedDocumentsInserted: documentsToInsert.length
         });
     }
 
@@ -55,7 +63,7 @@ export const insert = async ({
     }
 
     if (returnInsertedDocument) {
-        if (document) {
+        if (documentToInsert) {
             return insertionResult.ops[0];
         } else {
             return insertionResult.ops;
