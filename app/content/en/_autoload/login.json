@@ -17,6 +17,7 @@
             "inputs": {
                 "user": {
                     "label": "Email",
+                    "type": "text",
                     "name": "email",
                     "placeholder": "Email",
                     "validationType": "email",
@@ -28,6 +29,7 @@
                 "pass": {
                     "label": "Password",
                     "name": "password",
+                    "type": "password",
                     "placeholder": "Password",
                     "validationType": "text",
                     "tooltip": "Toggle display",

@@ -6,6 +6,7 @@
             id="contactForm"
             class="ui form contact{{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
             method="post"
+            data-validate-form
         >
             {{#if formHandlingError}}
                 <div class="ui error message">
@@ -25,15 +26,36 @@
             {{/if}}
             <div class="field">
                 <label>{{ page.nameInput.label }}</label>
-                <input type="text" name="{{ page.nameInput.name }}" placeholder="{{ page.nameInput.placeholder }}">
+                <input
+                    type="{{ page.nameInput.type }}"
+                    name="{{ page.nameInput.name }}"
+                    placeholder="{{ page.nameInput.placeholder }}"
+                    data-validate="{{ page.nameInput.validationType }}"
+                    data-error-element-id="{{ page.nameInput.errorElement.id }}"
+                >
+                <span id="{{ page.nameInput.errorElement.id }}" class="formErrorMessage">{{ page.nameInput.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ page.emailInput.label }}</label>
-                <input type="text" name="{{ page.emailInput.name }}" placeholder="{{ page.emailInput.placeholder }}">
+                <input
+                    type="{{ page.emailInput.type }}"
+                    name="{{ page.emailInput.name }}"
+                    placeholder="{{ page.emailInput.placeholder }}"
+                    data-validate="{{ page.emailInput.validationType }}"
+                    data-error-element-id="{{ page.emailInput.errorElement.id }}"
+                >
+                <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ page.messageInput.label }}</label>
-                <textarea name="{{ page.messageInput.name }}" rows="{{ page.messageInput.rows }}" placeholder="{{ page.messageInput.placeholder }}"></textarea>
+                <textarea
+                    name="{{ page.messageInput.name }}"
+                    rows="{{ page.messageInput.rows }}"
+                    placeholder="{{ page.messageInput.placeholder }}"
+                    data-validate="{{ page.messageInput.validationType }}"
+                    data-error-element-id="{{ page.messageInput.errorElement.id }}"
+                ></textarea>
+                <span id="{{ page.messageInput.errorElement.id }}" class="formErrorMessage">{{ page.messageInput.errorElement.text }}</span>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">

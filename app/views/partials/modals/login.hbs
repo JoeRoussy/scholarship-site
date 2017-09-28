@@ -24,7 +24,7 @@
             <div class="field">
                 <label>{{ form.inputs.user.label }}</label>
                 <input
-                    type="text"
+                    type="{{ form.inputs.user.type }}"
                     name="{{ form.inputs.user.name }}"
                     placeholder="{{ form.inputs.user.placeholder }}"
                     data-validate="{{ form.inputs.user.validationType }}"
@@ -37,7 +37,7 @@
                 <div class="passwordInputWrapper">
                     <input
                         id="loginPassword"
-                        type="password"
+                        type="{{ form.inputs.pass.type }}"
                         name="{{ form.inputs.pass.name }}"
                         placeholder="{{ form.inputs.pass.placeholder }}"
                         data-validate="{{ form.inputs.pass.validationType }}"

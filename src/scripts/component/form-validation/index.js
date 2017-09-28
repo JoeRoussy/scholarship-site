@@ -5,7 +5,7 @@ import validateInput from '../validate-input';
 export default () => {
     $('[data-validate-form]').each((i, e) => {
         const form = $(e);
-        const inputsToValidate = form.find('input[data-validate]');
+        const inputsToValidate = form.find('[data-validate]');
 
         // Attach validation handlers to all the inputs
         inputsToValidate.each((index, el) => {
@@ -17,7 +17,7 @@ export default () => {
             }
 
             // Set errors after user leaves a field
-            input.on('blur', () => {
+            input.on('blur', (e) => {
                 setErrorStates(input, validateInput(input));
             });
 

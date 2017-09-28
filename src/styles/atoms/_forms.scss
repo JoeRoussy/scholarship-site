@@ -10,7 +10,7 @@ form {
 
     &.ui.form {
         .field {
-            input.error {
+            input.error, textarea.error {
                 border-color: #ea212d;
             }
 
