@@ -30,6 +30,12 @@ export const login = ({
         email
     } = req.body;
 
+    if (!email) {
+        logger.warn('Got a request for login without an email');
+
+        return res.redirect(`/?loginError=${loginErrorMessages.generic}`);
+    }
+
     passport.authenticate(loginStrategy, (err, user, info) => {
         if (err) {
             logger.error(err, 'Error authenticating user');
@@ -84,6 +90,12 @@ export const signup = ({
         password,
         name
     } = req.body;
+
+    if (!email || !password || !name) {
+        logger.warn(`Got a signup request with missing data email: ${email}, password: ${password}, name: ${name}`);
+
+        return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
+    }
 
     // First see if a user with this email exists
     let user = null;
