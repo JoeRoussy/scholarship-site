@@ -19,14 +19,22 @@
                     "label": "Email",
                     "name": "email",
                     "placeholder": "Email",
-                    "error": "Please enter an email"
+                    "validationType": "email",
+                    "errorElement": {
+                        "id": "loginEmailError",
+                        "text": "Please enter an email"
+                    }
                 },
                 "pass": {
                     "label": "Password",
                     "name": "password",
                     "placeholder": "Password",
+                    "validationType": "text",
                     "tooltip": "Toggle display",
-                    "error": "Please enter your password"
+                    "errorElement": {
+                        "id": "loginPasswordError",
+                        "text": "Please enter your password"
+                    }
                 },
                 "submit": "Login"
             }

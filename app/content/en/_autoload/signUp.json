@@ -18,31 +18,64 @@
                 "name": {
                     "label": "Name",
                     "name": "name",
-                    "placeholder": "Name"
+                    "type": "text",
+                    "placeholder": "Name",
+                    "validationType": "text",
+                    "errorElement": {
+                        "id": "signupNameError",
+                        "text": "Please enter your name"
+                    }
                 },
                 "email": {
+                    "id": "signUpEmail",
                     "label": "Email",
                     "name": "email",
-                    "placeholder": "Email"
+                    "type": "text",
+                    "placeholder": "Email",
+                    "validationType": "email",
+                    "errorElement": {
+                        "id": "signupEmailError",
+                        "text": "Please enter an email"
+                    }
                 },
                 "confirmEmail": {
                     "label": "Confirm Email",
                     "name": "confirmEmail",
-                    "placeholder": "Confirm Email"
+                    "type": "text",
+                    "placeholder": "Confirm Email",
+                    "validationType": "equal",
+                    "errorElement": {
+                        "id": "signupConfirmEmailError",
+                        "text": "Please make sure the emails match"
+                    }
                 },
                 "password": {
+                    "id": "signupPassword",
                     "label": "Password",
                     "name": "password",
+                    "type": "password",
                     "placeholder": "Password",
-                    "tooltip": "Toggle display"
+                    "tooltip": "Toggle display",
+                    "validationType": "text",
+                    "errorElement": {
+                        "id": "signupPasswordError",
+                        "text": "Please choose a password"
+                    }
                 },
                 "confirmPassword": {
+                    "id": "signUpConfirmPassword",
                     "label": "Confirm Password",
                     "name": "confirmPassword",
+                    "type": "password",
                     "placeholder": "Confirm Password",
-                    "tooltip": "Toggle display"
+                    "tooltip": "Toggle display",
+                    "validationType": "equal",
+                    "errorElement": {
+                        "id": "signupConfirmPasswordError",
+                        "text": "Please make sure the passwords match"
+                    }
                 },
-                "submit": "Login"
+                "submit": "Join"
             }
         }
     }

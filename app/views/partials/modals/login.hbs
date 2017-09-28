@@ -27,10 +27,10 @@
                     type="text"
                     name="{{ form.inputs.user.name }}"
                     placeholder="{{ form.inputs.user.placeholder }}"
-                    data-validate="email"
-                    data-error-element-id="loginUsernameError"
+                    data-validate="{{ form.inputs.user.validationType }}"
+                    data-error-element-id="{{ form.inputs.user.errorElement.id }}"
                 >
-                <span id="loginUsernameError" class="formErrorMessage">{{ form.inputs.user.error }}</span>
+                <span id="{{ form.inputs.user.errorElement.id }}" class="formErrorMessage">{{ form.inputs.user.errorElement.text }}</span>
             </div>
             <div class="field">
                 <label>{{ form.inputs.pass.label }}</label>
@@ -40,8 +40,8 @@
                         type="password"
                         name="{{ form.inputs.pass.name }}"
                         placeholder="{{ form.inputs.pass.placeholder }}"
-                        data-validate="text"
-                        data-error-element-id="loginPasswordError"
+                        data-validate="{{ form.inputs.pass.validationType }}"
+                        data-error-element-id="{{ form.inputs.pass.errorElement.id }}"
                     >
                     <div
                         class="iconWrapper"
@@ -51,7 +51,7 @@
                         <i class="eye icon"></i>
                     </div>
                 </div>
-                <span id="loginPasswordError" class="formErrorMessage">{{ form.inputs.pass.error }}</span>
+                <span id="{{ form.inputs.pass.errorElement.id }}" class="formErrorMessage">{{ form.inputs.pass.errorElement.text }}</span>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">

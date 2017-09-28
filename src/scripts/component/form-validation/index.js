@@ -16,8 +16,8 @@ export default () => {
                 return;
             }
 
-            // Set errors during edits
-            input.on(getEventsForInputType(inputType), () => {
+            // Set errors after user leaves a field
+            input.on('blur', () => {
                 setErrorStates(input, validateInput(input));
             });
 
@@ -46,14 +46,6 @@ export default () => {
             }
         });
     })
-}
-
-function getEventsForInputType(type) {
-    if (type === 'email') {
-        return 'blur';
-    }
-
-    return 'keyup change blur';
 }
 
 // Set the display of inputs and input messages based on the validity of the input
