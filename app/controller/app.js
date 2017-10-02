@@ -201,3 +201,13 @@ export const processContact = ({
 
     return next();
 });
+
+export const scholarshipApplication = (req, res) => {
+    res.render('scholarshipApplication');
+};
+
+export const processScholarshipApplication = ({
+
+}) => (req, res) => {
+
+};

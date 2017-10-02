@@ -1,4 +1,13 @@
-import { search, setupSearchPagination, home, contact, programDetails, processContact } from '../controller/app.js'
+import {
+    search,
+    setupSearchPagination,
+    home,
+    contact,
+    programDetails,
+    processContact,
+    scholarshipApplication,
+    processScholarshipApplication
+} from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { sendMessage as sendMailMessage, getMailMessage } from '../components/mail-sender';
 import { insert as insertInDb } from '../components/db/service';
@@ -35,5 +44,9 @@ export default ({
     app.get('/programs/:programId', programDetails({
         programsCollection: db.collection('programs')
     }));
+
+    app.route('/scholarship-application')
+        .get(scholarshipApplication)
+        .post(processScholarshipApplication({}));
 
 }
