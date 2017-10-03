@@ -193,7 +193,7 @@ export const processContact = ({
         .catch((e) => {
             // TODO: Log error with the information about the message
             // logger.error(e, 'Error sending mail message');
-        })
+        });
 
     res.locals.request = {
         email
@@ -258,7 +258,7 @@ export const processScholarshipApplication = ({
         .catch((e) => {
             // TODO: Log error with the information about the message
             // logger.error(e, 'Error sending mail message');
-        })
+        });
 
     res.locals.request = {
         email
