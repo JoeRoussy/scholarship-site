@@ -1,9 +1,10 @@
 {{> navigation page.navigation}}
-<div class="contactUs">
+
+<div class="scholarshipApplication">
     <div class="ui container">
-        <h1 class="heading">{{ page.heading }}</h1>
+        <h1>{{ page.heading }}</h1>
         <form
-            id="contactForm"
+            id="scholarshipApplicationForm"
             class="ui form {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
             method="post"
             data-validate-form
@@ -47,15 +48,16 @@
                 <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
             </div>
             <div class="field">
-                <label>{{ page.messageInput.label }}</label>
+                <label>{{ page.bodyInput.label }}</label>
                 <textarea
-                    name="{{ page.messageInput.name }}"
-                    rows="{{ page.messageInput.rows }}"
-                    placeholder="{{ page.messageInput.placeholder }}"
-                    data-validate="{{ page.messageInput.validationType }}"
-                    data-error-element-id="{{ page.messageInput.errorElement.id }}"
+                    name="{{ page.bodyInput.name }}"
+                    rows="{{ page.bodyInput.rows }}"
+                    placeholder="{{ page.bodyInput.placeholder }}"
+                    data-validate="{{ page.bodyInput.validationType }}"
+                    data-error-element-id="{{ page.bodyInput.errorElement.id }}"
+                    data-validate-word-count="{{ page.bodyInput.maxWordCount }}"
                 ></textarea>
-                <span id="{{ page.messageInput.errorElement.id }}" class="formErrorMessage">{{ page.messageInput.errorElement.text }}</span>
+                <span id="{{ page.bodyInput.errorElement.id }}" class="formErrorMessage">{{ page.bodyInput.errorElement.text }}</span>
             </div>
             <div class="field">
                 <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">

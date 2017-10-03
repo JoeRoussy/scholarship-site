@@ -29,3 +29,11 @@ export const isEqualText = (a, b) => {
 
     return a === b;
 }
+
+export const wordCountIsLessThan = (string, maxWordCount) => {
+    if (!isText(string)) {
+        return false;
+    }
+
+    return string.split(' ').length <= maxWordCount;
+};

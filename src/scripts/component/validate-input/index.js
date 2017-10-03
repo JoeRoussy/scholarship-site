@@ -1,6 +1,6 @@
 // Validates an input based on its type.
 
-import { isEmpty, isText, isEmail, isEqualText } from '../validate';
+import { isEmpty, isText, isEmail, isEqualText, wordCountIsLessThan } from '../validate';
 
 export default (element) => {
     const input = $(element);
@@ -45,8 +45,16 @@ function validateForInputType(type, input) {
                 return true;
             }
 
-            return isEqualText(input.val(), elementToCompare.val())
+            return isEqualText(input.val(), elementToCompare.val());
+        case 'maxLength':
+            const maxLength = +input.attr('data-validate-word-count');
+
+            if (isNaN(maxLength) || !maxLength) {
+                throw new Error('Could not find valid data-validate-word-count attribute on element with validation type maxLength');
+            }
+
+            return wordCountIsLessThan(input.val(), +maxLength);
         default:
-            throw new Error(`No validation available for input type ${inputType}`);
+            throw new Error(`No validation available for input type ${type}`);
     }
 }

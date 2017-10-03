@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import config from '../../config';
 
-export const getMailMessage = ({
+export const getContactMailMessage = ({
     name,
     message,
     email
@@ -11,9 +11,20 @@ export const getMailMessage = ({
     ${message}
 `;
 
+export const getApplicationMailMessage = ({
+    name,
+    email,
+    application
+}) => `
+    Scholarship application from ${name} (${email})
+
+    ${application}
+`;
+
 export const sendMessage = async ({
     to,
-    message
+    message,
+    subject
 }) => {
     const {
         server: {
@@ -27,9 +38,8 @@ export const sendMessage = async ({
             noReply
         } = {},
         messages: {
-            contact: {
-                subject
-            } = {}
+            contact,
+            scholarshipApplication
         } = {}
     } = config.email;
 
