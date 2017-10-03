@@ -4,7 +4,7 @@
         <h1 class="heading">{{ page.heading }}</h1>
         <form
             id="contactForm"
-            class="ui form contact{{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
+            class="ui form {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
             method="post"
             data-validate-form
         >

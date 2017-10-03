@@ -1,5 +1,67 @@
 {{> navigation page.navigation}}
 
 <div class="scholarshipApplication">
-    <h1>{{ page.heading }}</h1>
+    <div class="ui container">
+        <h1>{{ page.heading }}</h1>
+        <form
+            id="scholarshipApplicationForm"
+            class="ui form {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
+            method="post"
+            data-validate-form
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ page.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ page.errorMessage.body }}</p>
+                </div>
+            {{/if}}
+            {{#if requestSuccess}}
+                <div class="ui success message">
+                    <div class="header">
+                        <span>{{ page.successMessage.heading }}</span>
+                    </div>
+                    <p>{{interpolate page.successMessage.body request}}</p>
+                </div>
+            {{/if}}
+            <div class="field">
+                <label>{{ page.nameInput.label }}</label>
+                <input
+                    type="{{ page.nameInput.type }}"
+                    name="{{ page.nameInput.name }}"
+                    placeholder="{{ page.nameInput.placeholder }}"
+                    data-validate="{{ page.nameInput.validationType }}"
+                    data-error-element-id="{{ page.nameInput.errorElement.id }}"
+                >
+                <span id="{{ page.nameInput.errorElement.id }}" class="formErrorMessage">{{ page.nameInput.errorElement.text }}</span>
+            </div>
+            <div class="field">
+                <label>{{ page.emailInput.label }}</label>
+                <input
+                    type="{{ page.emailInput.type }}"
+                    name="{{ page.emailInput.name }}"
+                    placeholder="{{ page.emailInput.placeholder }}"
+                    data-validate="{{ page.emailInput.validationType }}"
+                    data-error-element-id="{{ page.emailInput.errorElement.id }}"
+                >
+                <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
+            </div>
+            <div class="field">
+                <label>{{ page.bodyInput.label }}</label>
+                <textarea
+                    name="{{ page.bodyInput.name }}"
+                    rows="{{ page.bodyInput.rows }}"
+                    placeholder="{{ page.bodyInput.placeholder }}"
+                    data-validate="{{ page.bodyInput.validationType }}"
+                    data-error-element-id="{{ page.bodyInput.errorElement.id }}"
+                    data-validate-word-count="{{ page.bodyInput.maxWordCount }}"
+                ></textarea>
+                <span id="{{ page.bodyInput.errorElement.id }}" class="formErrorMessage">{{ page.bodyInput.errorElement.text }}</span>
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
+            </div>
+        </form>
+    </div>
 </div>

@@ -1,5 +1,48 @@
 {
     "title": "Scholarship Site",
     "description": "A site for researching and applying for scholarships in canada",
-    "heading": "Apply For A Scholarship"
+    "heading": "Apply For A Scholarship",
+    "errorMessage": {
+        "heading": "Something went wrong",
+        "body": "We did not get your application, please email admin@canadahighereducationhouse.ca"
+    },
+    "successMessage": {
+        "heading": "We got your application!",
+        "body": "We will review your application and connect with you using {email}!"
+    },
+    "nameInput": {
+        "label": "Name",
+        "name": "name",
+        "type": "text",
+        "placeholder": "Name",
+        "validationType": "text",
+        "errorElement": {
+            "id": "scholarshipApplicationNameError",
+            "text": "Please enter your name"
+        }
+    },
+    "emailInput": {
+        "label": "Email",
+        "name": "email",
+        "type": "text",
+        "placeholder": "Email",
+        "validationType": "email",
+        "errorElement": {
+            "id": "scholarshipApplicationEmailError",
+            "text": "Please enter an email"
+        }
+    },
+    "bodyInput": {
+        "label": "Copy in your application",
+        "name": "body",
+        "placeholder": "Your application (max 500 words)",
+        "rows": "10",
+        "validationType": "maxLength",
+        "maxWordCount": "500",
+        "errorElement": {
+            "id": "scholarshipApplicationBodyError",
+            "text": "Please enter an application that is less than 500 words"
+        }
+    },
+    "submit": "Submit"
 }
