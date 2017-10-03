@@ -9,7 +9,7 @@ import {
     processScholarshipApplication
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
-import { sendMessage as sendMailMessage, getMailMessage } from '../components/mail-sender';
+import { sendMessage as sendMailMessage, getContactMailMessage, getApplicationMailMessage } from '../components/mail-sender';
 import { insert as insertInDb } from '../components/db/service';
 
 export default ({
@@ -25,7 +25,7 @@ export default ({
             processContact({
                 contactCollection: db.collection('contactSubmissions'),
                 sendMailMessage,
-                getMailMessage,
+                getMailMessage: getContactMailMessage,
                 insertInDb
             }),
             contact
@@ -47,6 +47,14 @@ export default ({
 
     app.route('/scholarship-application')
         .get(scholarshipApplication)
-        .post(processScholarshipApplication({}));
+        .post([
+            processScholarshipApplication({
+                scholarshipApplicationCollection: db.collection('scholarshipApplications'),
+                sendMailMessage,
+                getMailMessage: getApplicationMailMessage,
+                insertInDb
+            }),
+            scholarshipApplication
+        ]);
 
 }

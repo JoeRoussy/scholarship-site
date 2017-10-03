@@ -187,7 +187,8 @@ export const processContact = ({
     // Log an error if the email fails to send
     sendMailMessage({
         to: config.email.addresses.admin,
-        message: mailMessage
+        message: mailMessage,
+        subject: 'New Contact Submission'
     })
         .catch((e) => {
             // TODO: Log error with the information about the message
@@ -207,7 +208,62 @@ export const scholarshipApplication = (req, res) => {
 };
 
 export const processScholarshipApplication = ({
+    scholarshipApplicationCollection = required('scholarshipApplicationCollection'),
+    getMailMessage = required('getMailMessage'),
+    sendMailMessage = required('sendMailMessage'),
+    insertInDb = required('insertInDb')
+}) => coroutine(function* (req, res, next) {
+    const {
+        name,
+        email,
+        body: application
+    } = req.body;
 
-}) => (req, res) => {
+    if (!name || !email || !application) {
+        res.locals.formHandlingError = true;
 
-};
+        return next();
+    }
+
+    try {
+        yield insertInDb({
+            collection: scholarshipApplicationCollection,
+            document: {
+                name,
+                email,
+                application
+            }
+        });
+    } catch (e) {
+        // TODO: Log error
+        //logger.error(e, 'Error saving contact info to db');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    const mailMessage = getMailMessage({
+        name,
+        email,
+        application
+    });
+
+    // Do not wait for the message to send because this takes a long time
+    // Log an error if the email fails to send
+    sendMailMessage({
+        to: config.email.addresses.admin,
+        message: mailMessage,
+        subject: 'New Scholarship Application'
+    })
+        .catch((e) => {
+            // TODO: Log error with the information about the message
+            // logger.error(e, 'Error sending mail message');
+        })
+
+    res.locals.request = {
+        email
+    };
+    res.locals.requestSuccess = true;
+
+    return next();
+});
