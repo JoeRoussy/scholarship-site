@@ -1,6 +1,7 @@
 {
     "signUp": {
         "header": "Join Us",
+        "subheader": "If you are new to CHEH then you may use this form to join. You can join without paying the join fee and try out our site. Joining for $3 gives you the benefits of full program information searchable by subject, University or Province. You can then also apply for scholarship support to help defray your costs of attending the higher education program of your choice in Canada.",
         "image": {
             "src": "/images/logo.png",
             "alt": "canada higher education house"
