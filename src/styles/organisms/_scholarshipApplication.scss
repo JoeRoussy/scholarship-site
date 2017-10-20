@@ -1,3 +1,11 @@
 .scholarshipApplication {
     padding-top: 150px;
+
+    p {
+        margin: 2em 0;
+
+        @media screen and (min-width: $tabletWidth) {
+            margin: 3em 0;
+        }
+    }
 }

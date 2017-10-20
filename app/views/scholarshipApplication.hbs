@@ -3,11 +3,12 @@
 <div class="scholarshipApplication">
     <div class="ui container">
         <h1>{{ page.heading }}</h1>
+        <p>{{ page.description }}</p>
         <form
             id="scholarshipApplicationForm"
             class="ui form {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
             method="post"
-            data-validate-form
+            data-validate-form=""
         >
             {{#if formHandlingError}}
                 <div class="ui error message">
@@ -47,7 +48,7 @@
                 >
                 <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
             </div>
-            <div class="field">
+            <div class="field spaceAbove">
                 <label>{{ page.bodyInput.label }}</label>
                 <textarea
                     name="{{ page.bodyInput.name }}"
