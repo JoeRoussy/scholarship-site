@@ -1,4 +1,9 @@
 <div class="hero">
+    <div class="backgroundImage">
+        <div class="overlay"></div>
+        <img src="{{ @root.page.backgroundImageUrl }}" alt="university campus">
+    </div>
+
     <div class="ui container">
         <h1> {{ title }} </h1>
 
@@ -8,7 +13,7 @@
                 <div class="text">{{ @root.page.forms.searchTypes.options.0.text }}</div>
                 <div class="menu">
                     {{#each @root.page.forms.searchTypes.options}}
-                    <div class="item" data-value="{{ this.value }}">{{ this.text }}</div>
+                        <div class="item" data-value="{{ this.value }}">{{ this.text }}</div>
                     {{/each}}
                 </div>
             </div>
