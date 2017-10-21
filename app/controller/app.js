@@ -110,7 +110,17 @@ export const setupSearchPagination = (req, res) => {
 }
 
 export const home = (req, res) => {
-    res.render('home');
+    // Need to get some random hero image
+    let imageIndex = Math.floor(Math.random() * config.content.heroImageCount);
+
+    // Unless we got 0 out of the RNG, map imageIndex to a 0-index number
+    if (imageIndex) {
+        --imageIndex;
+    }
+
+    res.locals.page.backgroundImage = res.locals.page.backgroundImages[imageIndex];
+
+    res.render('home', res.locals);
 };
 
 export const contact = (req, res) => {

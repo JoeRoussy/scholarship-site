@@ -1,6 +1,6 @@
 {
     "login": {
-        "header": "Please login",
+        "header": "Please log in if you’ve already joined and are returning to CHEH.",
         "image": {
             "src": "/images/logo.png",
             "alt": "canada higher education house"

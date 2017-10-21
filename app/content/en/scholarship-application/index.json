@@ -2,6 +2,7 @@
     "title": "Scholarship Site",
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Apply For A Scholarship",
+    "description": "CHEH is a member driven organization aimed at promoting Canadian higher education and enabling Canadians and international student to attend the University and program of their choice. Should you be selected for a scholarship, CHEH will credit your student account at your chosen institution once proof of registration is received. For now your task is: complete the online application form including the short essay on ‘why I want to attend a Canadian University’. CHEH will notify winners of their awards and then arrange to credit winners’ student account with scholarship funds upon receipt of proof of registration. Good luck.",
     "errorMessage": {
         "heading": "Something went wrong",
         "body": "We did not get your application, please email admin@canadahighereducationhouse.ca"
@@ -33,7 +34,7 @@
         }
     },
     "bodyInput": {
-        "label": "Copy in your application",
+        "label": "This is where you submit your essay on 'why I want to attend a Canadian University'. This short essay is important so be sure to make your best submission. You can use another program (such as MS Word or Pages) to prepare your text. Then copy and past your text in this box to submit.",
         "name": "body",
         "placeholder": "Your application (max 500 words)",
         "rows": "10",

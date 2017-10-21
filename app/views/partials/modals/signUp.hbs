@@ -4,6 +4,7 @@
     </div>
     <div class="header">
         <span>{{ header }}</span>
+        <span class="small">{{ subheader }}</span>
     </div>
     <div class="content">
         <form
@@ -11,7 +12,7 @@
             class="ui form{{#if @root.queryParams.signupError}} error{{/if}}"
             method="post"
             action="/signup"
-            data-validate-form
+            data-validate-form=""
         >
             {{#if @root.queryParams.signupError}}
                 <div class="ui error message">
