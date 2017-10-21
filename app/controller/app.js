@@ -118,7 +118,7 @@ export const home = (req, res) => {
         --imageIndex;
     }
 
-    res.locals.page.backgroundImageUrl = res.locals.page.backgroundImages[imageIndex];
+    res.locals.page.backgroundImage = res.locals.page.backgroundImages[imageIndex];
 
     res.render('home', res.locals);
 };

@@ -1,9 +1,24 @@
 {
 	"backgroundImages": [
-		"/images/backgrounds/hero1.jpg",
-		"/images/backgrounds/hero2.jpg",
-		"/images/backgrounds/hero3.jpg",
-		"/images/backgrounds/hero4.jpg",
-		"/images/backgrounds/hero5.jpg"
+		{
+			"src": "/images/backgrounds/hero1.jpg",
+			"alt": "university campus"
+		},
+		{
+			"src": "/images/backgrounds/hero2.jpg",
+			"alt": "university campus"
+		},
+		{
+			"src": "/images/backgrounds/hero3.jpg",
+			"alt": "university campus"
+		},
+		{
+			"src": "/images/backgrounds/hero4.jpg",
+			"alt": "university campus"
+		},
+		{
+			"src": "/images/backgrounds/hero5.jpg",
+			"alt": "university campus"
+		}
 	]
 }
