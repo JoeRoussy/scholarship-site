@@ -1,3 +1,4 @@
+import express from 'express';
 import { membership, processMembership, membershipAccept } from '../controller/membership';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
@@ -7,19 +8,21 @@ export default ({
     db = required('db'),
     baseLogger = required('baseLogger')
 }) => {
-    app.route('/membership')
-        .get(membership)
-        .post(processMembership({
-            transactionsCollection: db.collection('transactions'),
-            logger: getChildLogger({
-                baseLogger,
-                additionalFields: {
-                    module: 'memberships-process'
-                }
-            })
-        }));
+    const router = express.Router();
 
-    app.get('/membership/success', membershipAccept({
+    router.get('/', membership);
+
+    router.get('/buy', processMembership({
+        transactionsCollection: db.collection('transactions'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'memberships-process'
+            }
+        })
+    }));
+
+    router.get('/success', membershipAccept({
         transactionsCollection: db.collection('transactions'),
         usersCollection: db.collection('users'),
         logger: getChildLogger({
@@ -29,4 +32,6 @@ export default ({
             }
         })
     }));
+
+    app.use('/membership', router);
 }

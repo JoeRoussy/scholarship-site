@@ -7,11 +7,11 @@
         },
         "description": "Description about buying a membership here...",
         "button": {
-            "id": "membershipPurchaseButton",
             "image": {
                 "src": "/images/buyWithPaypal.png",
                 "alt": "checkout with paypal"
-            }
+            },
+            "href": "/membership/buy"
         }
     }
 }

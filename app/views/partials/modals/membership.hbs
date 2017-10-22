@@ -7,8 +7,10 @@
     </div>
     <div class="content">
         <p>{{ description }}</p>
-        <button id="{{ button.id }}" class="ui button basic" type="button" name="{{ button.id }}">
-            <img src="{{ button.image.src }}" alt="{{ button.image.alt }}">
-        </button>
+        {{#with button}}
+            <a href="{{ href }}">
+                <img src="{{ image.src }}" alt="{{ image.alt }}">
+            </a>
+        {{/with}}
     </div>
 </div>
