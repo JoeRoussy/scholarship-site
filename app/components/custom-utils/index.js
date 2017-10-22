@@ -22,7 +22,7 @@ export const print = (obj, message) => {
     if (message) {
         console.log(message);
     }
-    
+
     console.log(JSON.stringify(obj, null, 4));
 }
 
@@ -67,3 +67,6 @@ export const sortByKey = key => (a, b) => {
 
     return 0;
 }
+
+// Returns a fully qualified URL with a given path using the slug in a req object
+export const buildUrl = (req, path) => `${req.protocol}://${req.get('host')}${path}`;

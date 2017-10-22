@@ -12,6 +12,7 @@ import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
 import authRouteConfig from './router/authRoutes.js';
+import memberRouteConfig from './router/membershipRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
@@ -75,6 +76,11 @@ dbConfig()
             db
         });
         apiRouteConfig({
+            app,
+            db,
+            baseLogger: Logger
+        });
+        memberRouteConfig({
             app,
             db,
             baseLogger: Logger
