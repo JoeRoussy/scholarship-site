@@ -1,7 +1,7 @@
 
 import querystring from 'querystring';
-import request from 'request-promise';
-import { required } from '../custom-utils';
+import rp from 'request-promise';
+import { required, print } from '../custom-utils';
 import config from '../../config';
 
 // TODO: Would be nice to have better error handling in this module
@@ -14,7 +14,8 @@ const {
         checkout: checkoutEndpoint,
         getAccept: getAcceptEndpoint,
         checkoutExperiences: checkoutExperiencesEndpoint
-    } = {}
+    } = {},
+    createCheckoutExperienceWithNoShippingPayload
 } = config.paypal;
 
 const token = {
@@ -44,12 +45,18 @@ export const checkout = ({
         experience_profile_id: experienceProfileId
     };
 
+    console.log('Checkout request...');
+    print({
+        ...body,
+        ...defaultRequestParams
+    });
+
     return makeGatewayRequest({
         request: checkoutEndpoint,
         token,
         body: {
             ...body,
-            defaultRequestParams
+            ...defaultRequestParams
         }
     });
 };
@@ -70,7 +77,7 @@ export const accept = ({
 export const createCheckoutExperienceWithNoShipping = () => makeGatewayRequest({
     request: checkoutExperiencesEndpoint,
     token,
-    body: PaypalConfig.createCheckoutExperienceWithNoShippingPayload
+    body: createCheckoutExperienceWithNoShippingPayload
 });
 
 export const getCheckoutExperiences = () => makeGatewayRequest({
@@ -88,7 +95,7 @@ const authenticateGatewayRequest = ({
         grant_type: 'client_credentials'
     };
 
-    return Request({
+    return rp({
         uri: `${gatewayEndpoint}/v1/oauth2/token`,
         method: 'POST',
         headers: {
@@ -112,7 +119,7 @@ const makeGatewayRequest = ({
     body,
     method = 'POST'
 }) => authenticateGatewayRequest(token)
-    .then(accessToken => Request({
+    .then(accessToken => rp({
         uri: gatewayEndpoint+request,
         headers: {
             'Content-Type': 'application/json',

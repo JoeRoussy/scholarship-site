@@ -1,6 +1,6 @@
 import { wrap as coroutine } from 'co';
 import config from '../config';
-import { required, buildUrl } from '../components/custom-utils';
+import { required, buildUrl, print } from '../components/custom-utils';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
 import {
     checkout as paypalCheckout,
@@ -73,24 +73,28 @@ export const processMembership = ({
         } = {}
     } = config.paypal;
 
-    const total = (subTotal * tax).toFixed(2);
+    const total = subTotal * tax;
     const taxAmount = total - subTotal;
+
+    const paypalTotal = total.toFixed(2);
+    const paypalSubTotal = subTotal.toFixed(2);
+    const paypalTaxAmount = taxAmount.toFixed(2);
 
     const paypalTransaction = {
         amount: {
-                total: total,
+                total: paypalTotal,
                 currency: 'CAD',
                 details: {
-                    subtotal: subTotal,
-                    tax: taxAmount
+                    subtotal: paypalSubTotal,
+                    tax: paypalTaxAmount
                 }
             },
             item_list: {
                 items: [
                     {
                         name,
-                        price: total,
-                        tax: taxAmount,
+                        price: paypalSubTotal,
+                        tax: paypalTaxAmount,
                         currency: 'CAD',
                         quantity: 1,
                         description
