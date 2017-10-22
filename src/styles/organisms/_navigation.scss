@@ -7,11 +7,28 @@
     .item {
         padding: 0.92em 1.8em;
 
-        &:not(span) {
+        &:not(.noHover):not(.subMenuParent) {
             cursor: pointer;
 
             &:hover {
                 background: rgba(0, 0, 0, 0.03);
+            }
+        }
+
+        .menu.borderless {
+            .item {
+                justify-content: center;
+
+                &:before {
+                    background: none;
+                }
+
+                &.buttonParent {
+                    &:hover {
+                        background-color: transparent;
+                        cursor: default;
+                    }
+                }
             }
         }
     }

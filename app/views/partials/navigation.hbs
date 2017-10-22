@@ -5,19 +5,25 @@
     {{#each items}}
         {{> navigationItem this}}
     {{/each}}
-    {{#each authItems}}
-        {{#if this.showOnUser}}
-        {{#if @root.user}}
-            {{> navigationItem this}}
-        {{/if}}
-        {{/if}}
 
-        {{#if hideOnUser}}
-        {{#unless @root.user}}
-            {{> navigationItem this}}
-        {{/unless}}
-        {{/if}}
-    {{/each}}
+    {{! Hard Code the auth items because their logic is more complicated }}
+    {{#if @root.user}}
+        {{#with profileItem}}
+            <div class="item {{ customClasses }}">
+                <div class="vertical borderless menu">
+                    <span class="item noHover">{{interpolate text (lookup @root interpolateFromRoot)}}</span>
+                    <div class="item buttonParent">
+                        {{> button button}}
+                    </div>
+                </div>
+            </div>
+        {{/with}}
+        {{> navigationItem logoutItem}}
+    {{else}}
+        {{> button loginItem}}
+        {{> button joinItem}}
+    {{/if}}
+
     <button id="hamburgerButton" class="ui icon button sidebarButton">
         <i class="sidebar icon"></i>
     </button>

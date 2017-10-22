@@ -1,0 +1,17 @@
+{
+    "membership": {
+        "header": "Membership",
+        "image": {
+            "src": "/images/logo.png",
+            "alt": "canada higher education house"
+        },
+        "description": "Description about buying a membership here...",
+        "button": {
+            "id": "membershipPurchaseButton",
+            "image": {
+                "src": "/images/buyWithPaypal.png",
+                "alt": "checkout with paypal"
+            }
+        }
+    }
+}
