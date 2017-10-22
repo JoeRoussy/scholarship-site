@@ -45,12 +45,6 @@ export const checkout = ({
         experience_profile_id: experienceProfileId
     };
 
-    console.log('Checkout request...');
-    print({
-        ...body,
-        ...defaultRequestParams
-    });
-
     return makeGatewayRequest({
         request: checkoutEndpoint,
         token,

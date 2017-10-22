@@ -1,6 +1,6 @@
 import { wrap as coroutine } from 'co';
 import config from '../config';
-import { required, buildUrl, print } from '../components/custom-utils';
+import { required, buildUrl, print, convertToObjectId } from '../components/custom-utils';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
 import {
     checkout as paypalCheckout,
@@ -139,7 +139,7 @@ export const processMembership = ({
     }
 
     try {
-        const transaction = saveToDb({
+        const transaction = yield saveToDb({
             collection: transactionsCollection,
             document: {
                 type: 'membership',
@@ -207,10 +207,10 @@ export const membershipAccept = ({
 
     // Update the transaction as completed
     try {
-        findAndUpdate({
+        const result = yield findAndUpdate({
             collection: transactionsCollection,
             query: {
-                _id: unconfirmedTransactionId
+                _id: convertToObjectId(unconfirmedTransactionId)
             },
             update: {
                 completed: true,
@@ -227,10 +227,10 @@ export const membershipAccept = ({
 
     // Update the user as a member
     try {
-        findAndUpdate({
+        const result = yield findAndUpdate({
             collection: usersCollection,
             query: {
-                _id: userId
+                _id: convertToObjectId(userId)
             },
             update: {
                 isMember: true
