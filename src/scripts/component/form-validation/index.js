@@ -34,7 +34,7 @@ export default () => {
                 setErrorStates(input, validateInput(input));
             });
 
-            const elementsWithError = form.find('input.error[data-validate]');
+            const elementsWithError = form.find('.error[data-validate]');
 
             if (!elementsWithError.length) {
                 form.submit();
