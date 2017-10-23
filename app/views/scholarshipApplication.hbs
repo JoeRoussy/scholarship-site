@@ -39,6 +39,9 @@
                     placeholder="{{ page.nameInput.placeholder }}"
                     data-validate="{{ page.nameInput.validationType }}"
                     data-error-element-id="{{ page.nameInput.errorElement.id }}"
+                    {{#if user}}
+                        value="{{ user.name }}"
+                    {{/if}}
                 >
                 <span id="{{ page.nameInput.errorElement.id }}" class="formErrorMessage">{{ page.nameInput.errorElement.text }}</span>
             </div>
@@ -50,6 +53,9 @@
                     placeholder="{{ page.emailInput.placeholder }}"
                     data-validate="{{ page.emailInput.validationType }}"
                     data-error-element-id="{{ page.emailInput.errorElement.id }}"
+                    {{#if user}}
+                        value="{{ user.email }}"
+                    {{/if}}
                 >
                 <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
             </div>
