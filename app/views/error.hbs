@@ -1,0 +1,14 @@
+{{> navigation page.navigation}}
+
+<div class="error">
+    <div class="ui container">
+        <h1 class="ui header">{{ page.heading }}</h1>
+        <h2 class="ui icon header">
+            <i class="warning sign icon"></i>
+            <div class="content">
+                {{lookup page.subheadings errorKey}}
+            </div>
+        </h2>
+        {{{md (lookup page.descriptions errorKey)}}}
+    </div>
+</div>

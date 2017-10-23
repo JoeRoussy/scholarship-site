@@ -1,0 +1,11 @@
+{
+    "title": "Scholarship Site",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Error",
+    "subheadings": {
+        "default": "Something went wrong"
+    },
+    "descriptions": {
+        "default": "Please try your action again, if the problem persists, please [contact us](/contact)."
+    }
+}

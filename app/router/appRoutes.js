@@ -2,6 +2,7 @@ import {
     search,
     setupSearchPagination,
     home,
+    error,
     contact,
     programDetails,
     processContact,
@@ -18,6 +19,8 @@ export default ({
 }) => {
 
     app.get('/', home);
+
+    app.get('/error', error);
 
     app.route('/contact')
         .get(contact)
