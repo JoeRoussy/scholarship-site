@@ -1,4 +1,4 @@
-<div id="{{ id }}" class="ui dimmer">
+<div id="{{ id }}" class="ui dimmer{{#if customClasses}} {{ customClasses }}{{/if}}"{{#if toggleOnLoad}} data-toggle-dimmer-on-page-load=""{{/if}}>
     <div class="content">
         <div class="center">
             {{#if loader}}

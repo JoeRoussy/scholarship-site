@@ -6,10 +6,15 @@
         <p>{{ page.description }}</p>
         <form
             id="scholarshipApplicationForm"
-            class="ui form {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
+            class="ui form blurring {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
             method="post"
             data-validate-form=""
         >
+
+            {{#unless @root.user.isMember}}
+                {{> dimmer page.dimmer}}
+            {{/unless}}
+
             {{#if formHandlingError}}
                 <div class="ui error message">
                     <div class="header">
