@@ -9,6 +9,10 @@ form {
     }
 
     &.ui.form {
+        .ui.message {
+            text-align: center;
+        }
+
         .field {
             input.error, textarea.error {
                 border-color: #ea212d;
