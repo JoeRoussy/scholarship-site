@@ -25,13 +25,14 @@
     }
 
     .programDetailsSection {
-        padding: $innerSectionPadding;
+        padding: 0 $innerSectionPadding $innerSectionPadding;
 
         @media screen and (min-width: $laptopWidth) {
             position: absolute;
             top: $rootSectionVerticalPaddingDesktop;
             left: 0;
             width: 50%;
+            padding: $innerSectionPadding;
         }
     }
 }
