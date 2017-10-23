@@ -20,6 +20,9 @@ export const search = ({
         name,
         provinceId,
         universityId,
+    } = req.query;
+
+    let {
         page = 0
     } = req.query;
 
@@ -29,6 +32,11 @@ export const search = ({
 
     if (universityId && !ObjectId.isValid(universityId)) {
         // TODO: Render error
+    }
+
+    // If the user is not a member, they can only see the first page
+    if (!req.user || !req.user.isMember) {
+        page = 0;
     }
 
     const resultsPerPage = config.api.search.resultsPerPage
@@ -64,6 +72,7 @@ export const search = ({
     });
 
     res.locals.count = count;
+    res.locals.searchPage = page;
     res.locals.programs = programs
             .map(transformProgramForOutput)
             .sort(sortByKey('name'));
@@ -85,16 +94,17 @@ export const search = ({
 
 export const setupSearchPagination = (req, res) => {
     const {
-        page = 0
-    } = req.query;
-
-    const {
-        count
+        count = 0,
+        searchPage: page = 0
     } = res.locals;
 
     const {
         resultsPerPage
     } = config.api.search;
+
+    if (!(count && page)) {
+        // TODO: Something has gone wrong
+    }
 
     const lastPage = Math.floor(count / resultsPerPage);
     const rangeLow = page * resultsPerPage + 1;
