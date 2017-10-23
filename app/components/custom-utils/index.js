@@ -73,3 +73,6 @@ export const buildUrl = (req, path) => `${req.protocol}://${req.get('host')}${pa
 
 // Return a redirect to the error page with an error key in the qs
 export const redirectToError = (errorKey, res) => res.redirect(`/error?errorKey=${errorKey}`);
+
+// Verifies that a request conatins a user and they are a member
+export const isMember = req => req.user && req.user.isMember;

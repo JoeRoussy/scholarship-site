@@ -2,7 +2,7 @@ import { wrap as coroutine } from 'co';
 import { getProgramsWithFilter, getProgramById, countProgramsForFilter } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput } from '../components/transformers';
-import { print, sortByKey, required } from '../components/custom-utils';
+import { print, sortByKey, required, redirectToError, isMember } from '../components/custom-utils';
 import config from '../config';
 
 if (!config) {
@@ -35,7 +35,7 @@ export const search = ({
     }
 
     // If the user is not a member, they can only see the first page
-    if (!req.user || !req.user.isMember) {
+    if (!isMember(req)) {
         page = 0;
     }
 
@@ -265,6 +265,10 @@ export const processScholarshipApplication = ({
         email,
         body: application
     } = req.body;
+
+    if (!isMember(req)) {
+        return redirectToError('nonMemberScholarshipApplication', res);
+    }
 
     if (!name || !email || !application) {
         res.locals.formHandlingError = true;
