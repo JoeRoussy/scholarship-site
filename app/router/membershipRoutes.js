@@ -10,14 +10,12 @@ export default ({
 }) => {
     const router = express.Router();
 
-    router.get('/', membership);
-
     router.get('/buy', processMembership({
         transactionsCollection: db.collection('transactions'),
         logger: getChildLogger({
             baseLogger,
             additionalFields: {
-                module: 'memberships-process'
+                module: 'membership-process'
             }
         })
     }));
@@ -28,7 +26,7 @@ export default ({
         logger: getChildLogger({
             baseLogger,
             additionalFields: {
-                module: 'memberships-accept'
+                module: 'membership-accept'
             }
         })
     }));

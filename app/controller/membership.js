@@ -9,9 +9,6 @@ import {
     createCheckoutExperienceWithNoShipping
 } from '../components/paypal-helper';
 
-export const membership = (req, res) => {
-    return res.render('membership/index', res.locals);
-};
 
 // Process paypal payment for memberships
 export const processMembership = ({
@@ -36,7 +33,7 @@ export const processMembership = ({
         // We can use an id that already exists
         paypalCheckoutExperienceId = paypalCheckoutExperience.id;
     } else {
-        // We need to make a new checkout experience and the reference that id
+        // We need to make a new checkout experience and then reference that id
         try {
             const experienceCreationResponse = yield createCheckoutExperienceWithNoShipping();
 
@@ -60,8 +57,7 @@ export const processMembership = ({
         tax,
         name,
         description,
-        transactionDescriptions,
-        paypalUrls
+        transactionDescriptions
     } = config.membership;
 
     const {
