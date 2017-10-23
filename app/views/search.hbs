@@ -22,23 +22,25 @@
     </div>
 
     <div class="paginationWrapper">
-        <div id="dataPaginationMenu" class="ui pagination menu">
-            {{#unless isFirstPage}}
-                <div class="icon item" data-page="{{math currentPage '-' 1}}">
-                    <i class="left arrow icon"></i>
-                </div>
-            {{/unless}}
+        {{#if user.isMember}}
+            <div id="dataPaginationMenu" class="ui pagination menu">
+                {{#unless isFirstPage}}
+                    <div class="icon item" data-page="{{math currentPage '-' 1}}">
+                        <i class="left arrow icon"></i>
+                    </div>
+                {{/unless}}
 
-            <div class="item active">
-                {{math currentPage '+' 1}}
+                <div class="item active">
+                    {{math currentPage '+' 1}}
+                </div>
+
+                {{#unless isLastPage}}
+                    <div class="icon item" data-page="{{math currentPage '+' 1}}">
+                        <i class="right arrow icon"></i>
+                    </div>
+                {{/unless}}
             </div>
-
-            {{#unless isLastPage}}
-                <div class="icon item" data-page="{{math currentPage '+' 1}}">
-                    <i class="right arrow icon"></i>
-                </div>
-            {{/unless}}
-        </div>
+        {{/if}}
         <div class="paginationInfo">
             <span>{{ page.pagination.results }}</span>
             <span class="value">{{ rangeLow }}</span>
@@ -47,5 +49,14 @@
             <span>{{ page.pagination.of }}</span>
             <span class="value">{{ count }}</span>
         </div>
+        {{#unless user.isMember}}
+            <div class="memberPlug">
+                {{#if user}}
+                    <span>{{{ page.pagination.memberPlug.isSignedIn }}}</span>
+                {{else}}
+                    <span>{{{ page.pagination.memberPlug.notSignedIn }}}</span>
+                {{/if}}
+            </div>
+        {{/unless}}
     </div>
 </div>

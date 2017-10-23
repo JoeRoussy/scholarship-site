@@ -1,7 +1,13 @@
 import { wrap as coroutine } from 'co';
 import config from '../config';
-import { required, buildUrl, print, convertToObjectId } from '../components/custom-utils';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
+import {
+    required,
+    buildUrl,
+    print,
+    convertToObjectId,
+    redirectToError
+} from '../components/custom-utils';
 import {
     checkout as paypalCheckout,
     accept as paypalAccept,
@@ -9,8 +15,6 @@ import {
     createCheckoutExperienceWithNoShipping
 } from '../components/paypal-helper';
 
-
-const redirectToError = (errorKey, res) => res.redirect(`/error?errorKey=${errorKey}`);
 
 // Process paypal payment for memberships
 export const processMembership = ({

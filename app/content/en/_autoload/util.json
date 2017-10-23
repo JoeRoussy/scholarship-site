@@ -44,7 +44,7 @@
         "joinItem": {
             "text": "Join",
             "customClasses": "right authItem",
-            "modal": "signInModal"
+            "modal": "signUpModal"
         },
         "profileItem": {
             "text": "Welcome {name}",
