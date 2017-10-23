@@ -70,3 +70,31 @@ export const insert = async ({
         }
     }
 };
+
+export const findAndUpdate = async ({
+    collection = required('collection'),
+    query = required('query'),
+    update = required('update'),
+    skipValidation = false
+}) => {
+    let updateResult;
+
+    if (query._id) {
+        updateResult = await collection.findOneAndUpdate(query, { $set: update });
+    } else {
+        const sortOrder = [ [ '_id', 1 ] ]; // Update objects in acending order by id
+
+        updateResult = await collection.findAndModify(query, sortOrder, update);
+    }
+
+    const {
+        value,
+        ok
+    } = updateResult;
+
+    if (!skipValidation && !(value && ok)) {
+        throw new Error('Update not successful');
+    }
+
+    return ok;
+};

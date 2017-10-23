@@ -5,6 +5,7 @@ import pagination from './component/pagination';
 import modal from './component/modal';
 import passwordToggle from './component/password-toggle';
 import formValidation from './component/form-validation';
+import pageDimmer from './component/page-dimmer-handler';
 
 // Generic semantic UI setup
 
@@ -17,3 +18,4 @@ pagination();
 modal();
 passwordToggle();
 formValidation();
+pageDimmer();

@@ -282,6 +282,7 @@ export const countProgramsForFilter = async ({
 
 // Get a document by Id for a given collection. Returns a promise. Does not do any population.
 // Throws normal errors
+// TODO: This should be in the db service
 export const getDocById = async ({
     collection = required('collection'),
     id = required('id')

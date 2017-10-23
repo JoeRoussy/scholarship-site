@@ -1,0 +1,13 @@
+<div id="{{ id }}" class="ui dimmer">
+    <div class="content">
+        <div class="center">
+            {{#if loader}}
+                <div class="ui text loader">
+                    {{ text }}
+                </div>
+            {{else}}
+                <span>{{ text }}</span>
+            {{/if}}
+        </div>
+    </div>
+</div>

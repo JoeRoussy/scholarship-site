@@ -36,36 +36,32 @@
                 "href": "/contact"
             }
         ],
-        "authItems": [
-            {
-                "text": "Sign In",
-                "href": "#",
-                "customClasses": "right authItem",
-                "hideOnUser": true,
-                "isButton": true,
-                "modal": "loginModal"
-            },
-            {
-                "text": "Join",
-                "href": "#",
-                "customClasses": "right authItem",
-                "hideOnUser": true,
-                "isButton": true,
-                "modal": "signInModal"
-            },
-            {
-                "text": "Welcome {name}",
-                "customClasses": "right authItem",
-                "interpolateFromRoot": "user",
-                "showOnUser": true
-            },
-            {
-                "text": "Logout",
-                "customClasses": "right authItem",
-                "href": "/logout",
-                "showOnUser": true
+        "loginItem": {
+            "text": "Sign In",
+            "customClasses": "right authItem",
+            "modal": "loginModal"
+        },
+        "joinItem": {
+            "text": "Join",
+            "customClasses": "right authItem",
+            "modal": "signInModal"
+        },
+        "profileItem": {
+            "text": "Welcome {name}",
+            "customClasses": "right authItem subMenuParent",
+            "interpolateFromRoot": "user",
+            "button": {
+                "text": "Become a member",
+                "modal": "membershipModal",
+                "isNotItem": true,
+                "customClasses": "ui green button"
             }
-        ]
+        },
+        "logoutItem": {
+            "text": "Logout",
+            "customClasses": "right authItem",
+            "href": "/logout"
+        }
     },
     "forms": {
         "placeholders": {

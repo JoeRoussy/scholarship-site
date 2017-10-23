@@ -1,0 +1,23 @@
+{
+    "membership": {
+        "header": "Membership",
+        "image": {
+            "src": "/images/logo.png",
+            "alt": "canada higher education house"
+        },
+        "description": "Description about buying a membership here...",
+        "button": {
+            "image": {
+                "src": "/images/buyWithPaypal.png",
+                "alt": "checkout with paypal"
+            },
+            "href": "/membership/buy",
+            "dimmerId": "membershipModalDimmer"
+        },
+        "dimmer": {
+            "id": "membershipModalDimmer",
+            "loader": true,
+            "text": "Redirecting to paypal..."
+        }
+    }
+}

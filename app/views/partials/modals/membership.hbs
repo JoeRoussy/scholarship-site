@@ -1,0 +1,17 @@
+<div id="membershipModal" class="ui modal small withLogoHeading">
+    <div class="imageWrapper">
+        <img src="{{ image.src }}" alt="{{ image.alt }}">
+    </div>
+    <div class="header">
+        <span>{{ header }}</span>
+    </div>
+    <div class="content">
+        <p>{{ description }}</p>
+        {{#with button}}
+            <a href="{{ href }}" data-show-dimmer-on-click="{{ dimmerId }}">
+                <img src="{{ image.src }}" alt="{{ image.alt }}">
+            </a>
+        {{/with}}
+    </div>
+    {{> dimmer dimmer}}
+</div>
