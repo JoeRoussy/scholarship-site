@@ -52,9 +52,9 @@
         {{#unless user.isMember}}
             <div class="memberPlug">
                 {{#if user}}
-                    <span>{{{md page.pagination.memberPlug.isSignedIn true}}}</span>
+                    <span>{{{ page.pagination.memberPlug.isSignedIn }}}</span>
                 {{else}}
-                    <span>{{{md page.pagination.memberPlug.notSignedIn true}}}</span>
+                    <span>{{{ page.pagination.memberPlug.notSignedIn }}}</span>
                 {{/if}}
             </div>
         {{/unless}}
