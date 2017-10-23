@@ -10,7 +10,12 @@ export default () => {
             return;
         }
 
-        element.on('click', () => {
+        element.on('click', (e) => {
+            if (element.attr('href')) {
+                // This is a link and we don't want to follow it
+                e.preventDefault();
+            }
+
             modal.modal('show');
         });
     });

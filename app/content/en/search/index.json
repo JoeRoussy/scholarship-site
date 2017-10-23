@@ -1,4 +1,6 @@
 {
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
     "heading": "Your Programs",
     "provinceSearchHeading": "Programs in: _{province}_",
     "universitySearchHeading": "Programs at: _{university}_",
@@ -11,6 +13,10 @@
     "pagination": {
         "results": "Results",
         "divider": "-",
-        "of": "of"
+        "of": "of",
+        "memberPlug": {
+            "notSignedIn": "<a href=\"#\" data-modal=\"signUpModal\">Join</a> or <a href=\"#\" data-modal=\"loginModal\">sign in</a> and become a member to access more results",
+            "isSignedIn": "<a href=\"#\" data-modal=\"membershipModal\">Become a member</a> to access more results"
+        }
     }
 }
