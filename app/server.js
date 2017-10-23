@@ -43,8 +43,8 @@ dbConfig()
         // TODO: Use secure cookies in production along with setting 'trust proxy' to 1 on the app
          app.use(session({
             secret: config.session.secret,
-            resave: false,
-            saveUninitialized: false
+            resave: false, // don't save the session if unmodified
+            saveUninitialized: false // don't create session until something stored
         }));
         app.use(passport.initialize());
         app.use(passport.session());
