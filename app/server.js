@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import connectMongo from 'connect-mongo';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 import config from './config';
@@ -20,6 +21,7 @@ import configureAuth from './components/authentication';
 import { print } from './components/custom-utils';
 
 const app = express();
+const MongoStore = connectMongo(session); // mongodb session store
 
 global.Logger = getLogger({
     name: 'scholarship-site'
@@ -44,7 +46,11 @@ dbConfig()
          app.use(session({
             secret: config.session.secret,
             resave: false, // don't save the session if unmodified
-            saveUninitialized: false // don't create session until something stored
+            saveUninitialized: false, // don't create session until something stored
+            store: new MongoStore({
+                db,
+                touchAfter: 24 * 3600 // Only update the session every 24 hours unless a modification to the session is made
+            })
         }));
         app.use(passport.initialize());
         app.use(passport.session());
