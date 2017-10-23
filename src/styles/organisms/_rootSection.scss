@@ -1,0 +1,7 @@
+.rootSection {
+    padding: $rootSectionVerticalPaddingMobile $rootSectionHorizontalPaddingMobile;
+
+    @media screen and (min-width: $laptopWidth) {
+        padding: $rootSectionVerticalPaddingDesktop $rootSectionHorizontalPaddingDesktop;
+    }
+}
