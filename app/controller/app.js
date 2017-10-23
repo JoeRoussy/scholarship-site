@@ -106,6 +106,7 @@ export const setupSearchPagination = (req, res) => {
     res.locals.rangeLow = rangeLow;
     res.locals.rangeHigh = rangeHigh > count ? count : rangeHigh;
 
+    // TODO: Given the name of this function, the rendering should be a separate function
     return res.render('search', res.locals);
 }
 
@@ -121,6 +122,32 @@ export const home = (req, res) => {
     res.locals.page.backgroundImage = res.locals.page.backgroundImages[imageIndex];
 
     res.render('home', res.locals);
+};
+
+export const error = (req, res) => {
+    // Render the error page with a paragraph based on the key passed in
+    const {
+        errorKey = 'default'
+    } = req.query;
+
+    // Make sure the error key matches with the content of the page
+    let isValidErrorKey = true;
+    let contentObjects = [ res.locals.page.subheadings, res.locals.page.descriptions ];
+
+    for (let obj of contentObjects) {
+        if (!Object.keys(obj).some(x => x === errorKey)) {
+            isValidErrorKey = false;
+            break;
+        }
+    }
+
+    if (isValidErrorKey) {
+        res.locals.errorKey = errorKey;
+    } else {
+        res.locals.errorKey = 'default';
+    }
+
+    return res.render('error', res.locals);
 };
 
 export const contact = (req, res) => {

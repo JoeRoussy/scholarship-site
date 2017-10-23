@@ -1,0 +1,16 @@
+.error {
+    padding: 150px 0;
+    text-align: center;
+
+    .ui.icon.header {
+        margin-top: 0;
+
+        & + p {
+            margin-top: 30px;
+        }
+
+        .icon {
+            color: #ea212d;
+        }
+    }
+}
