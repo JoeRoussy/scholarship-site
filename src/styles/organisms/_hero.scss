@@ -2,8 +2,14 @@
     position: relative;
     text-align: center;
     color: white;
+    background-color: #222222;
+
+    @media screen and (min-width: $desktopWidth) {
+        background-color: transparent;
+    }
 
     .backgroundImage {
+        display: none;
         position: absolute;
         top: 0;
         left: 0;
@@ -12,6 +18,10 @@
         width: 100%;
         overflow: hidden;
         z-index: -1;
+
+        @media screen and (min-width: $desktopWidth) {
+            display: block;
+        }
 
         .overlay {
             position: absolute;
