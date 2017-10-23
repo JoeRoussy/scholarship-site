@@ -49,7 +49,7 @@ dbConfig()
             saveUninitialized: false, // don't create session until something stored
             store: new MongoStore({
                 db,
-                touchAfter: 24 * 3600
+                touchAfter: 24 * 3600 // Only update the session every 24 hours unless a modification to the session is made
             })
         }));
         app.use(passport.initialize());
