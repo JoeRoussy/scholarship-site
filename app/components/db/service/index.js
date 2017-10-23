@@ -74,7 +74,8 @@ export const insert = async ({
 export const findAndUpdate = async ({
     collection = required('collection'),
     query = required('query'),
-    update = required('update')
+    update = required('update'),
+    skipValidation = false
 }) => {
     let updateResult;
 
@@ -86,5 +87,14 @@ export const findAndUpdate = async ({
         updateResult = await collection.findAndModify(query, sortOrder, update);
     }
 
-    return updateResult.ok;
+    const {
+        value,
+        ok
+    } = updateResult;
+
+    if (!skipValidation && !(value && ok)) {
+        throw new Error('Update not successful');
+    }
+
+    return ok;
 };
