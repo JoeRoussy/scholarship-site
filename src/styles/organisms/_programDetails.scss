@@ -1,14 +1,7 @@
 .programDetails {
-    $topPaddingMobile: 100px;
-    $topPaddingDesktop: 150px;
     $innerSectionPadding: 30px;
 
     position: relative;
-    padding-top: $topPaddingMobile;
-
-    @media screen and (min-width: $laptopWidth) {
-        padding-top: $topPaddingDesktop;
-    }
 
     .mapsSection {
         height: 500px;
@@ -16,7 +9,7 @@
 
         @media screen and (min-width: $laptopWidth) {
             position: absolute;
-            top: $topPaddingDesktop;
+            top: $rootSectionVerticalPaddingDesktop;
             right: 0;
             width: 50%;
             height: 50vw;
@@ -32,13 +25,14 @@
     }
 
     .programDetailsSection {
-        padding: $innerSectionPadding;
+        padding: 0 $innerSectionPadding $innerSectionPadding;
 
         @media screen and (min-width: $laptopWidth) {
             position: absolute;
-            top: $topPaddingDesktop;
+            top: $rootSectionVerticalPaddingDesktop;
             left: 0;
             width: 50%;
+            padding: $innerSectionPadding;
         }
     }
 }
