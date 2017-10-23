@@ -8,9 +8,10 @@
     <div class="content">
         <p>{{ description }}</p>
         {{#with button}}
-            <a href="{{ href }}">
+            <a href="{{ href }}" data-show-dimmer-on-click="{{ dimmerId }}">
                 <img src="{{ image.src }}" alt="{{ image.alt }}">
             </a>
         {{/with}}
     </div>
+    {{> dimmer dimmer}}
 </div>

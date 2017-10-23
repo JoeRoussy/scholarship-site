@@ -11,7 +11,13 @@
                 "src": "/images/buyWithPaypal.png",
                 "alt": "checkout with paypal"
             },
-            "href": "/membership/buy"
+            "href": "/membership/buy",
+            "dimmerId": "membershipModalDimmer"
+        },
+        "dimmer": {
+            "id": "membershipModalDimmer",
+            "loader": true,
+            "text": "Redirecting to paypal..."
         }
     }
 }
