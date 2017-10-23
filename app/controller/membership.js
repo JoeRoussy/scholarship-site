@@ -10,6 +10,8 @@ import {
 } from '../components/paypal-helper';
 
 
+const redirectToError = (errorKey, res) => res.redirect(`/error?errorKey=${errorKey}`);
+
 // Process paypal payment for memberships
 export const processMembership = ({
     transactionsCollection = required('transactionsCollection'),
@@ -24,7 +26,7 @@ export const processMembership = ({
     } catch (e) {
         logger.error({err: e}, 'Error getting checkout experiences for paypal');
 
-        // TODO: Render some error page
+        return redirectToError('paypalGeneric', res);
     }
 
     let [ paypalCheckoutExperience ] = paypalCheckoutExperiences;
@@ -41,14 +43,14 @@ export const processMembership = ({
         } catch (e) {
             logger.error({err: e}, 'Error generating a checkout experience for paypal');
 
-            // TODO: Render some error page
+            return redirectToError('paypalGeneric', res);
         }
     }
 
     if (!paypalCheckoutExperienceId) {
         logger.error('Undefined paypal checkout experience after configuration');
 
-        // TODO: Render some error page
+        return redirectToError('paypalGeneric', res);
     }
 
     // Now that we have a checkout experience, send the user to paypal the checkout
@@ -124,14 +126,14 @@ export const processMembership = ({
             .catch(err => {
                 logger.error({ err }, 'Error during call to paypal checkout endpoint');
 
-                // TODO: Redirect to some error
+                return redirectToError('paypalCheckout', res);
             });
 
     // Save a transaction to the database
     if (!req.user) {
         logger.error('No user in session when trying to redirect for paypal checkout');
 
-        // TODO: Redirect to some error
+        return redirectToError('paypalCheckout', res);
     }
 
     try {
@@ -152,7 +154,7 @@ export const processMembership = ({
     } catch (e) {
         logger.error({ err: e }, 'Error saving transaction to DB');
 
-        // TODO: Render error
+        return redirectToError('paypalCheckout', res);
     }
 
     return res.redirect(paypalRedirect);
@@ -171,7 +173,7 @@ export const membershipAccept = ({
     if (!paymentId || !payerId) {
         logger.error(req.query, 'Missing paymentId or PayerID from paypal accept redirect');
 
-        // TODO: Render an error
+        return redirectToError('paypalAccept', res);
     }
 
     const {
@@ -180,6 +182,16 @@ export const membershipAccept = ({
 
     if (!unconfirmedTransactionId) {
         logger.error({ session: req.session }, 'Could not find unconfirmed transaction id in session');
+
+        return redirectToError('paypalAccept', res);
+    }
+
+    const userId = req.user._id;
+
+    if (!userId) {
+        logger.error('Could not find an id for a logged in user when trying to confirm a paypal payment');
+
+        return redirectToError('paypalNotLoggedIn', res);
     }
 
     let paypalAcceptResponse;
@@ -192,13 +204,7 @@ export const membershipAccept = ({
     } catch (e) {
         logger.error({ err: e }, 'Error during paypal accept call');
 
-        // TODO: Render an error
-    }
-
-    const userId = req.user._id;
-
-    if (!userId) {
-        logger.error('Could not find an id for a logged in user when trying to confirm a paypal payment');
+        return redirectToError('paypalAccept', res);
     }
 
     // Update the transaction as completed
@@ -218,7 +224,7 @@ export const membershipAccept = ({
     } catch (e) {
         logger.error({ err: e, user: req.user }, 'Error updating membership transaction as complete');
 
-        // TODO: Render some error
+        return redirectToError('paypalAccept', res);
     }
 
     // Update the user as a member
@@ -235,7 +241,7 @@ export const membershipAccept = ({
     } catch (e) {
         logger.error({ err: e, user: req.user }, 'Error updating the user as a member');
 
-        // TODO: Render some error
+        return redirectToError('paypalAccept', res);
     }
 
     return res.render('membership/success', res.locals);

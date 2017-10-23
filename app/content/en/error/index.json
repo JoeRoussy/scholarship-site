@@ -3,9 +3,17 @@
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Error",
     "subheadings": {
-        "default": "Something went wrong"
+        "default": "Something went wrong",
+        "paypalGeneric": "Something went wrong processing your request",
+        "paypalCheckout": "Something went wrong processing your paypal checkout",
+        "paypalAccept": "Something went wrong processing your paypal payment",
+        "paypalNotLoggedIn": "It seems like you are no longer logged in"
     },
     "descriptions": {
-        "default": "Please try your action again, if the problem persists, please [contact us](/contact)."
+        "default": "Please try your action again, if the problem persists, please [contact us](/contact).",
+        "paypalGeneric": "Please try becoming a member again, if the problem persists, please [contact us](/contact).",
+        "paypalCheckout": "Please try the checkout process again. If the problem persists, please [contact us](/contact).",
+        "paypalAccept": "Please [contact us](/contact) to sort out the issue.",
+        "paypalNotLoggedIn": "Your payment has not been processed. Please log back in and try to become a member again."
     }
 }
