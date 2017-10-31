@@ -280,13 +280,36 @@ export const processScholarshipApplication = ({
         return next();
     }
 
+    const {
+        _id: userId
+    } = req.user;
+
+    // Make sure this user has not already submitted an application
+    try {
+        const previousApplication = yield scholarshipApplicationCollection.findOne({ userId });
+
+        if (previousApplication) {
+            res.locals.formHandlingError = true;
+            res.locals.customMessageTag = ''; // TODO: Do some similar message tagging to what was done elsewhere in the project
+
+            return next();
+        }
+    } catch (e) {
+        // TODO: Log error
+        //logger.error(e, 'Error saving contact info to db');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
     try {
         yield insertInDb({
             collection: scholarshipApplicationCollection,
             document: {
                 name,
                 email,
-                application
+                application,
+                userId
             }
         });
     } catch (e) {
