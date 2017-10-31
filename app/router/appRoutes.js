@@ -3,6 +3,7 @@ import {
     setupSearchPagination,
     home,
     error,
+    studyingInCanada,
     contact,
     programDetails,
     processContact,
@@ -21,6 +22,8 @@ export default ({
     app.get('/', home);
 
     app.get('/error', error);
+
+    app.get('/studying-in-canada', studyingInCanada);
 
     app.route('/contact')
         .get(contact)

@@ -160,6 +160,10 @@ export const error = (req, res) => {
     return res.render('error', res.locals);
 };
 
+export const studyingInCanada = (req, res) => {
+    res.render('news.hbs', res.locals);
+}
+
 export const contact = (req, res) => {
      res.render('contact');
 };
