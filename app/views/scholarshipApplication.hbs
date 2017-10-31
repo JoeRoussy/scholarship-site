@@ -11,16 +11,30 @@
             data-validate-form=""
         >
 
-            {{#unless @root.user.isMember}}
-                {{> dimmer page.dimmer}}
-            {{/unless}}
+            {{#if user.isMember}}
+            {{#if duplicateApplication}}
+                {{! The user is a member but they have already submitted an application }}
+                {{> dimmer page.duplicateApplicationDimmer}}
+            {{/if}}
+            {{else}}
+                {{! The user is not a member so show the non membership modal }}
+                {{> dimmer page.nonMemberDimmer}}
+            {{/if}}
 
             {{#if formHandlingError}}
                 <div class="ui error message">
                     <div class="header">
-                        <span>{{ page.errorMessage.heading }}</span>
+                        {{#if existingApplication}}
+                            <span>{{ page.errorMessage.existingApplicationHeading }}</span>
+                        {{else}}
+                            <span>{{ page.errorMessage.heading }}</span>
+                        {{/if}}
                     </div>
-                    <p>{{ page.errorMessage.body }}</p>
+                    {{#if existingApplication}}
+                        <span>{{ page.errorMessage.existingApplicationBody }}</span>
+                    {{else}}
+                        <span>{{ page.errorMessage.body }}</span>
+                    {{/if}}
                 </div>
             {{/if}}
             {{#if requestSuccess}}
