@@ -13,8 +13,8 @@
     "duplicateApplicationDimmer": {
         "toggleOnLoad": true,
         "id": "scholarshipApplicationDuplicateDimmer",
-        "defaultText": "Looks like you have already applied for a scholarship. You can inly submit one scholarship application.",
-        "userText": "Looks like you have already applied for a scholarship. You can inly submit one scholarship application.",
+        "defaultText": "Looks like you have already applied for a scholarship. You can only submit one scholarship application.",
+        "userText": "Looks like you have already applied for a scholarship. You can only submit one scholarship application.",
         "customClasses": "lowZIndex"
     },
     "errorMessage": {

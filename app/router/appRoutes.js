@@ -52,7 +52,7 @@ export default ({
     }));
 
     app.route('/scholarship-application')
-        .get(scholarshipApplication)
+        .get(scholarshipApplication(db.collection('scholarshipApplications')))
         .post([
             processScholarshipApplication({
                 scholarshipApplicationCollection: db.collection('scholarshipApplications'),
@@ -60,7 +60,7 @@ export default ({
                 getMailMessage: getApplicationMailMessage,
                 insertInDb
             }),
-            scholarshipApplication
+            scholarshipApplication()
         ]);
 
 }
