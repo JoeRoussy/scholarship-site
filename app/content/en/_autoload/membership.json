@@ -17,7 +17,8 @@
         "dimmer": {
             "id": "membershipModalDimmer",
             "loader": true,
-            "text": "Redirecting to paypal..."
+            "defaultText": "Redirecting to paypal...",
+            "userText": "Redirecting to paypal..."
         }
     }
 }

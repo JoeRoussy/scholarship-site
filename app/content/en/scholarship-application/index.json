@@ -6,7 +6,8 @@
     "dimmer": {
         "toggleOnLoad": true,
         "id": "scholarshipApplicationDimmer",
-        "text": "Sorry but you need to be a member to submit a scholarship application. Join or upgrade your account now!",
+        "defaultText": "Sorry but you need to be a member to submit a scholarship application. <a href=\"#\" data-modal=\"signUpModal\">Join</a> or <a href=\"#\" data-modal=\"loginModal\">sign in</a> now!",
+        "userText": "Sorry but you need to be a member to submit a scholarship application. Upgrade your account and <a href=\"#\" data-modal=\"membershipModal\">bsecome a member now!</a>",
         "customClasses": "lowZIndex"
     },
     "errorMessage": {

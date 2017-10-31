@@ -3,10 +3,14 @@
         <div class="center">
             {{#if loader}}
                 <div class="ui text loader">
-                    {{ text }}
+            {{/if}}
+                {{#if @root.user}}
+                    <span>{{{md userText true}}}</span>
+                {{else}}
+                    <span>{{{md defaultText true}}}</span>
+                {{/if}}
+            {{#if loader}}
                 </div>
-            {{else}}
-                <span>{{ text }}</span>
             {{/if}}
         </div>
     </div>

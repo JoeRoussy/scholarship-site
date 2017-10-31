@@ -2,4 +2,14 @@
     &.lowZIndex {
         z-index: 1;
     }
+
+    a {
+        color: #ffffff;
+        font-weight: bold;
+        text-decoration: underline;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
 }
