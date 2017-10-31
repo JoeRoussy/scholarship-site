@@ -6,15 +6,15 @@
     }
 
     .ui.raised.segment {
-        padding: 1.5em 1.5em;
+        padding: 21px;
 
         @media screen and (min-width: $tabletWidth) {
-            margin: 3rem 0;
-            padding: 2em 2em;
+            margin: 42px 0;
+            padding: 28px;
         }
 
         &.first {
-            margin-top: 1rem;
+            margin-top: 14px;
         }
     }
 }
