@@ -1,0 +1,19 @@
+{{> navigation page.navigation}}
+
+<div class="newsSection rootSection">
+    <div class="ui container">
+        <h1>{{ page.heading }}</h1>
+        <p class="heading">{{ page.subheading }}</p>
+        {{#each page.articles}}
+            {{#with this}}
+                <div class="ui raised segment{{#if first}} first{{/if}}">
+                    <h2>{{ title }}</h2>
+                    <p>{{ summary }}</p>
+                    {{#with link}}
+                        <p><a href="{{ href }}" target="_blank">{{ title }}</a></p>
+                    {{/with}}
+                </div>
+            {{/with}}
+        {{/each}}
+    </div>
+</div>

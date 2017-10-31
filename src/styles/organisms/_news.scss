@@ -1,0 +1,20 @@
+.newsSection {
+    p.heading {
+        font-size: 1.2em;
+        padding-top: 32px;
+        padding-bottom: 32px;
+    }
+
+    .ui.raised.segment {
+        padding: 21px;
+
+        @media screen and (min-width: $tabletWidth) {
+            margin: 42px 0;
+            padding: 28px;
+        }
+
+        &.first {
+            margin-top: 14px;
+        }
+    }
+}

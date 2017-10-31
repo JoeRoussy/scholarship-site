@@ -1,0 +1,33 @@
+{
+    "title": "Scholarship Site",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Studying In Canada",
+    "subheading": "These articles contain information about applying to scholarships in canada.",
+    "articles": [
+        {
+            "first": true,
+            "title": "Article Title",
+            "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed lectus bibendum, aliquam elit quis, consectetur orci. Sed euismod tortor et libero tincidunt porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non suscipit mauris. Sed euismod erat nibh, nec mollis leo porta vitae. Mauris congue, lacus sit amet volutpat pharetra, nibh ante scelerisque quam, lacinia gravida urna mauris ut sapien. Suspendisse sagittis eros turpis, id blandit libero convallis ut. Donec urna massa, commodo at consectetur in, finibus vitae tellus. Nullam eu risus sodales, feugiat odio in, iaculis felis.",
+            "link": {
+                "href": "#",
+                "title": "Read more"
+            }
+        },
+        {
+            "title": "Article Title",
+            "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed lectus bibendum, aliquam elit quis, consectetur orci. Sed euismod tortor et libero tincidunt porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non suscipit mauris. Sed euismod erat nibh, nec mollis leo porta vitae. Mauris congue, lacus sit amet volutpat pharetra, nibh ante scelerisque quam, lacinia gravida urna mauris ut sapien. Suspendisse sagittis eros turpis, id blandit libero convallis ut. Donec urna massa, commodo at consectetur in, finibus vitae tellus. Nullam eu risus sodales, feugiat odio in, iaculis felis.",
+            "link": {
+                "href": "#",
+                "title": "Read more"
+            }
+        },
+        {
+            "title": "Article Title",
+            "summary": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sed lectus bibendum, aliquam elit quis, consectetur orci. Sed euismod tortor et libero tincidunt porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non suscipit mauris. Sed euismod erat nibh, nec mollis leo porta vitae. Mauris congue, lacus sit amet volutpat pharetra, nibh ante scelerisque quam, lacinia gravida urna mauris ut sapien. Suspendisse sagittis eros turpis, id blandit libero convallis ut. Donec urna massa, commodo at consectetur in, finibus vitae tellus. Nullam eu risus sodales, feugiat odio in, iaculis felis.",
+            "link": {
+                "href": "#",
+                "title": "Read more"
+            }
+        }
+    ]
+}
