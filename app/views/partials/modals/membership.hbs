@@ -1,4 +1,4 @@
-<div id="membershipModal" class="ui modal small withLogoHeading">
+<div id="membershipModal" class="ui modal small withLogoHeading extraPaddingOnContent">
     <div class="imageWrapper">
         <img src="{{ image.src }}" alt="{{ image.alt }}">
     </div>
@@ -6,11 +6,15 @@
         <span>{{ header }}</span>
     </div>
     <div class="content">
-        <p>{{ description }}</p>
+        {{#each descriptionParagraphs}}
+            <p>{{ this }}</p>
+        {{/each}}
         {{#with button}}
-            <a href="{{ href }}" data-show-dimmer-on-click="{{ dimmerId }}">
-                <img src="{{ image.src }}" alt="{{ image.alt }}">
-            </a>
+            <div class="contentFooter">
+                <a href="{{ href }}" data-show-dimmer-on-click="{{ dimmerId }}">
+                    <img src="{{ image.src }}" alt="{{ image.alt }}">
+                </a>
+            </div>
         {{/with}}
     </div>
     {{> dimmer dimmer}}
