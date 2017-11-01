@@ -76,7 +76,6 @@
     &.extraPaddingOnContent {
         .content {
             @media screen and (min-width: $tabletWidth) {
-                //padding: 10%;
                 padding-left: 10%;
                 padding-right: 10%;
             }
