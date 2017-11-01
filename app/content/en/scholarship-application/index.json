@@ -3,16 +3,25 @@
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Apply For A Scholarship",
     "description": "CHEH is a member driven organization aimed at promoting Canadian higher education and enabling Canadians and international student to attend the University and program of their choice. Should you be selected for a scholarship, CHEH will credit your student account at your chosen institution once proof of registration is received. For now your task is: complete the online application form including the short essay on ‘why I want to attend a Canadian University’. CHEH will notify winners of their awards and then arrange to credit winners’ student account with scholarship funds upon receipt of proof of registration. Good luck.",
-    "dimmer": {
+    "nonMemberDimmer": {
         "toggleOnLoad": true,
-        "id": "scholarshipApplicationDimmer",
+        "id": "scholarshipApplicationNonMemberDimmer",
         "defaultText": "Sorry but you need to be a member to submit a scholarship application. <a href=\"#\" data-modal=\"signUpModal\">Join</a> or <a href=\"#\" data-modal=\"loginModal\">sign in</a> now!",
         "userText": "Sorry but you need to be a member to submit a scholarship application. Upgrade your account and <a href=\"#\" data-modal=\"membershipModal\">bsecome a member now!</a>",
         "customClasses": "lowZIndex"
     },
+    "duplicateApplicationDimmer": {
+        "toggleOnLoad": true,
+        "id": "scholarshipApplicationDuplicateDimmer",
+        "defaultText": "Looks like you have already applied for a scholarship. You can only submit one scholarship application.",
+        "userText": "Looks like you have already applied for a scholarship. You can only submit one scholarship application.",
+        "customClasses": "lowZIndex"
+    },
     "errorMessage": {
         "heading": "Something went wrong",
-        "body": "We did not get your application, please email admin@canadahighereducationhouse.ca"
+        "existingApplicationHeading": "Duplicate Application",
+        "body": "We did not get your application, please email admin@canadahighereducationhouse.ca",
+        "existingApplicationBody": "We already got an application from you. You can only submit one application."
     },
     "successMessage": {
         "heading": "We got your application!",

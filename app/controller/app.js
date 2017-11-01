@@ -254,9 +254,33 @@ export const processContact = ({
     return next();
 });
 
-export const scholarshipApplication = (req, res) => {
+export const scholarshipApplication = (scholarshipApplicationCollection) => coroutine(function* (req, res) {
+    // If we get this collection we will check for duplicates
+    if (scholarshipApplicationCollection) {
+        // See if there is a logged in user that has submitted an application
+        const {
+            user: {
+                _id: userId
+            } = {}
+        } = req;
+
+        if (userId) {
+            // We should check for a duplicate id
+            try {
+                const previousApplication = yield scholarshipApplicationCollection.findOne({ userId });
+
+                res.locals.duplicateApplication = !!previousApplication;
+            } catch (e) {
+                // TODO: Log error
+                //logger.error(e, 'Error saving contact info to db');
+
+                return redirectToError('default', res);
+            }
+        }
+    }
+
     res.render('scholarshipApplication');
-};
+});
 
 export const processScholarshipApplication = ({
     scholarshipApplicationCollection = required('scholarshipApplicationCollection'),
@@ -280,13 +304,42 @@ export const processScholarshipApplication = ({
         return next();
     }
 
+    const {
+        _id: userId
+    } = req.user;
+
+    if (!userId) {
+        // TODO: Log an error for us being in a weird state
+
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Make sure this user has not already submitted an application
+    try {
+        const previousApplication = yield scholarshipApplicationCollection.findOne({ userId });
+
+        if (previousApplication) {
+            // We don't need a nice error because the UI does not let people submit duplicate application
+            res.locals.formHandlingError = true;
+
+            return next();
+        }
+    } catch (e) {
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
     try {
         yield insertInDb({
             collection: scholarshipApplicationCollection,
             document: {
                 name,
                 email,
-                application
+                application,
+                userId
             }
         });
     } catch (e) {

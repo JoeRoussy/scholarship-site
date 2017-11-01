@@ -11,16 +11,30 @@
             data-validate-form=""
         >
 
-            {{#unless @root.user.isMember}}
-                {{> dimmer page.dimmer}}
-            {{/unless}}
+            {{#if user.isMember}}
+            {{#if duplicateApplication}}
+                {{! The user is a member but they have already submitted an application }}
+                {{> dimmer page.duplicateApplicationDimmer}}
+            {{/if}}
+            {{else}}
+                {{! The user is not a member so show the non membership modal }}
+                {{> dimmer page.nonMemberDimmer}}
+            {{/if}}
 
             {{#if formHandlingError}}
                 <div class="ui error message">
                     <div class="header">
-                        <span>{{ page.errorMessage.heading }}</span>
+                        {{#if existingApplication}}
+                            <span>{{ page.errorMessage.existingApplicationHeading }}</span>
+                        {{else}}
+                            <span>{{ page.errorMessage.heading }}</span>
+                        {{/if}}
                     </div>
-                    <p>{{ page.errorMessage.body }}</p>
+                    {{#if existingApplication}}
+                        <span>{{ page.errorMessage.existingApplicationBody }}</span>
+                    {{else}}
+                        <span>{{ page.errorMessage.body }}</span>
+                    {{/if}}
                 </div>
             {{/if}}
             {{#if requestSuccess}}
@@ -30,50 +44,51 @@
                     </div>
                     <p>{{interpolate page.successMessage.body request}}</p>
                 </div>
+            {{else}}
+                <div class="field">
+                    <label>{{ page.nameInput.label }}</label>
+                    <input
+                        type="{{ page.nameInput.type }}"
+                        name="{{ page.nameInput.name }}"
+                        placeholder="{{ page.nameInput.placeholder }}"
+                        data-validate="{{ page.nameInput.validationType }}"
+                        data-error-element-id="{{ page.nameInput.errorElement.id }}"
+                        {{#if user}}
+                            value="{{ user.name }}"
+                        {{/if}}
+                    >
+                    <span id="{{ page.nameInput.errorElement.id }}" class="formErrorMessage">{{ page.nameInput.errorElement.text }}</span>
+                </div>
+                <div class="field">
+                    <label>{{ page.emailInput.label }}</label>
+                    <input
+                        type="{{ page.emailInput.type }}"
+                        name="{{ page.emailInput.name }}"
+                        placeholder="{{ page.emailInput.placeholder }}"
+                        data-validate="{{ page.emailInput.validationType }}"
+                        data-error-element-id="{{ page.emailInput.errorElement.id }}"
+                        {{#if user}}
+                            value="{{ user.email }}"
+                        {{/if}}
+                    >
+                    <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
+                </div>
+                <div class="field spaceAbove">
+                    <label>{{ page.bodyInput.label }}</label>
+                    <textarea
+                        name="{{ page.bodyInput.name }}"
+                        rows="{{ page.bodyInput.rows }}"
+                        placeholder="{{ page.bodyInput.placeholder }}"
+                        data-validate="{{ page.bodyInput.validationType }}"
+                        data-error-element-id="{{ page.bodyInput.errorElement.id }}"
+                        data-validate-word-count="{{ page.bodyInput.maxWordCount }}"
+                    ></textarea>
+                    <span id="{{ page.bodyInput.errorElement.id }}" class="formErrorMessage">{{ page.bodyInput.errorElement.text }}</span>
+                </div>
+                <div class="field">
+                    <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
+                </div>
             {{/if}}
-            <div class="field">
-                <label>{{ page.nameInput.label }}</label>
-                <input
-                    type="{{ page.nameInput.type }}"
-                    name="{{ page.nameInput.name }}"
-                    placeholder="{{ page.nameInput.placeholder }}"
-                    data-validate="{{ page.nameInput.validationType }}"
-                    data-error-element-id="{{ page.nameInput.errorElement.id }}"
-                    {{#if user}}
-                        value="{{ user.name }}"
-                    {{/if}}
-                >
-                <span id="{{ page.nameInput.errorElement.id }}" class="formErrorMessage">{{ page.nameInput.errorElement.text }}</span>
-            </div>
-            <div class="field">
-                <label>{{ page.emailInput.label }}</label>
-                <input
-                    type="{{ page.emailInput.type }}"
-                    name="{{ page.emailInput.name }}"
-                    placeholder="{{ page.emailInput.placeholder }}"
-                    data-validate="{{ page.emailInput.validationType }}"
-                    data-error-element-id="{{ page.emailInput.errorElement.id }}"
-                    {{#if user}}
-                        value="{{ user.email }}"
-                    {{/if}}
-                >
-                <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
-            </div>
-            <div class="field spaceAbove">
-                <label>{{ page.bodyInput.label }}</label>
-                <textarea
-                    name="{{ page.bodyInput.name }}"
-                    rows="{{ page.bodyInput.rows }}"
-                    placeholder="{{ page.bodyInput.placeholder }}"
-                    data-validate="{{ page.bodyInput.validationType }}"
-                    data-error-element-id="{{ page.bodyInput.errorElement.id }}"
-                    data-validate-word-count="{{ page.bodyInput.maxWordCount }}"
-                ></textarea>
-                <span id="{{ page.bodyInput.errorElement.id }}" class="formErrorMessage">{{ page.bodyInput.errorElement.text }}</span>
-            </div>
-            <div class="field">
-                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
-            </div>
         </form>
     </div>
 </div>
