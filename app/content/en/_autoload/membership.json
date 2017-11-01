@@ -5,7 +5,10 @@
             "src": "/images/logo.png",
             "alt": "canada higher education house"
         },
-        "description": "Description about buying a membership here...",
+        "descriptionParagraphs": [
+            "Upgrade your account to a full membership to the Canada Higher Education House. A full membership allows you to apply for scholarships offered by the Canada Higher Education House and also allows full access to program search results. Upgrade your account today for $3.",
+            "You can pay with a paypal account, credit card, or debit card on the paypal site using the link below."
+        ],
         "button": {
             "image": {
                 "src": "/images/buyWithPaypal.png",
