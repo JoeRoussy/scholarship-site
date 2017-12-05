@@ -248,5 +248,5 @@ export const membershipAccept = ({
         return redirectToError('paypalAccept', res);
     }
 
-    return res.render('membership/success', res.locals);
+    return res.redirect('/?paypalSuccess=true');
 });
