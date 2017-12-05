@@ -131,6 +131,9 @@ export const home = (req, res) => {
 
     res.locals.page.backgroundImage = res.locals.page.backgroundImages[imageIndex];
 
+    // TODO: For testing:
+    res.locals.paypalPaymentSuccess = true;
+
     res.render('home', res.locals);
 };
 

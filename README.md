@@ -11,3 +11,6 @@ Config elements should be exported from `app/config/index.js`. TODO: Enumerate e
 
 Semantic-UI:
 This site is built on top of [Semantic-UI](https://semantic-ui.com/). The semantic-ui components of the site must be built using `gulp buildSemantic` before running the standard `gulp` command during initial set up or after semantic-ui theming changes have been made.
+
+iziToast:
+This project makes use of iziToast for notifications. The js configuration is already done automatically but the css file should be placed in the /src/styles/vendor folder.

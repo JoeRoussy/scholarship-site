@@ -50,6 +50,10 @@
     <body>
         {{{ body }}}
 
+        {{#if paypalPaymentSuccess}}
+            {{> positiveNotification page.notifications.paypalSuccess}}
+        {{/if}}
+
         {{> modals/login page.login}}
         {{> modals/signUp page.signUp}}
         {{> modals/membership page.membership}}
