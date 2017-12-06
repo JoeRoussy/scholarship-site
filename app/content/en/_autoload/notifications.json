@@ -2,7 +2,8 @@
     "notifications": {
         "paypalSuccess": {
             "heading": "Congragulations!",
-            "body": "You are now a full member of the Canada Higher Education House."
+            "body": "You are now a full member of the Canada Higher Education House.",
+            "type": "success"
         }
     }
 }
