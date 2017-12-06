@@ -6,6 +6,7 @@ import modal from './component/modal';
 import passwordToggle from './component/password-toggle';
 import formValidation from './component/form-validation';
 import pageDimmer from './component/page-dimmer-handler';
+import notification from './component/notification';
 
 // Generic semantic UI setup
 
@@ -19,3 +20,4 @@ modal();
 passwordToggle();
 formValidation();
 pageDimmer();
+notification();

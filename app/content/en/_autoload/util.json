@@ -2,6 +2,7 @@
     "assets": {
         "stylesheets": [
             "/semantic/semantic.min.css",
+            "/css/vendor.min.css",
             "/css/app.min.css"
         ],
         "scripts": {

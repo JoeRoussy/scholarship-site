@@ -42,7 +42,7 @@ export const intersectIfPopulated = (target, source, comparator) => {
             return comparator(x, source);
         }
 
-        return source.indexOf(x) !== -1
+        return source.indexOf(x) !== -1;
     });
 }
 

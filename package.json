@@ -15,6 +15,7 @@
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0",
     "express-session": "1.15.5",
+    "izitoast": "1.2.0",
     "marked": "0.3.6",
     "mongodb": "2.2.30",
     "nodemailer": "4.1.0",

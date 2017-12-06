@@ -25,6 +25,7 @@ const semanticBuild = require('./semantic/tasks/build');
 
 const frontEndScriptsGlob = './src/scripts/**/*.js';
 const stylesGlob = './src/styles/**/*.scss';
+const vendorStylesGlob = './src/styles/vendor/**/*.css';
 const imagesGlob = './src/images/**/*';
 const appGlob = './app/**';
 const serverPublicFolderPath = './public';
@@ -93,6 +94,21 @@ gulp.task('styles', () => {
         .pipe(gulp.dest(`${serverPublicFolderPath}/css`));
 });
 
+// Transfer vendor css files to the publix folder
+gulp.task('vendorStyles', () => {
+    const processors = [];
+
+    if (!isDev) {
+        processors.push(cssnano());
+    }
+
+    return gulp.src(vendorStylesGlob)
+        .pipe(postcss(processors))
+        .pipe(concat('vendor.css'))
+        .pipe(rename(file => addMinToFileExtension(file)))
+        .pipe(gulp.dest(`${serverPublicFolderPath}/css`));
+});
+
 // Image processing
 gulp.task('image', function() {
     return gulp.src(imagesGlob)
@@ -132,11 +148,11 @@ gulp.task('semanticBuild', semanticBuild);
 
 // Build task for dev (is default)
 gulp.task('default', () => {
-    runSequence(['styles', 'scripts', 'image', 'watch'], 'nodemon');
+    runSequence(['vendorStyles', 'styles', 'scripts', 'image', 'watch'], 'nodemon');
 });
 
 // Build task for production
 gulp.task('production', () => {
     isDev = false;
-    runSequence(['styles', 'scripts', 'image', 'semanticBuild']);
+    runSequence(['vendorStyles', 'styles', 'scripts', 'image', 'semanticBuild']);
 });
