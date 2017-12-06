@@ -76,6 +76,12 @@
                         "text": "Please make sure the passwords match"
                     }
                 },
+                "membership": {
+                    "id": "signupMembership",
+                    "label": "Purchase full membership (you will be redirected to paypal to complete payement)",
+                    "name": "buyMemebership",
+                    "type": "checkbox"
+                },
                 "submit": "Join"
             }
         }

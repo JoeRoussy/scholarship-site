@@ -32,6 +32,22 @@ form {
             &.spaceAbove {
                 margin-top: 2em;
             }
+
+            .ui.checkbox {
+                &.extraSpace {
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+
+                    @media screen and (min-width: $tabletWidth) {
+                        margin-top: 30px;
+                        margin-bottom: 30px;
+                    }
+                }
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
 
 
