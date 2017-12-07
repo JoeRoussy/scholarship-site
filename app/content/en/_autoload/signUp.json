@@ -82,8 +82,16 @@
                     "name": "buyMemebership",
                     "type": "checkbox"
                 },
-                "submit": "Join"
+                "submit": {
+                    "text": "Join",
+                    "dimmerId": "signUpModalDimmer"
+                }
             }
+        },
+        "dimmer": {
+            "id": "signUpModalDimmer",
+            "loader": true,
+            "defaultText": "Please wait..."
         }
     }
 }

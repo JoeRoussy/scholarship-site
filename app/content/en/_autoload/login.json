@@ -38,8 +38,16 @@
                         "text": "Please enter your password"
                     }
                 },
-                "submit": "Login"
+                "submit": {
+                    "text": "Login",
+                    "dimmerId": "loginModalDimmer"
+                }
             }
+        },
+        "dimmer": {
+            "id": "loginModalDimmer",
+            "loader": true,
+            "defaultText": "Please wait..."
         }
     }
 }

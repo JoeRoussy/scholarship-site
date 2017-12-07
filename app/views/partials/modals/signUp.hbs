@@ -109,8 +109,9 @@
                 </div>
             </div>
             <div class="field">
-                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">
+                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}" data-show-dimmer-on-click="{{ form.inputs.submit.dimmerId }}">
             </div>
         </form>
     </div>
+    {{> dimmer dimmer}}
 </div>
