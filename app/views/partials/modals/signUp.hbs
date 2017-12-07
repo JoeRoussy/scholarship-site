@@ -101,6 +101,14 @@
                 <span id="{{ form.inputs.confirmPassword.errorElement.id }}" class="formErrorMessage">{{ form.inputs.confirmPassword.errorElement.text }}</span>
             </div>
             <div class="field">
+                <div class="ui checkbox extraSpace">
+                    <input id="{{ form.inputs.membership.id }}" type="{{ form.inputs.membership.type }}" name="{{ form.inputs.membership.name }}">
+                    <label for="{{ form.inputs.membership.id }}">
+                        {{ form.inputs.membership.label }}
+                    </label>
+                </div>
+            </div>
+            <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit }}">
             </div>
         </form>

@@ -88,7 +88,8 @@ export const signup = ({
     const {
         email,
         password,
-        name
+        name,
+        buyMemebership
     } = req.body;
 
     if (!email || !password || !name) {
@@ -156,6 +157,12 @@ export const signup = ({
             return res.redirect(`/?signupError=${signupErrorMessages.contact}`);
         }
 
+        if (buyMemebership) {
+            // We are logging in and trying to buy the membership right away
+            return res.redirect('/membership/buy');
+        }
+
+        // We are just logging in without buying the membership
         return res.redirect('/');
     });
 });
