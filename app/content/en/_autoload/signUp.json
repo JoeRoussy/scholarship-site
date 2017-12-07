@@ -78,7 +78,7 @@
                 },
                 "membership": {
                     "id": "signupMembership",
-                    "label": "Purchase full membership (you will be redirected to paypal to complete payement)",
+                    "label": "Purchase full membership (you will be redirected to paypal to complete payment)",
                     "name": "buyMemebership",
                     "type": "checkbox"
                 },
