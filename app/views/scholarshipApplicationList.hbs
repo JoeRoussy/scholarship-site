@@ -2,6 +2,36 @@
 
 <div class="scholarshipApplicationList rootSection">
     <div class="ui container">
+        <h1>{{ page.heading }}</h1>
+        <div class="ui form">
+            <span class="minorHeading">{{ page.calendar.title }}</span>
+            <div class="ui form calendarGroup">
+                <div class="two fields">
+                    <div class="field">
+                        {{#with page.calendar.start}}
+                            <label for="{{ id }}">{{ label }}</label>
+                            <div id="{{ id }}" class="ui calendar" data-end-calendar="{{ otherId }}">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" placeholder="{{ placeholder }}">
+                                </div>
+                            </div>
+                        {{/with}}
+                    </div>
+                    <div class="field">
+                        {{#with page.calendar.end}}
+                            <label for="{{ id }}">{{ label }}</label>
+                            <div id="{{ id }}" class="ui calendar" data-start-calendar="{{ otherId }}">
+                                <div class="ui input left icon">
+                                    <i class="calendar icon"></i>
+                                    <input type="text" placeholder="{{ placeholder }}">
+                                </div>
+                            </div>
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
+        </div>
         {{#each applications}}
             {{#with this}}
                 <div class="ui raised segment{{#if isFirst}} first{{/if}}">

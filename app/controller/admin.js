@@ -40,5 +40,7 @@ export const applications = ({
     // Now render the template with the applications
     res.locals.applications = scholarshipApplications.sort(sortByDate);
 
+    // print(res.locals.page);
+
     return res.render('scholarshipApplicationList', res.locals);
 });
