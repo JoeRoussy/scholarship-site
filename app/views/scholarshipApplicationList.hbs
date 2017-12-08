@@ -1,0 +1,11 @@
+{{> navigation page.navigation}}
+
+<div class="scholarshipApplicationList rootSection">
+    <div class="ui container">
+        {{#each applications}}
+            {{#with this}}
+                <p>{{ name }}</p>
+            {{/with}}
+        {{/each}}
+    </div>
+</div>

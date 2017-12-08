@@ -396,3 +396,17 @@ export const getUserByEmail = async({
         });
     }
 };
+
+// Get all scholarship applications
+export const getScholarshipApplications = async({
+    applicationsCollection = required('applicationsCollection')
+}) => {
+    try {
+        return await applicationsCollection.find().toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting scholarship applications',
+            err: e
+        });
+    }
+};
