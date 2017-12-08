@@ -3,7 +3,13 @@ import { getScholarshipApplications } from '../components/data';
 import { required, redirectToError, print } from '../components/custom-utils';
 
 export const isAdmin = (req, res, next) => {
-    if (req.user.isAdmin) {
+    const {
+        user: {
+            isAdmin
+        } = {}
+    } = req;
+
+    if (isAdmin) {
         return next();
     } else {
         return res.redirect('/');
