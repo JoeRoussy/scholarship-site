@@ -68,6 +68,9 @@ export const sortByKey = key => (a, b) => {
     return 0;
 }
 
+// Uses the createdAt property in each object
+export const sortByDate = (a, b) => b.createdAt - a.createdAt;
+
 // Returns a fully qualified URL with a given path using the slug in a req object
 export const buildUrl = (req, path) => `${req.protocol}://${req.get('host')}${path}`;
 

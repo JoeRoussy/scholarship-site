@@ -1,6 +1,6 @@
 import { wrap as coroutine } from 'co';
 import { getScholarshipApplications } from '../components/data';
-import { required, redirectToError, print } from '../components/custom-utils';
+import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 
 export const isAdmin = (req, res, next) => {
     const {
@@ -34,8 +34,11 @@ export const applications = ({
         return redirectToError('default', res);
     }
 
+    // Add a first marker to the start of the applications
+    scholarshipApplications[0].isFirst = true;
+
     // Now render the template with the applications
-    res.locals.applications = scholarshipApplications;
+    res.locals.applications = scholarshipApplications.sort(sortByDate);
 
     return res.render('scholarshipApplicationList', res.locals);
 });

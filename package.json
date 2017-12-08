@@ -12,6 +12,7 @@
     "connect-mongo": "2.0.0",
     "csv-parse": "^1.2.0",
     "encodeurl": "1.0.1",
+    "eol": "0.9.1",
     "express": "^4.15.3",
     "express-handlebars": "^3.0.0",
     "express-session": "1.15.5",

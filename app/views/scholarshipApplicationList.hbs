@@ -4,7 +4,11 @@
     <div class="ui container">
         {{#each applications}}
             {{#with this}}
-                <p>{{ name }}</p>
+                <div class="ui raised segment{{#if isFirst}} first{{/if}}">
+                    <h2>{{ name }}</h2>
+                    <p><a href="mailto:{{ email }}">{{ email }}</a></p>
+                    <p data-hide-target="">{{{addLineBreaks application}}}</p>
+                </div>
             {{/with}}
         {{/each}}
     </div>
