@@ -1,8 +1,8 @@
 {
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Scholarship Applications",
     "calendar": {
-        "title": "Filter by date",
         "start": {
             "id": "scholarshipApplicationListcalendarStart",
             "label": "Show applications after:",
@@ -15,5 +15,9 @@
             "placeholder": "Date",
             "otherId": "scholarshipApplicationListcalendarStart"
         }
+    },
+    "searchBar": {
+        "id": "applicationsListingNameSearch",
+        "placeholder": "Filter By Name"
     }
 }

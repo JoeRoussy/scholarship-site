@@ -1,4 +1,4 @@
-<div id="{{ id }}" class="ui search"{{#if hide}} data-hide-on-init{{/if}}>
+<div id="{{ id }}" class="ui search{{#if customClasses}} {{ customClasses }}{{/if}}"{{#if hide}} data-hide-on-init{{/if}}>
     <div class="ui right icon input">
         <input class="prompt" type="text" placeholder="{{ placeholder }}">
         <i class="search icon"></i>
