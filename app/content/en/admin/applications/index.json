@@ -7,13 +7,15 @@
             "id": "scholarshipApplicationListcalendarStart",
             "label": "Show applications after:",
             "placeholder": "Date",
-            "otherId": "scholarshipApplicationListcalendarEnd"
+            "otherId": "scholarshipApplicationListcalendarEnd",
+            "type": "date"
         },
         "end": {
             "id": "scholarshipApplicationListcalendarEnd",
             "label": "Show applications before:",
             "placeholder": "Date",
-            "otherId": "scholarshipApplicationListcalendarStart"
+            "otherId": "scholarshipApplicationListcalendarStart",
+            "type": "date"
         }
     },
     "searchBar": {

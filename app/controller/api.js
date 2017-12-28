@@ -2,9 +2,21 @@
     All loggers in this module should a module key in the form: api-function-name
 */
 
-import { required, print } from '../components/custom-utils';
-import { getProgramsWithFilter, getDocById, getProgramById as dataModuleGetProgramById, getUniversitiesWithFilter } from '../components/data';
-import { transformProgramForOutput, transformUniversityForOutput } from '../components/transformers';
+import { required, print, unique } from '../components/custom-utils';
+import {
+    getProgramsWithFilter,
+    getDocById,
+    getProgramById as dataModuleGetProgramById,
+    getUniversitiesWithFilter,
+    getUsers,
+    getScholarshipApplicationsWithFilter
+} from '../components/data';
+import {
+    transformProgramForOutput,
+    transformUniversityForOutput,
+    transformUserForOutput,
+    transformScholarshipApplicationForOutput
+ } from '../components/transformers';
 import { ObjectId } from 'mongodb';
 
 
@@ -231,4 +243,69 @@ export const getUniversityById = ({
                 message: `Could not get a university with id ${id}`
             });
         });
+}
+
+export const usersSearch = ({
+    usersCollection = required('usersCollection', 'You must pass in the users db collection'),
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection', 'You must pass in the scholarship applications db collection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => (req, res) => {
+    const {
+        hasScholarshipApplication
+    } = req.query;
+
+    if (hasScholarshipApplication) {
+        // We are finding all the scholarship applications and only returning the users
+        getScholarshipApplicationsWithFilter({
+            scholarshipApplicationsCollection
+        })
+            .then(applications => {
+                const transformedApplications = applications.map(transformScholarshipApplicationForOutput);
+                const users = transformedApplications.map(x => x.user);
+                const transformedUsers = users.map(transformUserForOutput);
+                const uniqueTransformedUsers = unique(transformedUsers);
+                const count = uniqueTransformedUsers.count;
+
+                return res.json({
+                    count: uniqueTransformedUsers.count,
+                    users: uniqueTransformedUsers
+                });
+            })
+            .catch(e => {
+                logger.error(e, 'Error getting users');
+
+                return res.status(500).json({
+                    error: true,
+                    message: 'Could not get users'
+                });
+            });
+    } else {
+        // We are finding all the users
+        getUsers({
+            usersCollection
+        })
+            .then(users => {
+                const count = users.count;
+
+                if (count === 0) {
+                    // There must be something wrong if we cannot find any users
+                    // NOTE: We have not implemented any filter up until now
+
+                    logger.warn('Could not find any users');
+                }
+
+                return res.json({
+                    count,
+                    users: users.map(transformUserForOutput)
+                });
+            })
+            .catch(e => {
+                logger.error(e, 'Error getting users');
+
+                return res.status(500).json({
+                    error: true,
+                    message: 'Could not get users'
+                });
+            });
+    }
 }

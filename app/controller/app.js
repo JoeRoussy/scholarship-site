@@ -294,8 +294,6 @@ export const processScholarshipApplication = ({
         body: application
     } = req.body;
 
-    print(application);
-
     if (!isMember(req)) {
         return redirectToError('nonMemberScholarshipApplication', res);
     }

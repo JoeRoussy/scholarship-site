@@ -10,7 +10,7 @@
                         <div class="field">
                             {{#with page.calendar.start}}
                                 <label for="{{ id }}">{{ label }}</label>
-                                <div id="{{ id }}" class="ui calendar" data-end-calendar="{{ otherId }}">
+                                <div id="{{ id }}" class="ui calendar" data-type="{{ type }}" data-end-calendar="{{ otherId }}">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
                                         <input type="text" placeholder="{{ placeholder }}">
@@ -21,7 +21,7 @@
                         <div class="field">
                             {{#with page.calendar.end}}
                                 <label for="{{ id }}">{{ label }}</label>
-                                <div id="{{ id }}" class="ui calendar" data-start-calendar="{{ otherId }}">
+                                <div id="{{ id }}" class="ui calendar" data-type="{{ type }}" data-start-calendar="{{ otherId }}">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
                                         <input type="text" placeholder="{{ placeholder }}">

@@ -7,6 +7,8 @@ import passwordToggle from './component/password-toggle';
 import formValidation from './component/form-validation';
 import pageDimmer from './component/page-dimmer-handler';
 import notification from './component/notification';
+import applicationNameSearch from './component/application-name-search';
+import datePicker from './component/date-picker';
 
 // Generic semantic UI setup
 
@@ -21,3 +23,5 @@ passwordToggle();
 formValidation();
 pageDimmer();
 notification();
+applicationNameSearch();
+datePicker();

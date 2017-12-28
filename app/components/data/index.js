@@ -398,15 +398,78 @@ export const getUserByEmail = async({
 };
 
 // Get all scholarship applications
-export const getScholarshipApplications = async({
-    applicationsCollection = required('applicationsCollection')
+// TODO: Should probably remove this
+// export const getScholarshipApplications = async({
+//     applicationsCollection = required('applicationsCollection')
+// }) => {
+//     try {
+//         return await applicationsCollection.find().toArray();
+//     } catch (e) {
+//         throw new RuntimeError({
+//             msg: 'Error getting scholarship applications',
+//             err: e
+//         });
+//     }
+// };
+
+// Get all the users
+export const getUsers = async({
+    usersCollection = required('usersCollection')
 }) => {
     try {
-        return await applicationsCollection.find().toArray();
+        return await usersCollection.find().toArray();
     } catch (e) {
         throw new RuntimeError({
-            msg: 'Error getting scholarship applications',
+            msg: 'Error getting users',
             err: e
         });
     }
-};
+}
+
+// Get Scholarship Applications
+export const getScholarshipApplicationsWithFilter = async({
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection'),
+    userId,
+    afterDate,
+    beforeDate
+}) => {
+    const filters = {};
+
+    if (userId) {
+        filters.userId = convertToObjectId(userId);
+    }
+
+    if (afterDate) {
+        filters.createdAt = {
+            $gte: new Date(afterDate)
+        };
+    }
+
+    if (beforeDate) {
+        filters.createdAt = {
+            $lte: new Date(afterDate)
+        };
+    }
+
+    try {
+        return await scholarshipApplicationsCollection.aggregate([
+            // TODO: add filters for date and userId
+            {
+                $match: filters
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'users'
+                }
+            }
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting users',
+            err: e
+        });
+    }
+}

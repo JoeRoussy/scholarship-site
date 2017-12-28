@@ -79,3 +79,16 @@ export const redirectToError = (errorKey, res) => res.redirect(`/error?errorKey=
 
 // Verifies that a request conatins a user and they are a member
 export const isMember = req => req.user && req.user.isMember;
+
+// Takes an array and returns all the unique values
+export const unique = array => {
+    let result = [];
+
+    for (let i = 0; i < array.length; i++) {
+        if(!result.includes(array[i])) {
+            result.push(array[i]);
+        }
+    }
+
+    return result;
+};

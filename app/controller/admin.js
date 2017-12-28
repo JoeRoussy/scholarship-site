@@ -1,5 +1,5 @@
 import { wrap as coroutine } from 'co';
-import { getScholarshipApplications } from '../components/data';
+import { getScholarshipApplicationsWithFilter } from '../components/data';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 
 export const isAdmin = (req, res, next) => {
@@ -21,12 +21,17 @@ export const applications = ({
     logger = required('logger', 'You must pass in a child logging instance')
 }) => coroutine(function* (req, res) {
 
+    const {
+        userId
+    } = req.query;
+
     // First get all the scholarship applications
     let scholarshipApplications;
 
     try {
-        scholarshipApplications = yield getScholarshipApplications({
-            applicationsCollection
+        scholarshipApplications = yield getScholarshipApplicationsWithFilter({
+            scholarshipApplicationsCollection: applicationsCollection,
+            userId
         });
     } catch (e) {
         logger.error({err: e}, 'Error getting scholarship applications');
@@ -34,13 +39,17 @@ export const applications = ({
         return redirectToError('default', res);
     }
 
-    // Add a first marker to the start of the applications
-    scholarshipApplications[0].isFirst = true;
+    if (!scholarshipApplications.length) {
+        // If we have not found any applications render the page without any
+        res.locals.applications = [];
 
-    // Now render the template with the applications
+        return res.render('scholarshipApplicationList', res.locals);
+    }
+
+    // Render the template with the applications
     res.locals.applications = scholarshipApplications.sort(sortByDate);
 
-    // print(res.locals.page);
+    res.locals.applications[0].isFirst = true;
 
     return res.render('scholarshipApplicationList', res.locals);
 });

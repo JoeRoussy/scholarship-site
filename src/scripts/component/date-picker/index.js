@@ -5,8 +5,8 @@ export default () => {
         const element = $(e);
 
         const type = element.attr('data-type');
-        const endcalendar = element.attr('data-end-calendar');
-        const startcalendar = element.attr('data-start-calendar');
+        const endCalendar = element.attr('data-end-calendar');
+        const startCalendar = element.attr('data-start-calendar');
 
         if (!type) {
             console.error('Missing type value on date picker ', element);
@@ -16,10 +16,10 @@ export default () => {
 
         let config = {};
 
-        if (startcalendar) {
-            config.startcalendar = startcalendar;
-        } else if (endcalendar) {
-            config.endcalendar = endcalendar;
+        if (startCalendar) {
+            config.startcalendar = startCalendar;
+        } else if (endCalendar) {
+            config.endcalendar = endCalendar;
         }
 
         element.calendar({

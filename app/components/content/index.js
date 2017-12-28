@@ -37,6 +37,9 @@ function loadContent (options, callback) {
         _options.page = _options.page.substr(1);
     }
 
+    // Make sure the query params are not involved in the loading of content
+    _options.page = _options.page.split('?')[0];
+
     // Make sure any ids in the urls are replace with placeholders so the folder structures do not break
     const [ page, ...possibleParams ] = _options.page.split('/');
     const isHex = /[0-9A-F]+/;
