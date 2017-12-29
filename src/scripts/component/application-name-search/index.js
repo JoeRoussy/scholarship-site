@@ -29,6 +29,9 @@ export default () => {
                 return {
                     users: formattedUsers
                 };
+            },
+            onSearchQuery() {
+                // TODO: Show Update button
             }
         },
         fields: {

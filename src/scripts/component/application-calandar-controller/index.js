@@ -3,9 +3,6 @@ import urlHelper from 'url';
 
 let startDate = null;
 let endDate = null;
-let updateButton = null;
-
-// TODO: Add controls for start and end dates
 
 function getErrorText(cal) {
     const title = cal.attr('data-error-title');
@@ -41,12 +38,7 @@ export const onStartChange = function (date) {
         }
     }
 
-    if (updateButton.length) {
-        updateButton.prop('disabled', false);
-    }
-
     startDate = date;
-
 }
 
 export const onEndChange = function (date) {
@@ -60,19 +52,15 @@ export const onEndChange = function (date) {
         }
     }
 
-    if (updateButton.length) {
-        updateButton.prop('disabled', false);
-    }
-
     endDate = date;
-
 }
 
 // When the update button is clicked, refresh the page with the appropriate filters
 export const init = () => {
-    updateButton = $('#applicationListUpdateButton');
+    const nameInput = $('#applicationsListingNameSearch input');
+    const updateButton = $('#applicationListUpdateButton');
 
-    if (!updateButton.length) {
+    if (!updateButton.length || !nameInput.length) {
         return;
     }
 
@@ -89,6 +77,10 @@ export const init = () => {
             url.query.endDate = +endDate;
         } else {
             delete url.query.endDate;
+        }
+
+        if (!nameInput.val()) {
+            delete url.query.userId;
         }
 
         // Build the query string based on the value of url.query

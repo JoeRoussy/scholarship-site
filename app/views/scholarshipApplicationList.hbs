@@ -15,12 +15,12 @@
                         </div>
                         <div class="field">
                             {{#with page.updateButton}}
-                                <button id="{{ id }}" class="ui green button" type="button" disabled="disabled">{{ text }}</button>
+                                <button id="{{ id }}" class="ui green button" type="button">{{ text }}</button>
                             {{/with}}
                         </div>
                     </div>
                     <div class="sixteen wide tablet eight wide computer column">
-                        {{> searchBar page.searchBar}}
+                        {{> searchBar page.searchBar value=populatedQueryObjects.user.name}}
                     </div>
                 </div>
             </div>
