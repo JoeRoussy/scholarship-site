@@ -5,6 +5,15 @@ const {
     serverError: serverErrorMessage
 } = window.globals.page.errorMessages;
 
+function getSearchLink(user) {
+    const url = urlHelper.parse(window.location.href, true);
+
+    url.search = null;
+    url.query.userId = user._id;
+
+    return urlHelper.format(url);
+}
+
 export default () => {
     const url = urlHelper.parse(window.location.href, true);
 
@@ -23,7 +32,7 @@ export default () => {
 
                 const formattedUsers = users.map(user => ({
                     name: user.name,
-                    nameSearch: `/admin/applications?userId=${user._id}` // TODO: Use the url module to build the query parameters
+                    nameSearch: getSearchLink(user)
                 }));
 
                 return {
