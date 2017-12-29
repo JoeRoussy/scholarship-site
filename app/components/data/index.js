@@ -426,7 +426,7 @@ export const getUsers = async({
     }
 }
 
-// Get Scholarship Applications
+// Get Scholarship Applications, must pass in javascript date objects
 export const getScholarshipApplicationsWithFilter = async({
     scholarshipApplicationsCollection = required('scholarshipApplicationsCollection'),
     userId,
@@ -441,19 +441,18 @@ export const getScholarshipApplicationsWithFilter = async({
 
     if (afterDate) {
         filters.createdAt = {
-            $gte: new Date(afterDate)
+            $gte: afterDate
         };
     }
 
     if (beforeDate) {
         filters.createdAt = {
-            $lte: new Date(afterDate)
+            $lte: beforeDate
         };
     }
 
     try {
         return await scholarshipApplicationsCollection.aggregate([
-            // TODO: add filters for date and userId
             {
                 $match: filters
             },

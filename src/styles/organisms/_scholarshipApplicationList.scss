@@ -19,5 +19,13 @@
             margin-left: 0.5rem;
             margin-right: 0.5rem;
         }
+
+        .noResultsWrapper {
+            p {
+                text-align: center;
+                font-size: 20px;
+                font-style: italic;
+            }
+        }
     }
 }

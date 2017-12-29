@@ -9,6 +9,7 @@ import pageDimmer from './component/page-dimmer-handler';
 import notification from './component/notification';
 import applicationNameSearch from './component/application-name-search';
 import datePicker from './component/date-picker';
+import { init as applicationCalandarControllerInit } from './component/application-calandar-controller';
 
 // Generic semantic UI setup
 
@@ -25,3 +26,4 @@ pageDimmer();
 notification();
 applicationNameSearch();
 datePicker();
+applicationCalandarControllerInit();

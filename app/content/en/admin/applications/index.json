@@ -4,22 +4,33 @@
     "heading": "Scholarship Applications",
     "calendar": {
         "start": {
-            "id": "scholarshipApplicationListcalendarStart",
+            "id": "scholarshipApplicationListCalendarStart",
             "label": "Show applications after:",
             "placeholder": "Date",
-            "otherId": "scholarshipApplicationListcalendarEnd",
-            "type": "date"
+            "otherId": "scholarshipApplicationListCalendarEnd",
+            "type": "date",
+            "isPastSelector": true,
+            "errorTitle": "Invalid date",
+            "errorMessage": "You must pick a start date that is before the end date"
         },
         "end": {
-            "id": "scholarshipApplicationListcalendarEnd",
+            "id": "scholarshipApplicationListCalendarEnd",
             "label": "Show applications before:",
             "placeholder": "Date",
-            "otherId": "scholarshipApplicationListcalendarStart",
-            "type": "date"
+            "otherId": "scholarshipApplicationListCalendarStart",
+            "type": "date",
+            "isPastSelector": true,
+            "errorTitle": "Invalid date",
+            "errorMessage": "You must pick an end date that is after the start date"
         }
+    },
+    "updateButton": {
+        "id": "applicationListUpdateButton",
+        "text": "Update"
     },
     "searchBar": {
         "id": "applicationsListingNameSearch",
         "placeholder": "Filter By Name"
-    }
+    },
+    "noResultsText": "Could not find any applications"
 }

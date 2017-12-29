@@ -22,7 +22,9 @@ export const applications = ({
 }) => coroutine(function* (req, res) {
 
     const {
-        userId
+        userId,
+        startDate,
+        endDate
     } = req.query;
 
     // First get all the scholarship applications
@@ -31,7 +33,9 @@ export const applications = ({
     try {
         scholarshipApplications = yield getScholarshipApplicationsWithFilter({
             scholarshipApplicationsCollection: applicationsCollection,
-            userId
+            userId,
+            afterDate: startDate ? new Date(parseInt(startDate)) : null,
+            beforeDate: endDate ? new Date(parseInt(endDate)) : null
         });
     } catch (e) {
         logger.error({err: e}, 'Error getting scholarship applications');
