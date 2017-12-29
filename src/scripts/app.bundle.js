@@ -24,6 +24,6 @@ passwordToggle();
 formValidation();
 pageDimmer();
 notification();
-applicationNameSearch();
 datePicker();
+applicationNameSearch();
 applicationCalandarControllerInit();

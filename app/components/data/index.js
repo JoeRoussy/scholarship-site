@@ -397,21 +397,6 @@ export const getUserByEmail = async({
     }
 };
 
-// Get all scholarship applications
-// TODO: Should probably remove this
-// export const getScholarshipApplications = async({
-//     applicationsCollection = required('applicationsCollection')
-// }) => {
-//     try {
-//         return await applicationsCollection.find().toArray();
-//     } catch (e) {
-//         throw new RuntimeError({
-//             msg: 'Error getting scholarship applications',
-//             err: e
-//         });
-//     }
-// };
-
 // Get all the users
 export const getUsers = async({
     usersCollection = required('usersCollection')

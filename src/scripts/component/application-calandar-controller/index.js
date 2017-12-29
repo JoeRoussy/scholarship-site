@@ -96,4 +96,24 @@ export const init = () => {
 
         window.location.href = urlHelper.format(url);
     });
+
+    // Populate dates if they already exist
+    const {
+        startDate: defaultStartDate,
+        endDate: defaultEndDate
+    } = window.globals.queryParams;
+
+    if (defaultStartDate) {
+        const date = new Date(parseInt(defaultStartDate));
+
+        $('#scholarshipApplicationListCalendarStart').calendar('set date', date, true, false);
+        startDate = date;
+    }
+
+    if (defaultEndDate) {
+        const date = new Date(parseInt(defaultEndDate));
+
+        $('#scholarshipApplicationListCalendarEnd').calendar('set date', date, true, false);
+        endDate = date;
+    }
 }
