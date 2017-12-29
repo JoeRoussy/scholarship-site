@@ -1,11 +1,24 @@
 .scholarshipApplicationList {
     .ui.form.calendarGroup {
-        .ui.search {
-            @media screen and (min-width: $computerWidth) {
-                margin-top: 22px;
-                text-align: right;
+        .fields {
+            .ui.grid {
+                .field {
+                    margin-top: 16px;
+
+                    &.first {
+                        margin-top: 0;
+                    }
+                }
+                
+                .ui.search {
+                    @media screen and (min-width: $computerWidth) {
+                        margin-top: 22px;
+                        text-align: right;
+                    }
+                }
             }
         }
+
     }
 
     .applications {
