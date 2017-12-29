@@ -3,7 +3,8 @@ import {
     print,
     RuntimeError,
     intersectIfPopulated,
-    convertToObjectId
+    convertToObjectId,
+    getRegex
 } from '../custom-utils';
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
@@ -57,19 +58,8 @@ function getFilters(name, universityIds, isForUniversitiesCollection) {
     let filters = {};
 
     if (name) {
-        let regex = '';
-        const words = name.split(' ');
-
-        if (words.length === 1) {
-            // If there is only 1 word in the name query, use that
-            regex = words[0];
-        } else {
-            // If there are multiple words in the name query, use and logic in the regex
-            regex = words.reduce((r, word) => `${r}(?=.*${word})`, '');
-        }
-
         filters.name = {
-            $regex: regex,
+            $regex: getRegex(name),
             $options: 'i'
         };
     }

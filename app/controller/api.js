@@ -2,7 +2,7 @@
     All loggers in this module should a module key in the form: api-function-name
 */
 
-import { required, print, unique } from '../components/custom-utils';
+import { required, print, unique, getRegex } from '../components/custom-utils';
 import {
     getProgramsWithFilter,
     getDocById,
@@ -251,7 +251,8 @@ export const usersSearch = ({
     logger = required('logger', 'you must pass a logger for this function to use')
 }) => (req, res) => {
     const {
-        hasScholarshipApplication
+        hasScholarshipApplication,
+        name
     } = req.query;
 
     if (hasScholarshipApplication) {
@@ -262,7 +263,17 @@ export const usersSearch = ({
             .then(applications => {
                 const transformedApplications = applications.map(transformScholarshipApplicationForOutput);
                 const users = transformedApplications.map(x => x.user);
-                const transformedUsers = users.map(transformUserForOutput);
+                let filteredUsers = users;
+
+                // Filter out the users if we got a name in the search
+                // TODO: If we get a lot of users this is going to be slow
+                if (name) {
+                    const regex = new RegExp(getRegex(name), 'i');
+
+                    filteredUsers = users.filter(user => regex.test(user.name));
+                }
+
+                const transformedUsers = filteredUsers.map(transformUserForOutput);
                 const uniqueTransformedUsers = unique(transformedUsers);
                 const count = uniqueTransformedUsers.count;
 

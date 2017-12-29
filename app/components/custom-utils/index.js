@@ -92,3 +92,20 @@ export const unique = array => {
 
     return result;
 };
+
+// Retuns a regex for a plain language query that may contain multiple words using and logic
+// NOTE: For compatability with mongodb, this function returns a string and not a RegExp object
+export const getRegex = query => {
+    let regex = '';
+    const words = query.split(' ');
+
+    if (words.length === 1) {
+        // If there is only 1 word in the name query, use that
+        regex = words[0];
+    } else {
+        // If there are multiple words in the name query, use and logic in the regex
+        regex = words.reduce((r, word) => `${r}(?=.*${word})`, '');
+    }
+
+    return regex;
+}
