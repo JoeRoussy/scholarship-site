@@ -17,7 +17,7 @@ export default ({
             logger: getChildLogger({
                 baseLogger,
                 additionalFields: {
-                    module: 'admin'
+                    module: 'admin-applications-view'
                 }
             })
         })

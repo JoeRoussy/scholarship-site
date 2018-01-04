@@ -27,7 +27,6 @@ export const applications = ({
         endDate
     } = req.query;
 
-    // First get all the scholarship applications
     let scholarshipApplications;
 
     try {

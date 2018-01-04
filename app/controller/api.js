@@ -275,7 +275,6 @@ export const usersSearch = ({
 
                 const transformedUsers = filteredUsers.map(transformUserForOutput);
                 const uniqueTransformedUsers = unique(transformedUsers);
-                const count = uniqueTransformedUsers.count;
 
                 return res.json({
                     count: uniqueTransformedUsers.count,
