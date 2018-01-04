@@ -9,6 +9,12 @@ form {
     }
 
     &.ui.form {
+        .ui.grid {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         .ui.message {
             text-align: center;
         }

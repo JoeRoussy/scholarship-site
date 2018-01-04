@@ -14,11 +14,13 @@ import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
 import authRouteConfig from './router/authRoutes.js';
 import memberRouteConfig from './router/membershipRoutes.js';
+import adminRouteConfig from './router/adminRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
 import configureAuth from './components/authentication';
 import { print } from './components/custom-utils';
+import queryParamsPopulation from './components/populate-query-params';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -73,6 +75,16 @@ dbConfig()
         });
 
         loadQueryParams(app);
+        queryParamsPopulation({
+            app,
+            db,
+            logger: getChildLogger({
+                baseLogger: Logger,
+                additionalFields: {
+                    module: 'populate-query-params'
+                }
+            })
+        });
         loadConfigElements(app);
         loadContentConfig(app);
         loadUser(app);
@@ -87,6 +99,11 @@ dbConfig()
             baseLogger: Logger
         });
         memberRouteConfig({
+            app,
+            db,
+            baseLogger: Logger
+        });
+        adminRouteConfig({
             app,
             db,
             baseLogger: Logger

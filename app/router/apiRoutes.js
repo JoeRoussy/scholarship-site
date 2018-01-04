@@ -1,5 +1,6 @@
 import express from 'express';
-import { programSearch, getProgramById, universitiesSearch, getUniversityById } from '../controller/api.js';
+import { programSearch, getProgramById, universitiesSearch, getUniversityById, usersSearch } from '../controller/api.js';
+import { isAdmin } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 
@@ -52,6 +53,20 @@ export default ({
             }
         })
     }));
+
+    router.get('/users', [
+        isAdmin,
+        usersSearch({
+            usersCollection: db.collection('users'),
+            scholarshipApplicationsCollection: db.collection('scholarshipApplications'),
+            logger: getChildLogger({
+                baseLogger,
+                additionalFields: {
+                    module: 'api-users-search'
+                }
+            })
+        })
+    ]);
 
     app.use('/api', router);
 }

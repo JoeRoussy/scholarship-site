@@ -1,5 +1,6 @@
 import handlebars from 'express-handlebars';
 import marked from 'marked';
+import eol from 'eol';
 
 export default app => {
     const hbs = handlebars.create({
@@ -219,6 +220,9 @@ export default app => {
            },
            getDiscount: function (prices, key) {
                return prices[key].discount;
+           },
+           addLineBreaks: function(text) {
+               return eol.lf(text).replace(/\n/g, '<br>');
            }
         }
     });

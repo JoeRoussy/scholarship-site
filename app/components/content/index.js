@@ -1,6 +1,8 @@
 import { execFile } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import { ObjectID } from 'mongodb';
+import config from '../../config';
 
 
 export default app => {
@@ -35,11 +37,17 @@ function loadContent (options, callback) {
         _options.page = _options.page.substr(1);
     }
 
-    // Now strip any inner params
-    const [ page ] = _options.page.split('/');
+    // Make sure the query params are not involved in the loading of content
+    _options.page = _options.page.split('?')[0];
+
+    // Make sure any ids in the urls are replace with placeholders so the folder structures do not break
+    const [ page, ...possibleParams ] = _options.page.split('/');
+    const isHex = /[0-9A-F]+/;
+
+    const innerParams = possibleParams.map(x => isHex.test(x) ? config.url.defualtParamEncoding : x);
 
     const autoloadPath = `${process.cwd()}/app/content/${_options.lang}/_autoload`;
-    const contentPath = `${process.cwd()}/app/content/${_options.lang}${convertPageURL(page)}`;
+    const contentPath = `${process.cwd()}/app/content/${_options.lang}${convertPageURL([ page, ...innerParams ].join('/'))}`;
 
     execFile('find', [ autoloadPath, contentPath, '-type', 'f', '-maxdepth', '1' ], (err, files) => {
         if (err) {

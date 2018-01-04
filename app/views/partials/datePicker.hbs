@@ -1,0 +1,25 @@
+<div class="datePicker">
+    <label for="{{ id }}">{{ label }}</label>
+    <div
+        id="{{ id }}"
+        class="ui calendar"
+        data-type="{{ type }}"
+        {{#if otherId}}
+            data-end-calendar="{{ otherId }}"
+        {{/if}}
+        {{#if isPastSelector}}
+            data-is-past-selector="true"
+        {{/if}}
+        {{#if errorTitle}}
+            data-error-title="{{ errorTitle }}"
+        {{/if}}
+        {{#if errorMessage}}
+            data-error-message="{{ errorMessage }}"
+        {{/if}}
+    >
+        <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="{{ placeholder }}">
+        </div>
+    </div>
+</div>

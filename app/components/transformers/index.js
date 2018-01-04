@@ -51,3 +51,36 @@ export const transformUniversityForOutput = university => {
         }
     };
 }
+
+export const transformUserForOutput = user => {
+    const {
+        password,
+        isAdmin,
+        ...userProps
+    } = user;
+
+    return {
+        ...userProps
+    };
+}
+
+export const transformScholarshipApplicationForOutput = application => {
+    const {
+        users: [
+            {
+                _id: uId,
+                name: uName
+            }
+        ],
+        userId,
+        ...applicationProps
+    } = application;
+
+    return {
+        ...applicationProps,
+        user: {
+            _id: uId,
+            name: uName
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Scholarship Applications",
+    "calendar": {
+        "start": {
+            "id": "scholarshipApplicationListCalendarStart",
+            "label": "Show applications after:",
+            "placeholder": "Date",
+            "otherId": "scholarshipApplicationListCalendarEnd",
+            "type": "date",
+            "isPastSelector": true,
+            "errorTitle": "Invalid date",
+            "errorMessage": "You must pick a start date that is before the end date"
+        },
+        "end": {
+            "id": "scholarshipApplicationListCalendarEnd",
+            "label": "Show applications before:",
+            "placeholder": "Date",
+            "otherId": "scholarshipApplicationListCalendarStart",
+            "type": "date",
+            "isPastSelector": true,
+            "errorTitle": "Invalid date",
+            "errorMessage": "You must pick an end date that is after the start date"
+        }
+    },
+    "updateButton": {
+        "id": "applicationListUpdateButton",
+        "text": "Update"
+    },
+    "searchBar": {
+        "id": "applicationsListingNameSearch",
+        "placeholder": "Filter By Name"
+    },
+    "noResultsText": "Could not find any applications"
+}

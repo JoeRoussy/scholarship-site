@@ -68,6 +68,9 @@ export const sortByKey = key => (a, b) => {
     return 0;
 }
 
+// Uses the createdAt property in each object
+export const sortByDate = (a, b) => b.createdAt - a.createdAt;
+
 // Returns a fully qualified URL with a given path using the slug in a req object
 export const buildUrl = (req, path) => `${req.protocol}://${req.get('host')}${path}`;
 
@@ -76,3 +79,33 @@ export const redirectToError = (errorKey, res) => res.redirect(`/error?errorKey=
 
 // Verifies that a request conatins a user and they are a member
 export const isMember = req => req.user && req.user.isMember;
+
+// Takes an array and returns all the unique values
+export const unique = array => {
+    let result = [];
+
+    for (let i = 0; i < array.length; i++) {
+        if(!result.includes(array[i])) {
+            result.push(array[i]);
+        }
+    }
+
+    return result;
+};
+
+// Retuns a regex for a plain language query that may contain multiple words using and logic
+// NOTE: For compatability with mongodb, this function returns a string and not a RegExp object
+export const getRegex = query => {
+    let regex = '';
+    const words = query.split(' ');
+
+    if (words.length === 1) {
+        // If there is only 1 word in the name query, use that
+        regex = words[0];
+    } else {
+        // If there are multiple words in the name query, use and logic in the regex
+        regex = words.reduce((r, word) => `${r}(?=.*${word})`, '');
+    }
+
+    return regex;
+}

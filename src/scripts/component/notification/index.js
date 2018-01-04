@@ -7,6 +7,14 @@ const validTypes = [
     'warning'
 ];
 
+const defaultPositioning = {
+    position: 'topRight',
+    transitionIn: 'fadeInLeft',
+    transitionOut: 'fadeOutRight',
+    transitionInMobile: 'fadeInLeft',
+    transitionOutMobile: 'fadeOutRight'
+}
+
 export default () => {
     $('[data-notification-trigger]').each((index, e) => {
         const element = $(e);
@@ -32,11 +40,23 @@ export default () => {
         iziToast[type]({
             title,
             message,
-            position: 'topRight',
-            transitionIn: 'fadeInLeft',
-            transitionOut: 'fadeOutRight',
-            transitionInMobile: 'fadeInLeft',
-            transitionOutMobile: 'fadeOutRight'
+            ...defaultPositioning
         });
     });
 };
+
+export const showError = (title, message) => {
+    iziToast.error({
+        title,
+        message,
+        ...defaultPositioning
+    });
+}
+
+export const showWarning = (title, message) => {
+    iziToast.warning({
+        title,
+        message,
+        ...defaultPositioning
+    });
+}

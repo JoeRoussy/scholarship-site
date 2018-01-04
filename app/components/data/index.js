@@ -3,7 +3,8 @@ import {
     print,
     RuntimeError,
     intersectIfPopulated,
-    convertToObjectId
+    convertToObjectId,
+    getRegex
 } from '../custom-utils';
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
@@ -57,19 +58,8 @@ function getFilters(name, universityIds, isForUniversitiesCollection) {
     let filters = {};
 
     if (name) {
-        let regex = '';
-        const words = name.split(' ');
-
-        if (words.length === 1) {
-            // If there is only 1 word in the name query, use that
-            regex = words[0];
-        } else {
-            // If there are multiple words in the name query, use and logic in the regex
-            regex = words.reduce((r, word) => `${r}(?=.*${word})`, '');
-        }
-
         filters.name = {
-            $regex: regex,
+            $regex: getRegex(name),
             $options: 'i'
         };
     }
@@ -396,3 +386,64 @@ export const getUserByEmail = async({
         });
     }
 };
+
+// Get all the users
+export const getUsers = async({
+    usersCollection = required('usersCollection')
+}) => {
+    try {
+        return await usersCollection.find().toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting users',
+            err: e
+        });
+    }
+}
+
+// Get Scholarship Applications, must pass in javascript date objects
+export const getScholarshipApplicationsWithFilter = async({
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection'),
+    userId,
+    afterDate,
+    beforeDate
+}) => {
+    const filters = {};
+
+    if (userId) {
+        filters.userId = convertToObjectId(userId);
+    }
+
+    if (afterDate) {
+        filters.createdAt = {
+            $gte: afterDate
+        };
+    }
+
+    if (beforeDate) {
+        filters.createdAt = {
+            $lte: beforeDate
+        };
+    }
+
+    try {
+        return await scholarshipApplicationsCollection.aggregate([
+            {
+                $match: filters
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'userId',
+                    foreignField: '_id',
+                    as: 'users'
+                }
+            }
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting users',
+            err: e
+        });
+    }
+}

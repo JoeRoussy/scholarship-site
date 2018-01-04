@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 import { transformProgramForOutput } from '../components/transformers';
 import { print, sortByKey, required, redirectToError, isMember } from '../components/custom-utils';
 import config from '../config';
+import eol from 'eol';
 
 if (!config) {
     throw new Error('Could not load config');
@@ -332,13 +333,16 @@ export const processScholarshipApplication = ({
         return next();
     }
 
+    // Save the application with any line endings normalized to '\n'
+    const normalizedApplication = eol.lf(application);
+
     try {
         yield insertInDb({
             collection: scholarshipApplicationCollection,
             document: {
                 name,
                 email,
-                application,
+                application: normalizedApplication,
                 userId
             }
         });
@@ -353,7 +357,7 @@ export const processScholarshipApplication = ({
     const mailMessage = getMailMessage({
         name,
         email,
-        application
+        application: normalizedApplication
     });
 
     // Do not wait for the message to send because this takes a long time

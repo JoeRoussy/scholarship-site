@@ -15,11 +15,7 @@ export const getApplicationMailMessage = ({
     name,
     email,
     application
-}) => `
-    Scholarship application from ${name} (${email})
-
-    ${application}
-`;
+}) => `Scholarship application from ${name} (${email}):\n\n${application}`;
 
 export const sendMessage = async ({
     to,

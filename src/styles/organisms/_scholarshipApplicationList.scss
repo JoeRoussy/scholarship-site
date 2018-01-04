@@ -1,0 +1,43 @@
+.scholarshipApplicationList {
+    .ui.form.calendarGroup {
+        .fields {
+            .ui.grid {
+                .field {
+                    margin-top: 16px;
+
+                    &.first {
+                        margin-top: 0;
+                    }
+                }
+
+                .ui.search {
+                    @media screen and (min-width: $computerWidth) {
+                        margin-top: 22px;
+                        text-align: right;
+                    }
+                }
+            }
+        }
+    }
+
+    .applications {
+        margin-top: 20px;
+
+        @media screen and (min-width: $tabletWidth) {
+            margin-top: 40px;
+        }
+
+        .ui.raised.segment, .minorHeading {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .noResultsWrapper {
+            p {
+                text-align: center;
+                font-size: 20px;
+                font-style: italic;
+            }
+        }
+    }
+}
