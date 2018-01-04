@@ -3,8 +3,9 @@ import passport from 'passport';
 import { print, required } from '../components/custom-utils';
 import { generateHash } from '../components/authentication';
 import { wrap as coroutine } from 'co';
-import { getUserByEmail } from '../components/data';
+import { getUserByEmail, getUserByReferalCode } from '../components/data';
 import { insert as saveToDb } from '../components/db/service';
+import { get as getHash } from '../components/hash';
 
 if (!config) {
     throw new Error('Could not find config!');
@@ -92,6 +93,10 @@ export const signup = ({
         buyMemebership
     } = req.body;
 
+    const {
+        refId
+    } = req.query;
+
     if (!email || !password || !name) {
         logger.warn(`Got a signup request with missing data email: ${email}, password: ${password}, name: ${name}`);
 
@@ -128,7 +133,8 @@ export const signup = ({
     const newUser = {
         email,
         password: hashedPassword,
-        name
+        name,
+        refId: getHash({ input: email })
     };
 
     let savedUser = null;
@@ -146,6 +152,26 @@ export const signup = ({
         }, 'Error saving new user to db');
 
         return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
+    }
+
+    // Now that the user has been made, see if we need to credit anyone with a referal
+    if (refId) {
+        let referer = null;
+
+        try {
+            referer = yield getUserByReferalCode({
+                usersCollection: db.collection('users'),
+                refId
+            });
+        } catch (e) {
+            // No need to mess this signup up because we could not find a referer
+            logger.error(err.err, err.msg);
+        }
+
+        if (referer) {
+            console.log('Found a referer!!!!!!');
+            // TODO: Actually attribute a signup to this user
+        }
     }
 
     // Now that the user has been made, log them in

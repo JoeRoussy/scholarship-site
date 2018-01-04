@@ -387,6 +387,20 @@ export const getUserByEmail = async({
     }
 };
 
+export const getUserByReferalCode = async({
+    usersCollection = required('usersCollection'),
+    refId = required('refId')
+}) => {
+    try {
+        return await usersCollection.findOne({ refId });
+    } catch (e) {
+        throw new RuntimeError({
+            msg: `Error getting a user with the refId ${refId}`,
+            err: e
+        });
+    }
+};
+
 // Get all the users
 export const getUsers = async({
     usersCollection = required('usersCollection')
