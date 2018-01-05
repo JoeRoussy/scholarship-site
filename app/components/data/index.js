@@ -387,7 +387,7 @@ export const getUserByEmail = async({
     }
 };
 
-export const getUserByReferalCode = async({
+export const getUserByReferralCode = async({
     usersCollection = required('usersCollection'),
     refId = required('refId')
 }) => {
@@ -461,3 +461,11 @@ export const getScholarshipApplicationsWithFilter = async({
         });
     }
 }
+
+export const getCurrentReferralPromo = async({
+    referralPromosCollection = required('referralPromosCollection')
+}) => {
+    const currentDate = new Date();
+
+
+};

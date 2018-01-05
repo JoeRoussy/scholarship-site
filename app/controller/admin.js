@@ -56,3 +56,13 @@ export const applications = ({
 
     return res.render('scholarshipApplicationList', res.locals);
 });
+
+export const promos = ({
+
+}) => coroutine(function* (req, res) {
+
+    //TODO: Get all the referral promotions and add them to the locals
+    // Redirect to an error if they cannot be found
+
+    return res.render('promos', res.locals);
+});

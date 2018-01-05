@@ -3,7 +3,7 @@ import passport from 'passport';
 import { print, required } from '../components/custom-utils';
 import { generateHash } from '../components/authentication';
 import { wrap as coroutine } from 'co';
-import { getUserByEmail, getUserByReferalCode } from '../components/data';
+import { getUserByEmail, getUserByReferralCode } from '../components/data';
 import { insert as saveToDb } from '../components/db/service';
 import { get as getHash } from '../components/hash';
 
@@ -154,12 +154,12 @@ export const signup = ({
         return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
     }
 
-    // Now that the user has been made, see if we need to credit anyone with a referal
+    // Now that the user has been made, see if we need to credit anyone with a referral
     if (refId) {
         let referer = null;
 
         try {
-            referer = yield getUserByReferalCode({
+            referer = yield getUserByReferralCode({
                 usersCollection: db.collection('users'),
                 refId
             });

@@ -1,0 +1,10 @@
+{
+    "title": "Scholarship Site",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Profile",
+    "joinedHeading": "Joined:",
+    "memberSinceHeading": "Member Since:",
+    "referralLinkText": "referral Link:",
+    "referralLinkHref": "/?refId={refId}",
+    "maxreferrals": 3
+}

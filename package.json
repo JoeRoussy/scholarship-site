@@ -18,6 +18,7 @@
     "express-session": "1.15.5",
     "izitoast": "1.2.0",
     "marked": "0.3.6",
+    "moment": "2.20.1",
     "mongodb": "2.2.30",
     "nodemailer": "4.1.0",
     "passport": "0.4.0",

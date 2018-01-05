@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdmin, applications } from '../controller/admin.js';
+import { isAdmin, applications, promos } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 
@@ -20,6 +20,13 @@ export default ({
                     module: 'admin-applications-view'
                 }
             })
+        })
+    ]);
+
+    router.get('/promos', [
+        isAdmin,
+        promos({
+
         })
     ]);
 

@@ -1,6 +1,7 @@
 import handlebars from 'express-handlebars';
 import marked from 'marked';
 import eol from 'eol';
+import format_date from '../format-date';
 
 export default app => {
     const hbs = handlebars.create({

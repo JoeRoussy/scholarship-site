@@ -379,3 +379,23 @@ export const processScholarshipApplication = ({
 
     return next();
 });
+
+export const profile = async({
+    usersCollection = required('usersCollection'),
+    referralsCollection = required('referralsCollection'),
+    referralPromosCollection = required('referralPromos')
+}) => coroutine(function* (req, res) {
+    // Make sure there is a current user in req.user
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    // See how many referrals the current user has
+    // Get the current promo
+    // Get the referrals that go with that promo and have a referer of the current user
+
+});

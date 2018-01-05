@@ -1,0 +1,51 @@
+{{> navigation page.navigation}}
+
+<div id="adminPromoListingSection" class="promosSection rootSection">
+    <div class="ui container">
+        <h1>{{ page.heading }}</h1>
+        <div class="promosWrapper">
+            {{#each promos}}
+                {{#with this}}
+                    <div class="ui raised segment promo">
+                        <h2>{{ name }}</h2>
+                        <div class="tableWrapper">
+                            <p class="row">
+                                <span class="label">{{ page.from }}</span>
+                                <span class="value">{{formatDate start}}</span>
+                            </p>
+                            <p class="row">
+                                <span class="label">{{ page.to }}</span>
+                                <span class="value">{{formatDate end}}</span>
+                            </p>
+                        </div>
+                        {{#if winner}}
+                            <div class="winnerWrapper">
+                                <h3>{{ page.winner }}</h3>
+                                <p>{{ winner.name }}</p>
+                                <a href="mailto:{{ winner.email }}">{{ winner.email }}</a>
+                            </div>
+                        {{else}}
+                            <div class="tableWrapper">
+                                <p class="row">
+                                    <span class="label">{{ page.numberEligible }}</span>
+                                    <span class="value">{{ numberEligible }}</span>
+                                </p>
+                            </div>
+                            <div class="buttonWrapper">
+                                <button class="ui button green" type="button" data-promo-id="{{ _id }}">{{ page.findWinner }}</button>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/with}}
+            {{else}}
+                <p class="noneFoundText">{{ page.noneFound }}</p>
+            {{/each}}
+        </div>
+
+        <div class="buttonWrapper">
+            {{#with page.newPromo}}
+                <a class="ui button green" href="{{ href }}">{{ text }}</a>
+            {{/with}}
+        </div>
+    </div>
+</div>
