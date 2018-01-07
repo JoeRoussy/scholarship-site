@@ -16,10 +16,22 @@
         {{#if errorMessage}}
             data-error-message="{{ errorMessage }}"
         {{/if}}
+        {{#if callbackTypes}}
+            data-callback-types="{{ callbackTypes}}"
+        {{/if}}
     >
         <div class="ui input left icon">
             <i class="calendar icon"></i>
-            <input type="text" placeholder="{{ placeholder }}">
+            <input
+                type="text"
+                placeholder="{{ placeholder }}"
+                {{#if validate}}
+                    data-validate="text"
+                {{/if}}
+                {{#if errorElementId}}
+                    data-error-element-id="{{ errorElementId }}"
+                {{/if}}
+            >
         </div>
     </div>
 </div>

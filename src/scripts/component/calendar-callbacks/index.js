@@ -1,6 +1,20 @@
-// Provides a function to fetch classback functions for the events of all date pickers in the app
+// Provides a function to fetch callback functions for the events of all date pickers in the app.
+// Also exposes the date range picker controllers for all applicable date pickers
 
-import { onStartChange as applicationOnStartChange, onEndChange as applicationOnEndChange } from '../application-calandar-controller';
+import datePickerCallbacks from '../date-range-picker-controller';
+
+const _applicationDatePickerCallbacks = datePickerCallbacks();
+const _promosDatePickerCallbacks = datePickerCallbacks();
+
+const {
+    onEndChange: applicationOnEndChange,
+    onStartChange: applicationOnStartChange
+} = _applicationDatePickerCallbacks;
+
+const {
+    onEndChange: promosOnEndChange,
+    onStartChange: promosOnStartChange
+} = _promosDatePickerCallbacks;
 
 const callbacks = {
     scholarshipApplicationListCalendarStart: {
@@ -8,17 +22,22 @@ const callbacks = {
     },
     scholarshipApplicationListCalendarEnd: {
         onChange: applicationOnEndChange
+    },
+    createPromoStartDate: {
+        onChange: promosOnStartChange
+    },
+    createPromoEndDate: {
+        onChange: promosOnEndChange
     }
-}
+};
 
 export default (id, type) => {
-    if (!callbacks[id]) {
-        throw new Error(`Invalid id: ${id}`);
+    if (callbacks[id] && callbacks[id][type]) {
+        return callbacks[id][type];
+    } else {
+        return null;
     }
-
-    if (!callbacks[id][type]) {
-        throw new Error(`Invalid type: ${type}`);
-    }
-
-    return callbacks[id][type];
 }
+
+export const applicationCallbacks = _applicationDatePickerCallbacks;
+export const promosCallbacks = _promosDatePickerCallbacks;

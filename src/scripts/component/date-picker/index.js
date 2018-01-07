@@ -11,6 +11,13 @@ export default () => {
         const endCalendar = element.attr('data-end-calendar');
         const startCalendar = element.attr('data-start-calendar');
         const isPastSelector = element.attr('data-is-past-selector');
+        const callbackTypesStr = element.attr('data-callback-types');
+
+        let callbackTypes = [];
+
+        if (callbackTypesStr) {
+            callbackTypes = JSON.parse(callbackTypesStr);
+        }
 
         if (!type) {
             console.error('Missing type value on date picker ', element);
@@ -32,14 +39,16 @@ export default () => {
             config.endcalendar = endCalendar;
         }
 
-        if (id) {
-            const onChange = calendarCallbacks(id, 'onChange');
+        if (id && callbackTypes.length) {
+            callbackTypes.forEach(callbackType => {
+                const callback = calendarCallbacks(id, callbackType);
 
-            if (typeof onChange == 'function') {
-                config.onChange = onChange;
-            } else {
-                throw new Error(`Did not get a function back from the calendar callback module for element with id: ${id}`);
-            }
+                if (typeof callback === 'function') {
+                    config[callbackType] = callback;
+                } else {
+                    throw new Error(`Did not get a function back from the calendar callback module for element with id: ${id} and callback type: ${callbackType}`);
+                }
+            });
         }
 
         element.calendar({

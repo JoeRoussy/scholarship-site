@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdmin, applications, promos } from '../controller/admin.js';
+import { isAdmin, applications, promos, createPromo } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 
@@ -28,6 +28,11 @@ export default ({
         promos({
 
         })
+    ]);
+
+    router.get('/promos/new', [
+        isAdmin,
+        createPromo
     ]);
 
     app.use('/admin', router);

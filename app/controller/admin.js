@@ -66,3 +66,5 @@ export const promos = ({
 
     return res.render('promos', res.locals);
 });
+
+export const createPromo = (req, res) => res.render('createPromo');

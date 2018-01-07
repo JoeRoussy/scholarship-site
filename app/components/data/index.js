@@ -435,9 +435,17 @@ export const getScholarshipApplicationsWithFilter = async({
     }
 
     if (beforeDate) {
-        filters.createdAt = {
-            $lte: beforeDate
-        };
+        // Be sure to create the createdAt property in the filters if it is not already there
+        if (filters.createdAt) {
+            filters.createdAt = {
+                ...filters.createdAt,
+                $lte: beforeDate
+            };
+        } else {
+            filters.createdAt = {
+                $lte: beforeDate
+            };
+        }
     }
 
     try {
