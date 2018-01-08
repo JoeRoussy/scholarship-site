@@ -12,6 +12,7 @@
     },
     "nameInput": {
         "label": "Name:",
+        "name": "name",
         "type": "text",
         "placeholder": "Promo Name",
         "validationType": "text",
@@ -38,6 +39,10 @@
             "text": "Please select a start date"
         }
     },
+    "hiddenStartInput": {
+        "id": "hiddenCreatePromoStartDate",
+        "name": "startDate"
+    },
     "endInput": {
         "datePickerElement": {
             "id": "createPromoEndDate",
@@ -55,6 +60,10 @@
             "id": "createPromoEndDateError",
             "text": "Please select an end date"
         }
+    },
+    "hiddenEndInput": {
+        "id": "hiddenCreatePromoEndDate",
+        "name": "endDate"
     },
     "submit": "Submit"
 }

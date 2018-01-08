@@ -47,6 +47,8 @@ export default () => {
             }
 
             endDate = date;
+
+            return true;
         },
         onStartChange: function(date) {
             if (endDate) {
@@ -60,6 +62,8 @@ export default () => {
             }
 
             startDate = date;
+
+            return true;
         },
         getStartDate: () => startDate,
         getEndDate: () => endDate,

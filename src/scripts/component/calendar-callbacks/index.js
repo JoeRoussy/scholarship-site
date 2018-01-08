@@ -2,9 +2,13 @@
 // Also exposes the date range picker controllers for all applicable date pickers
 
 import datePickerCallbacks from '../date-range-picker-controller';
+import { onChange as createPromoOnChange } from '../create-promo-controller';
 
 const _applicationDatePickerCallbacks = datePickerCallbacks();
 const _promosDatePickerCallbacks = datePickerCallbacks();
+
+const startCreatePromoOnChange = createPromoOnChange('hiddenCreatePromoStartDate');
+const endCreatePromoOnChange = createPromoOnChange('hiddenCreatePromoEndDate');
 
 const {
     onEndChange: applicationOnEndChange,
@@ -24,10 +28,22 @@ const callbacks = {
         onChange: applicationOnEndChange
     },
     createPromoStartDate: {
-        onChange: promosOnStartChange
+        onChange: date => {
+            const rangeResult = promosOnStartChange(date);
+
+            if (rangeResult) {
+                startCreatePromoOnChange(date);
+            }
+        }
     },
     createPromoEndDate: {
-        onChange: promosOnEndChange
+        onChange: date => {
+            const rangeResult = promosOnEndChange(date);
+
+            if (rangeResult) {
+                endCreatePromoOnChange(date);
+            }
+        }
     }
 };
 

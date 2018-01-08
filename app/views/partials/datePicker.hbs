@@ -25,6 +25,9 @@
             <input
                 type="text"
                 placeholder="{{ placeholder }}"
+                {{#if name}}
+                    name="{{ name }}"
+                {{/if}}
                 {{#if validate}}
                     data-validate="text"
                 {{/if}}

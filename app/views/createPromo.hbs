@@ -50,6 +50,12 @@
                     <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
                 {{/with}}
             </div>
+            {{#with page.hiddenStartInput}}
+                <input id="{{ id }}" type="hidden" name="{{ name }}">
+            {{/with}}
+            {{#with page.hiddenEndInput}}
+                <input id="{{ id }}" type="hidden" name="{{ name }}">
+            {{/with}}
             <div class="field">
                 <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
             </div>
