@@ -470,6 +470,8 @@ export const getScholarshipApplicationsWithFilter = async({
     }
 }
 
+
+// TODO: Might not need this
 export const getCurrentReferralPromo = async({
     referralPromosCollection = required('referralPromosCollection')
 }) => {

@@ -89,12 +89,13 @@ export const processCreatePromo = ({
     }
 
     try {
-        insertInDb({
+        yield insertInDb({
             collection: referralPromosCollection,
             document: {
                 name,
                 startDate: new Date(parseInt(startDateAsNum)),
-                endDate: new Date(parseInt(endDateAsNum))
+                endDate: new Date(parseInt(endDateAsNum)),
+                eligibleUsers: []
             }
         });
     } catch (e) {

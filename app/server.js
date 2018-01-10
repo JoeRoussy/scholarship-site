@@ -21,6 +21,7 @@ import runDataImport from './components/db/data-import';
 import configureAuth from './components/authentication';
 import { print } from './components/custom-utils';
 import queryParamsPopulation from './components/populate-query-params';
+import { middleware as sessionPopulation } from './components/populate-session';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -61,6 +62,7 @@ dbConfig()
             extended: true
         }));
         app.use(bodyParser.json());
+        app.use(sessionPopulation(config.session.loadedQueryKeys))
         app.use(language);
 
         configureAuth({
