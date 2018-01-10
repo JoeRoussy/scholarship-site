@@ -1,3 +1,5 @@
+import moment from 'moment';
+import { insert } from '../db/service';
 import {
     required,
     print,
@@ -471,11 +473,46 @@ export const getScholarshipApplicationsWithFilter = async({
 }
 
 
-// TODO: Might not need this
-export const getCurrentReferralPromo = async({
+export const attributeReferral = async({
+    refererId = required('refererId'),
+    refereeId = required('refereeId'),
+    referralsCollection = required('referralsCollection'),
     referralPromosCollection = required('referralPromosCollection')
 }) => {
-    const currentDate = new Date();
+    const now = new Date(moment().startOf('day').toISOString());
+    let currentPromos = [];
 
+    // First get all the current promos
+    try {
+        currentPromos = await referralPromosCollection.find({
+            startDate: {
+                $lte: now
+            },
+            endDate: {
+                $gte: now
+            }
+        }).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting current referral promotions',
+            err: e
+        });
+    }
 
+    // Foreach current promo, insert a new referral for the referer
+    try {
+        await Promise.all(currentPromos.map(promo => insert({
+            collection: referralsCollection,
+            document: {
+                promoId: promo._id,
+                refererId,
+                refereeId
+            }
+        })));
+    } catch (e) {
+        throw new RuntimeError({
+            msg: `Could not update all current promos for referer with id: ${refererId}`,
+            err: e
+        });
+    }
 };

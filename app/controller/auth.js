@@ -1,10 +1,9 @@
 import config from '../config';
 import passport from 'passport';
-import moment from 'moment';
 import { print, required } from '../components/custom-utils';
 import { generateHash } from '../components/authentication';
 import { wrap as coroutine } from 'co';
-import { getUserByEmail, getUserByReferralCode } from '../components/data';
+import { getUserByEmail, getUserByReferralCode, attributeReferral } from '../components/data';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
 import { get as getHash } from '../components/hash';
 import { free } from '../components/populate-session';
@@ -173,25 +172,15 @@ export const signup = ({
         if (referer) {
             // Update any promos going on now to have this new user as eligible
             try {
-                const now = new Date(moment().startOf('day').toISOString());
-
-                yield findAndUpdate({
-                    collection: db.collection('referralPromos'),
-                    query: {
-                        startDate: {
-                            $lte: now
-                        },
-                        endDate: {
-                            $gte: now
-                        }
-                    },
-                    uniquePush: {
-                        eligibleUsers: referer._id
-                    }
-                })
+                yield attributeReferral({
+                    refererId: referer._id,
+                    refereeId: savedUser._id,
+                    referralPromosCollection: db.collection('referralPromos'),
+                    referralsCollection: db.collection('referrals')
+                });
             } catch (e) {
                 // Again, we don't want to break this sign in because we could not complete some referral assignment
-                logger.error(e, `Could not update current promos with eligible user: ${referer._id}`);
+                logger.error(e.err, e.msg);
             }
         }
 
