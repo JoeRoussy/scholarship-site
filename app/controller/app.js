@@ -1,7 +1,13 @@
 import { wrap as coroutine } from 'co';
-import { getProgramsWithFilter, getProgramById, countProgramsForFilter } from '../components/data';
+import {
+    getProgramsWithFilter,
+    getProgramById,
+    countProgramsForFilter,
+    getCurrentReferralInformationForUser,
+    populateMembershipInformation
+} from '../components/data';
 import { ObjectId } from 'mongodb';
-import { transformProgramForOutput } from '../components/transformers';
+import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
 import { print, sortByKey, required, redirectToError, isMember } from '../components/custom-utils';
 import config from '../config';
 import eol from 'eol';
@@ -380,13 +386,14 @@ export const processScholarshipApplication = ({
     return next();
 });
 
-export const profile = async({
+export const profile = ({
     usersCollection = required('usersCollection'),
     referralsCollection = required('referralsCollection'),
-    referralPromosCollection = required('referralPromos')
+    referralPromosCollection = required('referralPromos'),
+    transactionsCollection = required('transactionsCollection')
 }) => coroutine(function* (req, res) {
     // Make sure there is a current user in req.user
-    const {
+    let {
         user
     } = req;
 
@@ -394,8 +401,35 @@ export const profile = async({
         return res.redirect('/');
     }
 
-    // See how many referrals the current user has
-    // Get the current promo
-    // Get the referrals that go with that promo and have a referer of the current user
+    // Get referal information for the current user
+    let currentPromos = [];
 
+    try {
+        currentPromos = yield getCurrentReferralInformationForUser({
+            userId: user._id,
+            referralsCollection
+        });
+    } catch (e) {
+        // Log an error about now we failed to find the referral information about the current promotions
+        
+        return redirectToError('default', res);
+    }
+
+    try {
+        user = yield populateMembershipInformation({
+            user,
+            transactionsCollection
+        });
+    }  catch (e) {
+        // Log an error about not being able to populate user with membership information
+
+        return redirectToError('default', res);
+    }
+
+    // Need to assign the new user to locals along with the currentPromos
+    res.locals.user = user;
+    res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
+
+    print(res.locals.currentPromos)
+    return res.render('profile');
 });

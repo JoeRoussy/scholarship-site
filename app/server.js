@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import config from './config';
 import language from './components/language';
 import loadContentConfig from './components/content';
-import loadQueryParams from './components/load-query-params';
+import loadRequest from './components/load-request';
 import loadConfigElements from './components/load-config';
 import loadUser from './components/load-user';
 import templateConfig from './components/template-config';
@@ -76,7 +76,7 @@ dbConfig()
             baseLogger: Logger
         });
 
-        loadQueryParams(app);
+        loadRequest(app);
         queryParamsPopulation({
             app,
             db,

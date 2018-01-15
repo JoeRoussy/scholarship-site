@@ -84,3 +84,30 @@ export const transformScholarshipApplicationForOutput = application => {
         }
     }
 }
+
+/*
+    Transforms promos with referral information of the form:
+    {
+        promo: {},
+        referrals: [  ] // Array of users
+    }
+*/
+export const transformPromoForOutput = p => {
+    const {
+        promo: {
+            winner,
+            ...promoProps
+        } = {},
+        referrals
+    } = p;
+
+    const transformedPromo = {
+        winner: winner ? transformUserForOutput(winner) : null,
+        ...promoProps
+    };
+
+    return {
+        promo: transformedPromo,
+        referrals: referrals.map(transformUserForOutput)
+    };
+}

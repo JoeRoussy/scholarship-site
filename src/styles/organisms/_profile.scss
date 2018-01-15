@@ -1,0 +1,52 @@
+.profileSection {
+    .profileData {
+        display: table;
+        width: 100%;
+        margin: 0 auto;
+        font-size: 1.2em;
+
+        @media screen and (min-width: $tabletWidth) {
+            width: 55%;
+            font-size: 1.35em;
+        }
+
+        .row {
+            display: table-row;
+
+            .label, .value {
+                display: table-cell;
+                width: 50%;
+                padding: 10px 0;
+            }
+
+            .label {
+                font-weight: bold;
+            }
+
+            .value {
+                p {
+                    margin: 0;
+
+                    &.description {
+                        margin-top: 0.5em;
+                        font-size: 0.7em;
+                        font-style: italic;
+                        color: #999;
+                    }
+                }
+            }
+        }
+    }
+
+    .promosData {
+        margin-top: 50px;
+
+        h2 {
+            text-align: center;
+        }
+
+        .promo {
+            margin-top: 25px;
+        }
+    }
+}
