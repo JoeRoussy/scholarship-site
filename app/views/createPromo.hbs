@@ -26,17 +26,7 @@
                 </div>
             {{/if}}
             <div class="field">
-                {{#with page.nameInput}}
-                    <label>{{ label }}</label>
-                    <input
-                        type="{{ type }}"
-                        name="{{ name }}"
-                        placeholder="{{ placeholder }}"
-                        data-validate="{{ validationType }}"
-                        data-error-element-id="{{ errorElement.id }}"
-                    >
-                    <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
-                {{/with}}
+                {{> standardFormInput page.nameInput}}
             </div>
             <div class="field">
                 {{#with page.startInput}}
@@ -49,6 +39,9 @@
                     {{> datePicker datePickerElement}}
                     <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
                 {{/with}}
+            </div>
+            <div class="field">
+                {{> standardFormInput page.threasholdInput}}
             </div>
             {{#with page.hiddenStartInput}}
                 <input id="{{ id }}" type="hidden" name="{{ name }}">

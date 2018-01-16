@@ -525,13 +525,56 @@ export const getCurrentReferralPromos = async({
 // Returns the all the current promos with information about each referal associated with a particular user
 export const getCurrentReferralInformationForUser = async({
     userId = required('userId'),
-    referralsCollection = required('referralsCollection')
+    referralsCollection = required('referralsCollection'),
+    referralPromosCollection = requried('referralPromosCollection')
 }) => {
     let result = [];
+    let currentPromos = [];
+    let referrals = [];
     const now = new Date(moment().startOf('day').toISOString());
 
+    // Find all the current promos
     try {
-        result = await referralsCollection.aggregate([
+        currentPromos = await referralPromosCollection.aggregate([
+            {
+                $match: {
+                    startDate: {
+                        $lte: now
+                    },
+                    endDate: {
+                        $gte: now
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'winnerId',
+                    foreignField: '_id',
+                    as: 'winners'
+                }
+            },
+            {
+                $project: {
+                    name: 1,
+                    startDate: 1,
+                    endDate: 1,
+                    createdAt: 1,
+                    threashold: 1,
+                    winner: { $arrayElemAt: [ '$winners', 0 ] }
+                }
+            }
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: 'Error finding current referral promotions'
+        });
+    }
+
+    // Now find any referrals that are associated with this user
+    try {
+        referrals = await referralsCollection.aggregate([
             {
                 $match: {
                     refererId: userId
@@ -546,70 +589,56 @@ export const getCurrentReferralInformationForUser = async({
                 }
             },
             {
-                $lookup: {
-                    from: 'referralPromos',
-                    localField: 'promoId',
-                    foreignField: '_id',
-                    as: 'promos'
-                }
-            },
-            {
                 $project: {
-                    promo: { $arrayElemAt: [ '$promos', 0 ]  },
+                    promoId: 1,
+                    refererId: 1,
+                    createdAt: 1,
                     referee: { $arrayElemAt: [ '$referees', 0 ]  }
                 }
             },
             {
-                $lookup: {
-                    from: 'users',
-                    localField: 'promo.winnerId',
-                    foreignField: '_id',
-                    as: 'promo.winners'
-                }
-            },
-            {
-                $project: {
-                    promo: {
-                        name: 1,
-                        startDate: 1,
-                        endDate: 1,
-                        createdAt: 1,
-                        threashold: 1,
-                        winner: { $arrayElemAt: [ '$promo.winners', 0 ]  }
-                    },
-                    referee: 1
-                }
-            },
-            {
-                $match: {
-                    'promo.startDate': {
-                        $lte: now
-                    },
-                    'promo.endDate': {
-                        $gte: now
-                    }
-                }
-            },
-            {
                 $group: {
-                    _id: '$promo',
+                    _id: '$promoId',
                     referrals: { $push: '$referee' }
                 }
             }
-        ]).toArray();
+        ]).toArray()
     } catch (e) {
         throw new RuntimeError({
-            msg: `Could not find current referral promotion information for user with ID: ${userId}`,
+            msg: `Could not find current referral information for user with ID: ${userId}`,
             err: e
         });
     }
 
-    // Rename the unintuitive _id property to a more useful name of "promo"
-    return result.map(x => ({
-        promo: x._id,
+    // Rename the unintuitive _id property to a more useful name of "promoId"
+    const formattedReferrals = referrals.map(x => ({
+        promoId: x._id,
         referrals: x.referrals
     }));
+
+    // Go through the currentPromos and find any referrals for that promo in the referrals array
+    return currentPromos.map(promo => {
+        const {
+            _id: promoId
+        } = promo;
+
+        const [ referralInfo ] = formattedReferrals.filter(x => x.promoId.equals(promoId));
+
+        if (referralInfo) {
+            return {
+                ...promo,
+                referrals: referralInfo.referrals
+            };
+        }
+
+        return {
+            ...promo,
+            referrals: []
+        };
+    })
 };
+
+
 
 export const attributeReferral = async({
     refererId = required('refererId'),

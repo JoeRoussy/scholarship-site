@@ -61,6 +61,17 @@
             "text": "Please select an end date"
         }
     },
+    "threasholdInput": {
+        "label": "Minimum Referrals To Be Eligible:",
+        "name": "threashold",
+        "type": "text",
+        "placeholder": "Threashold",
+        "validationType": "integer",
+        "errorElement": {
+            "id": "createPromoThreasholdError",
+            "text": "Please enter an integer for the threashold"
+        }
+    },
     "hiddenEndInput": {
         "id": "hiddenCreatePromoEndDate",
         "name": "endDate"

@@ -1,6 +1,6 @@
 // Validates an input based on its type.
 
-import { isEmpty, isText, isEmail, isEqualText, wordCountIsLessThan } from '../validate';
+import { isEmpty, isText, isEmail, isInteger, isEqualText, wordCountIsLessThan } from '../validate';
 
 export default (element) => {
     const input = $(element);
@@ -21,6 +21,8 @@ function validateForInputType(type, input) {
             return isText(input.val());
         case 'email':
             return isEmail(input.val());
+        case 'integer':
+            return isInteger(input.val());
         case 'equal':
             const elementToCompareId = input.attr('data-validation-target-id');
 

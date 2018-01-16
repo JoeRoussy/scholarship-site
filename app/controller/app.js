@@ -407,7 +407,8 @@ export const profile = ({
     try {
         currentPromos = yield getCurrentReferralInformationForUser({
             userId: user._id,
-            referralsCollection
+            referralsCollection,
+            referralPromosCollection
         });
     } catch (e) {
         // Log an error about now we failed to find the referral information about the current promotions
@@ -430,6 +431,6 @@ export const profile = ({
     res.locals.user = user;
     res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
 
-    print(res.locals.currentPromos)
+
     return res.render('profile');
 });

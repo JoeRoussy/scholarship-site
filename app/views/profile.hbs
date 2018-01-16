@@ -65,11 +65,9 @@
                 {{#with this}}
                     <div class="promo ui raised segment">
                         <div class="promoInformation">
-                            {{#with promo}}
-                                <h3 class="heading">{{ name }}</h3>
-                                <h4 class="heading">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h4>
-                                <p class="description">{{{md (interpolate @root.page.promoThreashholdTemplate this) true}}}</p>
-                            {{/with}}
+                            <h3 class="heading">{{ name }}</h3>
+                            <h4 class="heading">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h4>
+                            <p class="description">{{{md (interpolate @root.page.promoThreashholdTemplate this) true}}}</p>
                         </div>
                         <div class="referralsList">
                             <h4 class="heading">{{ @root.page.headings.referrals }}</h4>
@@ -80,13 +78,13 @@
                             {{/each}}
                         </div>
                         <div class="referralsReport">
-                            {{#if promo.winner}}
+                            {{#if winner}}
                                 <p class="ui orange header">{{ @root.page.winner }}</p>
                             {{else}}
-                                {{#cond referrals.length '>=' promo.threashold}}
+                                {{#cond referrals.length '>=' threashold}}
                                     <p class="ui green header">{{ @root.page.eligible }}</p>
                                 {{else}}
-                                    <p class="ui orange header">{{inlineInterpolate @root.page.notEligible (math promo.threashold '-' referrals.length)}}</p>
+                                    <p class="ui orange header">{{inlineInterpolate @root.page.notEligible (math threashold '-' referrals.length)}}</p>
                                 {{/cond}}
                             {{/if}}
                         </div>

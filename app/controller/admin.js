@@ -78,10 +78,11 @@ export const processCreatePromo = ({
     const {
         name,
         startDate: startDateAsNum,
-        endDate: endDateAsNum
+        endDate: endDateAsNum,
+        threashold
     } = req.body;
 
-    if (!name || !startDateAsNum || !endDateAsNum) {
+    if (!name || !startDateAsNum || !endDateAsNum || !threashold) {
         res.locals.formHandlingError = true;
         logger.error(req.body, 'Missing required fields from form body');
 
@@ -95,7 +96,7 @@ export const processCreatePromo = ({
                 name,
                 startDate: new Date(parseInt(startDateAsNum)),
                 endDate: new Date(parseInt(endDateAsNum)),
-                eligibleUsers: []
+                threashold: +threashold
             }
         });
     } catch (e) {
