@@ -27,7 +27,14 @@ export default ({
     router.get('/promos', [
         isAdmin,
         promos({
-
+            referralPromosCollection: db.collection('referralPromos'),
+            referralsCollection: db.collection('referrals'), // TODO: Might not need this
+            logger: getChildLogger({
+                baseLogger,
+                additionalFields: {
+                    module: 'admin-promos-view'
+                }
+            })
         })
     ]);
 

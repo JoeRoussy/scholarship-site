@@ -11,16 +11,16 @@
                         <div class="tableWrapper">
                             <p class="row">
                                 <span class="label">{{ page.from }}</span>
-                                <span class="value">{{formatDate start}}</span>
+                                <span class="value">{{formatDate startDate}}</span>
                             </p>
                             <p class="row">
                                 <span class="label">{{ page.to }}</span>
-                                <span class="value">{{formatDate end}}</span>
+                                <span class="value">{{formatDate endDate}}</span>
                             </p>
                         </div>
                         {{#if winner}}
                             <div class="winnerWrapper">
-                                <h3>{{ page.winner }}</h3>
+                                <h3>{{ @root.page.winner }}</h3>
                                 <p>{{ winner.name }}</p>
                                 <a href="mailto:{{ winner.email }}">{{ winner.email }}</a>
                             </div>

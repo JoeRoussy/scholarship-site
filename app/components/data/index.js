@@ -522,6 +522,78 @@ export const getCurrentReferralPromos = async({
     }
 };
 
+// Returns all the promos with information about how may users are eligible for that promotion
+export const getAllPromos = async({
+    referralPromosCollection = requried('referralPromosCollection'),
+    referralsCollection = required('referralsCollection'),
+}) => {
+    let promos = [];
+
+    try {
+        promos = await referralPromosCollection.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'winnerId',
+                    foreignField: '_id',
+                    as: 'winners'
+                }
+            },
+            {
+                $project: {
+                    name: 1,
+                    startDate: 1,
+                    endDate: 1,
+                    createdAt: 1,
+                    threashold: 1,
+                    winner: { $arrayElemAt: [ '$winners', 0 ] }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'referrals',
+                    localField: '_id',
+                    foreignField: 'promoId',
+                    as: 'referrals'
+                }
+            }
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: 'Error finding all referral promotions'
+        });
+    }
+
+    // We want to make arrays of referrals for each user that has them in the referrals array
+    const mappedPromos = promos.map(promo => {
+        const {
+            referrals,
+            ...promoProps
+        } = promo;
+
+        const eligibility = referrals.reduce((accumulator, current) => {
+            // Does the accumulator have an element for the current referal?
+            if (accumulator[current.referrerId]) {
+                // We are going to increment the count of this element
+                ++accumulator[current.referrerId];
+            } else {
+                // Intorduce a new element
+                accumulator[current.referrerId] = 1;
+            }
+
+            return accumulator;
+        }, {});
+
+        return {
+            numberEligible: Object.keys(eligibility).length,
+            ...promoProps
+        };
+    });
+
+    return mappedPromos;
+}
+
 // Returns the all the current promos with information about each referal associated with a particular user
 export const getCurrentReferralInformationForUser = async({
     userId = required('userId'),

@@ -389,7 +389,7 @@ export const processScholarshipApplication = ({
 export const profile = ({
     usersCollection = required('usersCollection'),
     referralsCollection = required('referralsCollection'),
-    referralPromosCollection = required('referralPromos'),
+    referralPromosCollection = required('referralPromosCollection'),
     transactionsCollection = required('transactionsCollection')
 }) => coroutine(function* (req, res) {
     // Make sure there is a current user in req.user
@@ -412,7 +412,7 @@ export const profile = ({
         });
     } catch (e) {
         // Log an error about now we failed to find the referral information about the current promotions
-        
+
         return redirectToError('default', res);
     }
 

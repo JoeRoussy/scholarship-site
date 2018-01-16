@@ -1,5 +1,5 @@
 import { wrap as coroutine } from 'co';
-import { getScholarshipApplicationsWithFilter } from '../components/data';
+import { getScholarshipApplicationsWithFilter, getAllPromos } from '../components/data';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 import { insertInDb } from '../components/db/service';
 
@@ -59,11 +59,22 @@ export const applications = ({
 });
 
 export const promos = ({
-
+    referralPromosCollection = required('referralPromosCollection'),
+    referralsCollection = required('referralsCollection'),
+    logger = required('logger', 'You must pass in a child logging instance')
 }) => coroutine(function* (req, res) {
+    let promos = [];
 
-    //TODO: Get all the referral promotions and add them to the locals
-    // Redirect to an error if they cannot be found
+    try {
+        promos = yield getAllPromos({
+            referralPromosCollection,
+            referralsCollection
+        });
+    } catch (e) {
+        logger.error(e.err, e.msg);
+    }
+
+    res.locals.promos = promos;
 
     return res.render('promos', res.locals);
 });
@@ -96,6 +107,7 @@ export const processCreatePromo = ({
                 name,
                 startDate: new Date(parseInt(startDateAsNum)),
                 endDate: new Date(parseInt(endDateAsNum)),
+                eligibleUsers: [],
                 threashold: +threashold
             }
         });
