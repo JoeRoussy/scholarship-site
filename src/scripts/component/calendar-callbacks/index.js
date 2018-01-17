@@ -22,27 +22,37 @@ const {
 
 const callbacks = {
     scholarshipApplicationListCalendarStart: {
-        onChange: applicationOnStartChange
+        onChange: function(date) {
+            return applicationOnStartChange($(this), date);
+        }
     },
     scholarshipApplicationListCalendarEnd: {
-        onChange: applicationOnEndChange
+        onChange: function(date) {
+            return applicationOnEndChange($(this), date);
+        }
     },
     createPromoStartDate: {
-        onChange: date => {
-            const rangeResult = promosOnStartChange(date);
+        onChange: function(date) {
+            const rangeResult = promosOnStartChange($(this), date);
 
             if (rangeResult) {
                 startCreatePromoOnChange(date);
             }
+
+            // Need to return this value to see if we should actually execute that change
+            return rangeResult;
         }
     },
     createPromoEndDate: {
-        onChange: date => {
-            const rangeResult = promosOnEndChange(date);
+        onChange: function(date) {
+            const rangeResult = promosOnEndChange($(this), date);
 
             if (rangeResult) {
                 endCreatePromoOnChange(date);
             }
+
+            // Need to return this value to see if we should actually execute that change
+            return rangeResult;
         }
     }
 };

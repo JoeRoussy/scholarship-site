@@ -34,12 +34,11 @@ export default () => {
     let endDate = null;
 
     return {
-        onEndChange: function(date) {
+        onEndChange: function(cal, date) {
             if (startDate) {
                 // Need to make sure this new end date is not before the current start date
                 if (date < startDate) {
-                    const cal = $(this);
-                    onError(cal);
+                    onError($(cal));
 
                     // Cancel the change
                     return false;
@@ -50,11 +49,11 @@ export default () => {
 
             return true;
         },
-        onStartChange: function(date) {
+        onStartChange: function(cal, date) {
             if (endDate) {
                 // Need to make sure this new start date is not after the current end date
                 if (date > endDate) {
-                    onError($(this));
+                    onError($(cal));
 
                     // Cancel the change
                     return false;
