@@ -3,7 +3,7 @@ import {
     getProgramsWithFilter,
     getProgramById,
     countProgramsForFilter,
-    getCurrentReferralInformationForUser,
+    getCurrentReferralInformation,
     populateMembershipInformation
 } from '../components/data';
 import { ObjectId } from 'mongodb';
@@ -405,8 +405,7 @@ export const profile = ({
     let currentPromos = [];
 
     try {
-        currentPromos = yield getCurrentReferralInformationForUser({
-            userId: user._id,
+        currentPromos = yield getCurrentReferralInformation({
             referralsCollection,
             referralPromosCollection
         });

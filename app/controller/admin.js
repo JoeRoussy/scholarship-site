@@ -60,15 +60,13 @@ export const applications = ({
 
 export const promos = ({
     referralPromosCollection = required('referralPromosCollection'),
-    referralsCollection = required('referralsCollection'),
     logger = required('logger', 'You must pass in a child logging instance')
 }) => coroutine(function* (req, res) {
     let promos = [];
 
     try {
         promos = yield getAllPromos({
-            referralPromosCollection,
-            referralsCollection
+            referralPromosCollection
         });
     } catch (e) {
         logger.error(e.err, e.msg);

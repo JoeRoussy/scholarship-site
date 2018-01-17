@@ -1,5 +1,12 @@
 import express from 'express';
-import { programSearch, getProgramById, universitiesSearch, getUniversityById, usersSearch } from '../controller/api.js';
+import {
+    programSearch,
+    getProgramById,
+    universitiesSearch,
+    getUniversityById,
+    usersSearch,
+    promoWinnerGeneration
+} from '../controller/api.js';
 import { isAdmin } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
@@ -67,6 +74,17 @@ export default ({
             })
         })
     ]);
+
+    router.get('/promo/:promoId/winner', promoWinnerGeneration({
+        referralPromosCollection: db.collection('referralPromos'),
+        referralsCollection: db.collection('referrals'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-promo-winner-generation'
+            }
+        })
+    }))
 
     app.use('/api', router);
 }

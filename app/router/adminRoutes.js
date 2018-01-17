@@ -28,7 +28,6 @@ export default ({
         isAdmin,
         promos({
             referralPromosCollection: db.collection('referralPromos'),
-            referralsCollection: db.collection('referrals'), // TODO: Might not need this
             logger: getChildLogger({
                 baseLogger,
                 additionalFields: {

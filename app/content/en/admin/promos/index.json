@@ -6,5 +6,13 @@
         "href": "/admin/promos/new",
         "text": "Create Promo"
     },
-    "noneFound": "No promos available"
+    "to": "to",
+    "noneFound": "No promos available",
+    "numberEligible": "**{numberEligible}** users are eligible for this promotion",
+    "threashold": "**{threashold}** referrals are required to be eligible for this promotion",
+    "findWinnerButton": {
+        "text": "Draw Winner",
+        "errorTitle": "Error drawing winner",
+        "errorMessage": "Please try again"
+    }
 }

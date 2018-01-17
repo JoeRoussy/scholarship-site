@@ -65,8 +65,8 @@
                 {{#with this}}
                     <div class="promo ui raised segment">
                         <div class="promoInformation">
-                            <h3 class="heading">{{ name }}</h3>
-                            <h4 class="heading">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h4>
+                            <h3 class="heading name">{{ name }}</h3>
+                            <h4 class="heading dateRange">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h4>
                             <p class="description">{{{md (interpolate @root.page.promoThreashholdTemplate this) true}}}</p>
                         </div>
                         <div class="referralsList">

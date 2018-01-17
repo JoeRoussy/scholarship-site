@@ -4,7 +4,7 @@
             text-align: center;
         }
 
-        h4 {
+        .dateRange {
             margin-top: 0;
         }
 
@@ -13,8 +13,8 @@
         }
     }
 
-    .referralsList {
-
+    .winnerWrapper {
+        text-align: center;
     }
 
     .referralsReport {
@@ -23,5 +23,10 @@
         p.header {
             font-size: 1em;
         }
+    }
+
+    .drawButtonWrapper {
+        margin-top: 25px;
+        text-align: center;
     }
 }
