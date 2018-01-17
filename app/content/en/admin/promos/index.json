@@ -14,5 +14,6 @@
         "text": "Draw Winner",
         "errorTitle": "Error drawing winner",
         "errorMessage": "Please try again"
-    }
+    },
+    "winner": "Winner:"
 }
