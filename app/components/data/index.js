@@ -11,6 +11,8 @@ import {
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
 
+// TODO: This file is getting pretty long, should refactor it without changing signature and make it a dispatcher
+
 // Finds the ids of any universities for a province. Returns an empty array if no province can be found
 async function getUniversitiesForProvince({
     province,
@@ -760,6 +762,7 @@ export const getWinnerForPromo = async({
     let promo;
     let eligibleUsers;
 
+    // First find the promo in question
     try {
         promo = await getDocById({
             collection: referralPromosCollection,
@@ -772,6 +775,7 @@ export const getWinnerForPromo = async({
         });
     }
 
+    // Find all eligible users for this promo (more referrals than the threashold)
     eligibleUsers = await referralsCollection.aggregate([
         {
             $match: {
@@ -827,6 +831,7 @@ export const getWinnerForPromo = async({
         }
     ]).toArray();
 
+    // Pick on of these eligible users at random
     const index = Math.floor(Math.random() * eligibleUsers.length);
 
     return eligibleUsers[index];
