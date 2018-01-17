@@ -827,9 +827,6 @@ export const getWinnerForPromo = async({
         }
     ]).toArray();
 
-    print(promo)
-    print(eligibleUsers)
-
     const index = Math.floor(Math.random() * eligibleUsers.length);
 
     return eligibleUsers[index];
