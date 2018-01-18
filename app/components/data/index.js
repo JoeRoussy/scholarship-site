@@ -576,12 +576,12 @@ export const getAllPromos = async({
 
         const eligibility = referrals.reduce((accumulator, current) => {
             // Does the accumulator have an element for the current referal?
-            if (accumulator[current.refererId]) {
+            if (accumulator[current.referrerId]) {
                 // We are going to increment the count of this element
-                ++accumulator[current.refererId];
+                ++accumulator[current.referrerId];
             } else {
                 // Intorduce a new element
-                accumulator[current.refererId] = 1;
+                accumulator[current.referrerId] = 1;
             }
 
             return accumulator;
@@ -608,6 +608,7 @@ export const getAllPromos = async({
 
 // Returns the all the current promos with information about each referal associated with a particular user
 export const getCurrentReferralInformation = async({
+    userId = required('userId'),
     referralsCollection = required('referralsCollection'),
     referralPromosCollection = requried('referralPromosCollection')
 }) => {
@@ -659,29 +660,29 @@ export const getCurrentReferralInformation = async({
         referrals = await referralsCollection.aggregate([
             {
                 $match: {
-                    refererId: userId
+                    referrerId: userId
                 }
             },
             {
                 $lookup: {
                     from: 'users',
-                    localField: 'refereeId',
+                    localField: 'referreeId',
                     foreignField: '_id',
-                    as: 'referees'
+                    as: 'referrees'
                 }
             },
             {
                 $project: {
                     promoId: 1,
-                    refererId: 1,
+                    referrerId: 1,
                     createdAt: 1,
-                    referee: { $arrayElemAt: [ '$referees', 0 ]  }
+                    referree: { $arrayElemAt: [ '$referrees', 0 ]  }
                 }
             },
             {
                 $group: {
                     _id: '$promoId',
-                    referrals: { $push: '$referee' }
+                    referrals: { $push: '$referree' }
                 }
             }
         ]).toArray()
@@ -723,27 +724,27 @@ export const getCurrentReferralInformation = async({
 
 
 export const attributeReferral = async({
-    refererId = required('refererId'),
-    refereeId = required('refereeId'),
+    referrerId = required('referrerId'),
+    referreeId = required('referreeId'),
     referralsCollection = required('referralsCollection'),
     referralPromosCollection = required('referralPromosCollection')
 }) => {
     // First get all the current promotions
     const currentPromos = await getCurrentReferralPromos({ referralPromosCollection });
 
-    // Foreach current promo, insert a new referral for the referer
+    // Foreach current promo, insert a new referral for the referrer
     try {
         await Promise.all(currentPromos.map(promo => insert({
             collection: referralsCollection,
             document: {
                 promoId: promo._id,
-                refererId,
-                refereeId
+                referrerId,
+                referreeId
             }
         })));
     } catch (e) {
         throw new RuntimeError({
-            msg: `Could not update all current promos for referer with id: ${refererId}`,
+            msg: `Could not update all current promos for referrer with id: ${referrerId}`,
             err: e
         });
     }
@@ -785,30 +786,30 @@ export const getWinnerForPromo = async({
         {
             $lookup: {
                 from: 'users',
-                localField: 'refererId',
+                localField: 'referrerId',
                 foreignField: '_id',
-                as: 'referers'
+                as: 'referrers'
             }
         },
         {
             $lookup: {
                 from: 'users',
-                localField: 'refereeId',
+                localField: 'referreeId',
                 foreignField: '_id',
-                as: 'referees'
+                as: 'referrees'
             }
         },
         {
             $project: {
                 promoId: 1,
-                referee: { $arrayElemAt: [ '$referees', 0 ] },
-                referrer: { $arrayElemAt: [ '$referers', 0 ] }
+                referree: { $arrayElemAt: [ '$referrees', 0 ] },
+                referrer: { $arrayElemAt: [ '$referrers', 0 ] }
             }
         },
         {
             $group: {
                 _id: '$referrer',
-                referrals: { $push: '$referee' }
+                referrals: { $push: '$referree' }
             }
         },
         {

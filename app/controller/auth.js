@@ -157,24 +157,24 @@ export const signup = ({
 
     // Now that the user has been made, see if we need to credit anyone with a referral
     if (refId) {
-        let referer = null;
+        let referrer = null;
 
         try {
-            referer = yield getUserByReferralCode({
+            referrer = yield getUserByReferralCode({
                 usersCollection: db.collection('users'),
                 refId
             });
         } catch (e) {
-            // No need to mess this signup up because we could not find a referer
+            // No need to mess this signup up because we could not find a referrer
             logger.error(err.err, err.msg);
         }
 
-        if (referer) {
+        if (referrer) {
             // Update any promos going on now to have this new user as eligible
             try {
                 yield attributeReferral({
-                    refererId: referer._id,
-                    refereeId: savedUser._id,
+                    referrerId: referrer._id,
+                    referreeId: savedUser._id,
                     referralPromosCollection: db.collection('referralPromos'),
                     referralsCollection: db.collection('referrals')
                 });

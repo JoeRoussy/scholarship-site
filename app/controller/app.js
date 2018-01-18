@@ -406,12 +406,13 @@ export const profile = ({
 
     try {
         currentPromos = yield getCurrentReferralInformation({
+            userId: user._id,
             referralsCollection,
             referralPromosCollection
         });
     } catch (e) {
         // Log an error about now we failed to find the referral information about the current promotions
-
+        console.error(e);
         return redirectToError('default', res);
     }
 
@@ -422,7 +423,7 @@ export const profile = ({
         });
     }  catch (e) {
         // Log an error about not being able to populate user with membership information
-
+        console.error(e);
         return redirectToError('default', res);
     }
 
