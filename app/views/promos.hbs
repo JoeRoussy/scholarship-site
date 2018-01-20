@@ -28,9 +28,9 @@
                                     type="button"
                                     data-promo-id="{{ _id }}"
                                     data-promo-drawing-button
-                                    {{#cond this.numberEligible '<' this.threashold}}
+                                    {{#unless this.numberEligible}}
                                         disabled
-                                    {{/cond}}
+                                    {{/unless}}
                                     data-error-title="{{ @root.page.findWinnerButton.errorTitle }}"
                                     data-error-message="{{ @root.page.findWinnerButton.errorMessage }}"
                                 >
