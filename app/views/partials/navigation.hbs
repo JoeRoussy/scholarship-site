@@ -11,8 +11,8 @@
         {{#with profileItem}}
             <div class="item {{ customClasses }}">
                 <div class="vertical borderless menu">
-                    <span class="item noHover">{{interpolate text (lookup @root interpolateFromRoot)}}</span>
-
+                    {{!-- <span class="item noHover">{{interpolate text (lookup @root interpolateFromRoot)}}</span> --}}
+                    <a class="item link" href="{{ link }}">{{interpolate text @root.user}}</a>
                     {{#unless @root.user.isMember}}
                         <div class="item buttonParent">
                             {{> button button}}

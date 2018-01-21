@@ -71,30 +71,76 @@ export const insert = async ({
     }
 };
 
+// Will return boolean value indicating operation success if skipValidation is set to true
 export const findAndUpdate = async ({
     collection = required('collection'),
     query = required('query'),
-    update = required('update'),
+    update,
+    uniquePush,
     skipValidation = false
 }) => {
-    let updateResult;
-
-    if (query._id) {
-        updateResult = await collection.findOneAndUpdate(query, { $set: update });
-    } else {
-        const sortOrder = [ [ '_id', 1 ] ]; // Update objects in acending order by id
-
-        updateResult = await collection.findAndModify(query, sortOrder, update);
+    // Need to pass an update or a unique push
+    if (!update && !uniquePush) {
+        throw new Error('Missing update or unique push object');
     }
 
+    let updateResult;
+    let updateObj;
+
+    if (update) {
+        updateObj = {
+            $set: update
+        };
+    }
+
+    if (uniquePush) {
+        updateObj = {
+            ...updateObj,
+            $addToSet: uniquePush
+        };
+    }
+
+    if (query._id) {
+        updateResult = await collection.findOneAndUpdate(query, updateObj);
+    } else {
+        updateResult = await collection.updateMany(query, updateObj);
+    }
+
+    if (!skipValidation) {
+        if (query._id) {
+            return singleUpdateValidation(updateResult);
+        } else {
+            return multipleUpdateValidation(updateResult);
+        }
+    }
+};
+
+// Since the callbacks for findOneAndUpdate and updateMany have a different structure, encapsulate the complexity
+// of verification in these two functions
+function singleUpdateValidation(dbResult) {
     const {
         value,
         ok
-    } = updateResult;
+    } = dbResult;
 
-    if (!skipValidation && !(value && ok)) {
+    if (!(value && ok)) {
         throw new Error('Update not successful');
     }
 
     return ok;
-};
+}
+
+function multipleUpdateValidation(dbResult) {
+    const {
+        result: {
+            nModified,
+            ok
+        } = {}
+    } = dbResult;
+
+    if (!(nModified && ok)) {
+        throw new Error('Update not successful');
+    }
+
+    return ok;
+}

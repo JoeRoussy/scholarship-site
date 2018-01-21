@@ -1,6 +1,8 @@
 import handlebars from 'express-handlebars';
 import marked from 'marked';
 import eol from 'eol';
+import format_date from '../format-date';
+import urlHelper from 'url';
 
 export default app => {
     const hbs = handlebars.create({
@@ -58,16 +60,19 @@ export default app => {
             interpolate(string, options) {
                 return string.replace(/{(\w+)}/g, (match, key) => options[key]);
             },
+            inlineInterpolate(string, value) {
+                return string.replace('{value}', value);
+            },
             formatDate(date, format) {
                 if (typeof format === 'object' && !format.fr && !format.en) {
                     // No format config was provided
                     format = null;
                 }
 
+                // TODO: Add in a utility to get user language later
                 return format_date({
                     date,
-                    format,
-                    language: language.selectedUserLanguage()
+                    format
                 });
            },
             equals: function (a, b, options) {
@@ -80,22 +85,8 @@ export default app => {
             equalsInline: function (a, b) {
                 return a == b;
             },
-            url: function (url, lang, options) {
-                var _url = [ url ];
-
-                // Swap params if lang is not provided
-                if (typeof lang !== 'string') {
-                    options = lang;
-                    lang = language.selectedUserLanguage();
-                }
-
-                // English is default so we don't want to insert language code
-                // when requesting English links
-                if (lang !== 'en') {
-                    _url.splice(0, 0, '/' + lang);
-                }
-
-                return _url.join('');
+            urlResolve: function (from, to) {
+                return urlHelper.resolve(from, to);
             },
             gt:function(a, b){
                 var next =  arguments[arguments.length-1];
@@ -223,6 +214,11 @@ export default app => {
            },
            addLineBreaks: function(text) {
                return eol.lf(text).replace(/\n/g, '<br>');
+           },
+           maskEmail: function(email) {
+               const [ username, domain ] = email.split('@');
+
+               return `${username.charAt(0)}*****@${domain}`;
            }
         }
     });

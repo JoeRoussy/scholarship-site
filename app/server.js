@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import config from './config';
 import language from './components/language';
 import loadContentConfig from './components/content';
-import loadQueryParams from './components/load-query-params';
+import loadRequest from './components/load-request';
 import loadConfigElements from './components/load-config';
 import loadUser from './components/load-user';
 import templateConfig from './components/template-config';
@@ -21,6 +21,7 @@ import runDataImport from './components/db/data-import';
 import configureAuth from './components/authentication';
 import { print } from './components/custom-utils';
 import queryParamsPopulation from './components/populate-query-params';
+import { middleware as sessionPopulation } from './components/populate-session';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -61,6 +62,7 @@ dbConfig()
             extended: true
         }));
         app.use(bodyParser.json());
+        app.use(sessionPopulation(config.session.loadedQueryKeys))
         app.use(language);
 
         configureAuth({
@@ -74,7 +76,7 @@ dbConfig()
             baseLogger: Logger
         });
 
-        loadQueryParams(app);
+        loadRequest(app);
         queryParamsPopulation({
             app,
             db,

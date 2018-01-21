@@ -11,7 +11,8 @@
             "type": "date",
             "isPastSelector": true,
             "errorTitle": "Invalid date",
-            "errorMessage": "You must pick a start date that is before the end date"
+            "errorMessage": "You must pick a start date that is before the end date",
+            "callbackTypes": "[ \"onChange\" ]"
         },
         "end": {
             "id": "scholarshipApplicationListCalendarEnd",
@@ -21,7 +22,8 @@
             "type": "date",
             "isPastSelector": true,
             "errorTitle": "Invalid date",
-            "errorMessage": "You must pick an end date that is after the start date"
+            "errorMessage": "You must pick an end date that is after the start date",
+            "callbackTypes": "[ \"onChange\" ]"
         }
     },
     "updateButton": {

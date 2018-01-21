@@ -49,8 +49,8 @@
         },
         "profileItem": {
             "text": "Welcome {name}",
+            "link": "/profile",
             "customClasses": "right authItem subMenuParent",
-            "interpolateFromRoot": "user",
             "button": {
                 "text": "Become a member",
                 "modal": "membershipModal",

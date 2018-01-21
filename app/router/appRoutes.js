@@ -8,7 +8,8 @@ import {
     programDetails,
     processContact,
     scholarshipApplication,
-    processScholarshipApplication
+    processScholarshipApplication,
+    profile
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { sendMessage as sendMailMessage, getContactMailMessage, getApplicationMailMessage } from '../components/mail-sender';
@@ -62,5 +63,12 @@ export default ({
             }),
             scholarshipApplication()
         ]);
+
+    app.get('/profile', profile({
+        usersCollection: db.collection('users'),
+        referralsCollection: db.collection('referrals'),
+        referralPromosCollection: db.collection('referralPromos'),
+        transactionsCollection: db.collection('transactions')
+    }));
 
 }

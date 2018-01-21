@@ -3,8 +3,10 @@ import passport from 'passport';
 import { print, required } from '../components/custom-utils';
 import { generateHash } from '../components/authentication';
 import { wrap as coroutine } from 'co';
-import { getUserByEmail } from '../components/data';
-import { insert as saveToDb } from '../components/db/service';
+import { getUserByEmail, getUserByReferralCode, attributeReferral } from '../components/data';
+import { insert as saveToDb, findAndUpdate } from '../components/db/service';
+import { get as getHash } from '../components/hash';
+import { free } from '../components/populate-session';
 
 if (!config) {
     throw new Error('Could not find config!');
@@ -92,6 +94,10 @@ export const signup = ({
         buyMemebership
     } = req.body;
 
+    const {
+        refId
+    } = req.session;
+
     if (!email || !password || !name) {
         logger.warn(`Got a signup request with missing data email: ${email}, password: ${password}, name: ${name}`);
 
@@ -128,7 +134,8 @@ export const signup = ({
     const newUser = {
         email,
         password: hashedPassword,
-        name
+        name,
+        refId: getHash({ input: email })
     };
 
     let savedUser = null;
@@ -146,6 +153,38 @@ export const signup = ({
         }, 'Error saving new user to db');
 
         return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
+    }
+
+    // Now that the user has been made, see if we need to credit anyone with a referral
+    if (refId) {
+        let referrer = null;
+
+        try {
+            referrer = yield getUserByReferralCode({
+                usersCollection: db.collection('users'),
+                refId
+            });
+        } catch (e) {
+            // No need to mess this signup up because we could not find a referrer
+            logger.error(err.err, err.msg);
+        }
+
+        if (referrer) {
+            // Update any promos going on now to have this new user as eligible
+            try {
+                yield attributeReferral({
+                    referrerId: referrer._id,
+                    referreeId: savedUser._id,
+                    referralPromosCollection: db.collection('referralPromos'),
+                    referralsCollection: db.collection('referrals')
+                });
+            } catch (e) {
+                // Again, we don't want to break this sign in because we could not complete some referral assignment
+                logger.error(e.err, e.msg);
+            }
+        }
+
+        free(req.session, 'refId');
     }
 
     // Now that the user has been made, log them in

@@ -1,59 +1,5 @@
-import { showWarning} from '../notification';
 import urlHelper from 'url';
-
-let startDate = null;
-let endDate = null;
-
-function getErrorText(cal) {
-    const title = cal.attr('data-error-title');
-    const message = cal.attr('data-error-message');
-
-    if (!title || !message) {
-        throw new Error('Could not find error text for calendar');
-    }
-
-    return {
-        title,
-        message
-    };
-}
-
-function onError(cal) {
-    const {
-        title,
-        message
-    } = getErrorText(cal);
-
-    showWarning(title, message);
-}
-
-export const onStartChange = function (date) {
-    if (endDate) {
-        // Need to make sure this new start date is not after the current end date
-        if (date > endDate) {
-            onError($(this));
-
-            // Cancel the change
-            return false;
-        }
-    }
-
-    startDate = date;
-}
-
-export const onEndChange = function (date) {
-    if (startDate) {
-        // Need to make sure this new end date is not before the current start date
-        if (date < startDate) {
-            onError($(this));
-
-            // Cancel the change
-            return false;
-        }
-    }
-
-    endDate = date;
-}
+import { applicationCallbacks as applicationCallbacksController } from '../calendar-callbacks';
 
 // When the update button is clicked, refresh the page with the appropriate filters
 export const init = () => {
@@ -66,6 +12,9 @@ export const init = () => {
 
     updateButton.on('click', () => {
         const url = urlHelper.parse(window.location.href, true);
+
+        const startDate = applicationCallbacksController.getStartDate();
+        const endDate = applicationCallbacksController.getEndDate();
 
         if (startDate) {
             url.query.startDate = +startDate;
@@ -99,13 +48,13 @@ export const init = () => {
         const date = new Date(parseInt(defaultStartDate));
 
         $('#scholarshipApplicationListCalendarStart').calendar('set date', date, true, false);
-        startDate = date;
+        applicationCallbacksController.setStartDate(date);
     }
 
     if (defaultEndDate) {
         const date = new Date(parseInt(defaultEndDate));
 
         $('#scholarshipApplicationListCalendarEnd').calendar('set date', date, true, false);
-        endDate = date;
+        applicationCallbacksController.setEndDate(date);
     }
 }

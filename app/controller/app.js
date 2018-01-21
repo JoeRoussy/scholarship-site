@@ -1,7 +1,13 @@
 import { wrap as coroutine } from 'co';
-import { getProgramsWithFilter, getProgramById, countProgramsForFilter } from '../components/data';
+import {
+    getProgramsWithFilter,
+    getProgramById,
+    countProgramsForFilter,
+    getCurrentReferralInformation,
+    populateMembershipInformation
+} from '../components/data';
 import { ObjectId } from 'mongodb';
-import { transformProgramForOutput } from '../components/transformers';
+import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
 import { print, sortByKey, required, redirectToError, isMember } from '../components/custom-utils';
 import config from '../config';
 import eol from 'eol';
@@ -378,4 +384,53 @@ export const processScholarshipApplication = ({
     res.locals.requestSuccess = true;
 
     return next();
+});
+
+export const profile = ({
+    usersCollection = required('usersCollection'),
+    referralsCollection = required('referralsCollection'),
+    referralPromosCollection = required('referralPromosCollection'),
+    transactionsCollection = required('transactionsCollection')
+}) => coroutine(function* (req, res) {
+    // Make sure there is a current user in req.user
+    let {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    // Get referal information for the current user
+    let currentPromos = [];
+
+    try {
+        currentPromos = yield getCurrentReferralInformation({
+            userId: user._id,
+            referralsCollection,
+            referralPromosCollection
+        });
+    } catch (e) {
+        // Log an error about now we failed to find the referral information about the current promotions
+        console.error(e);
+        return redirectToError('default', res);
+    }
+
+    try {
+        user = yield populateMembershipInformation({
+            user,
+            transactionsCollection
+        });
+    }  catch (e) {
+        // Log an error about not being able to populate user with membership information
+        console.error(e);
+        return redirectToError('default', res);
+    }
+
+    // Need to assign the new user to locals along with the currentPromos
+    res.locals.user = user;
+    res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
+
+
+    return res.render('profile');
 });

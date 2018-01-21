@@ -2,14 +2,15 @@
     All loggers in this module should a module key in the form: api-function-name
 */
 
-import { required, print, unique, getRegex } from '../components/custom-utils';
+import { required, print, unique, getRegex, convertToObjectId } from '../components/custom-utils';
 import {
     getProgramsWithFilter,
     getDocById,
     getProgramById as dataModuleGetProgramById,
     getUniversitiesWithFilter,
     getUsers,
-    getScholarshipApplicationsWithFilter
+    getScholarshipApplicationsWithFilter,
+    getWinnerForPromo
 } from '../components/data';
 import {
     transformProgramForOutput,
@@ -18,6 +19,8 @@ import {
     transformScholarshipApplicationForOutput
  } from '../components/transformers';
 import { ObjectId } from 'mongodb';
+import { wrap as coroutine } from 'co';
+import { findAndUpdate } from '../components/db/service';
 
 
 export const programSearch = ({
@@ -319,3 +322,71 @@ export const usersSearch = ({
             });
     }
 }
+
+export const promoWinnerGeneration = ({
+    referralPromosCollection = required('referralPromosCollection'),
+    referralsCollection = required('referralsCollection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => coroutine(function*(req, res) {
+    const {
+        promoId
+    } = req.params;
+
+    if (!promoId) {
+        return res.status(400).json({
+            error: true,
+            message: 'You must pass a promo id to this endpoint: /api/{promoId}/winner'
+        });
+    }
+
+    let winner;
+
+    // Get the winner
+    try {
+        winner = yield getWinnerForPromo({
+            promoId,
+            referralsCollection,
+            referralPromosCollection
+        });
+    } catch (e) {
+        logger.error(e.err, e.msg);
+
+        return res.status(500).json({
+            error: true,
+            message: 'A winner could not be chosen for this promotion'
+        });
+    }
+
+    if (!winner) {
+        logger.warn({ promoId }, 'No winner returned for this promotion');
+
+        return res.status(500).json({
+            error: true,
+            message: 'A winner could not be found for this promotion'
+        });
+    }
+
+    // Update the promo with this new winner
+    try {
+        yield findAndUpdate({
+            collection: referralPromosCollection,
+            query: {
+                _id: convertToObjectId(promoId)
+            },
+            update: {
+                winnerId: winner._id
+            }
+        });
+    } catch (e) {
+        logger.error(e, 'Could not update promo with id: ${promoId} with winner with id: ${winner._id}');
+
+        return res.status(500).json({
+            error: true,
+            message: 'The winner could not be assigned to this promotion'
+        });
+    }
+
+    return res.json({
+        user: winner
+    });
+});

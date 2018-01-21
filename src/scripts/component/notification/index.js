@@ -45,16 +45,27 @@ export default () => {
     });
 };
 
-export const showError = (title, message) => {
+export const showError = (title, message, preventDrag) => {
+    const drag = !preventDrag;
+
     iziToast.error({
         title,
         message,
+        drag,
         ...defaultPositioning
     });
 }
 
 export const showWarning = (title, message) => {
     iziToast.warning({
+        title,
+        message,
+        ...defaultPositioning
+    });
+}
+
+export const showSuccess = (title, message) => {
+    iziToast.success({
         title,
         message,
         ...defaultPositioning

@@ -1,0 +1,33 @@
+.promo {
+    .promoInformation {
+        .heading {
+            text-align: center;
+        }
+
+        .dateRange {
+            margin-top: 0;
+        }
+
+        .description {
+            text-align: center;
+        }
+    }
+
+    .winnerWrapper {
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    .referralsReport {
+        margin-top: 20px;
+
+        p.header {
+            font-size: 1em;
+        }
+    }
+
+    .drawButtonWrapper {
+        margin-top: 25px;
+        text-align: center;
+    }
+}

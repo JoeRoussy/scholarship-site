@@ -1,0 +1,19 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Referral Promotions",
+    "newPromo": {
+        "href": "/admin/promos/new",
+        "text": "Create Promo"
+    },
+    "to": "to",
+    "noneFound": "No promos available",
+    "numberEligible": "**{numberEligible}** users are eligible for this promotion",
+    "threashold": "**{threashold}** referrals are required to be eligible for this promotion",
+    "findWinnerButton": {
+        "text": "Draw Winner",
+        "errorTitle": "Error drawing winner",
+        "errorMessage": "Please try again"
+    },
+    "winner": "Winner:"
+}

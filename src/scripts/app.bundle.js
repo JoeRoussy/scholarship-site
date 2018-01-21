@@ -10,6 +10,8 @@ import notification from './component/notification';
 import applicationNameSearch from './component/application-name-search';
 import datePicker from './component/date-picker';
 import { init as applicationCalandarControllerInit } from './component/application-calandar-controller';
+import clipboardCopy from './component/clipboard-copy';
+import promoWinner from './component/promo-winner-draw-controller';
 
 // Generic semantic UI setup
 
@@ -27,3 +29,5 @@ notification();
 datePicker();
 applicationNameSearch();
 applicationCalandarControllerInit();
+clipboardCopy([ 'profileReferralLink' ]);
+promoWinner();

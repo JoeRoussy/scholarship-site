@@ -84,3 +84,17 @@ export const transformScholarshipApplicationForOutput = application => {
         }
     }
 }
+
+export const transformPromoForOutput = promo => {
+    const {
+        winner,
+        referrals = [],
+        ...promoProps
+    } = promo;
+
+    return {
+        winner: winner ? transformUserForOutput(winner) : null,
+        referrals: referrals.map(transformUserForOutput),
+        ...promoProps
+    };
+}

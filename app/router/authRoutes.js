@@ -18,6 +18,7 @@ export default ({
         })
     }));
 
+    // TODO: Should this not pass collections instead of the whole db?
     app.post('/signup', signup({
         db,
         logger: getChildLogger({

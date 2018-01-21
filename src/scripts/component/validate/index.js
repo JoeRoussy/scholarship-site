@@ -21,6 +21,8 @@ export const isEmail = (string) => {
     return emailRegex.test(string);
 }
 
+export const isInteger = (string) => !isNaN(parseInt(string));
+
 export const isEqualText = (a, b) => {
     // We need to make sure both a and b are not empty strings
     if (!isText(a) && !isText(b)) {

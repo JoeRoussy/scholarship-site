@@ -1,6 +1,7 @@
 import { wrap as coroutine } from 'co';
-import { getScholarshipApplicationsWithFilter } from '../components/data';
+import { getScholarshipApplicationsWithFilter, getAllReferralPromos } from '../components/data';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
+import { insertInDb } from '../components/db/service';
 
 export const isAdmin = (req, res, next) => {
     const {
@@ -55,4 +56,67 @@ export const applications = ({
     res.locals.applications[0].isFirst = true;
 
     return res.render('scholarshipApplicationList', res.locals);
+});
+
+export const promos = ({
+    referralPromosCollection = required('referralPromosCollection'),
+    logger = required('logger', 'You must pass in a child logging instance')
+}) => coroutine(function* (req, res) {
+    let promos = [];
+
+    try {
+        promos = yield getAllReferralPromos({
+            referralPromosCollection
+        });
+    } catch (e) {
+        logger.error(e.err, e.msg);
+    }
+
+    res.locals.promos = promos;
+
+    return res.render('promos', res.locals);
+});
+
+export const createPromo = (req, res) => res.render('createPromo');
+
+export const processCreatePromo = ({
+    referralPromosCollection = required('referralPromosCollection'),
+    logger = required('logger', 'You must pass in a child logging instance'),
+    insertInDb = required('insertInDb')
+}) => coroutine(function* (req, res, next) {
+    const {
+        name,
+        startDate: startDateAsNum,
+        endDate: endDateAsNum,
+        threashold
+    } = req.body;
+
+    if (!name || !startDateAsNum || !endDateAsNum || !threashold) {
+        res.locals.formHandlingError = true;
+        logger.error(req.body, 'Missing required fields from form body');
+
+        return next();
+    }
+
+    try {
+        yield insertInDb({
+            collection: referralPromosCollection,
+            document: {
+                name,
+                startDate: new Date(parseInt(startDateAsNum)),
+                endDate: new Date(parseInt(endDateAsNum)),
+                eligibleUsers: [],
+                threashold: +threashold
+            }
+        });
+    } catch (e) {
+        res.locals.formHandlingError = true;
+        logger.error({ doc: req.body, err: e }, 'Error inserting new promo into db');
+
+        return next();
+    }
+
+    res.locals.requestSuccess = true;
+
+    return next();
 });

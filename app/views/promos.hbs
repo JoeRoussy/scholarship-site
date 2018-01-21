@@ -1,0 +1,54 @@
+{{> navigation page.navigation}}
+
+<div id="adminPromoListingSection" class="promosSection rootSection">
+    <div class="ui container">
+        <h1>{{ page.heading }}</h1>
+        <div class="promosWrapper">
+            {{#each promos}}
+                {{#with this}}
+                    <div class="ui raised segment promo">
+                        <div class="promoInformation">
+                            <h2 class="heading name">{{ name }}</h2>
+                            <h3 class="heading dateRange">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h3>
+                            {{#unless winner}}
+                                <p class="description">{{{md (interpolate @root.page.threashold this) true}}}</p>
+                                <p class="description">{{{md (interpolate @root.page.numberEligible this) true}}}</p>
+                            {{/unless}}
+                        </div>
+                        {{#if winner}}
+                            <div class="winnerWrapper">
+                                <h3>{{ @root.page.winner }}</h3>
+                                <p>{{ winner.name }}</p>
+                                <a href="mailto:{{ winner.email }}">{{ winner.email }}</a>
+                            </div>
+                        {{else}}
+                            <div class="drawButtonWrapper">
+                                <button
+                                    class="ui button green"
+                                    type="button"
+                                    data-promo-id="{{ _id }}"
+                                    data-promo-drawing-button
+                                    {{#unless this.numberEligible}}
+                                        disabled
+                                    {{/unless}}
+                                    data-error-title="{{ @root.page.findWinnerButton.errorTitle }}"
+                                    data-error-message="{{ @root.page.findWinnerButton.errorMessage }}"
+                                >
+                                    {{ @root.page.findWinnerButton.text }}
+                                </button>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/with}}
+            {{else}}
+                <p class="noneFoundText">{{ page.noneFound }}</p>
+            {{/each}}
+        </div>
+
+        <div class="buttonWrapper">
+            {{#with page.newPromo}}
+                <a class="ui button green" href="{{ href }}">{{ text }}</a>
+            {{/with}}
+        </div>
+    </div>
+</div>

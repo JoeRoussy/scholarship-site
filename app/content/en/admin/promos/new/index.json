@@ -1,0 +1,80 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Create Referral Program",
+    "errorMessage": {
+        "heading": "Something went wrong",
+        "body": "Could not create promo, please try again."
+    },
+    "successMessage": {
+        "heading": "Promo created!",
+        "body": ""
+    },
+    "nameInput": {
+        "label": "Name:",
+        "name": "name",
+        "type": "text",
+        "placeholder": "Promo Name",
+        "validationType": "text",
+        "errorElement": {
+            "id": "createPromoNameError",
+            "text": "Please enter a name"
+        }
+    },
+    "startInput": {
+        "datePickerElement": {
+            "id": "createPromoStartDate",
+            "label": "Choose a start date:",
+            "type": "date",
+            "placeholder": "Date",
+            "otherId": "createPromoEndDate",
+            "errorTitle": "Invalid date",
+            "errorMessage": "You must pick a start date that is before the end date",
+            "callbackTypes": "[ \"onChange\" ]",
+            "validate": true,
+            "errorElementId": "createPromoStartDateError"
+        },
+        "errorElement": {
+            "id": "createPromoStartDateError",
+            "text": "Please select a start date"
+        }
+    },
+    "hiddenStartInput": {
+        "id": "hiddenCreatePromoStartDate",
+        "name": "startDate"
+    },
+    "endInput": {
+        "datePickerElement": {
+            "id": "createPromoEndDate",
+            "label": "Choose an end date:",
+            "type": "date",
+            "placeholder": "Date",
+            "otherId": "createPromoStartDate",
+            "errorTitle": "Invalid date",
+            "errorMessage": "You must pick an end date that is after the start date",
+            "callbackTypes": "[ \"onChange\" ]",
+            "validate": true,
+            "errorElementId": "createPromoEndDateError"
+        },
+        "errorElement": {
+            "id": "createPromoEndDateError",
+            "text": "Please select an end date"
+        }
+    },
+    "threasholdInput": {
+        "label": "Minimum Referrals To Be Eligible:",
+        "name": "threashold",
+        "type": "text",
+        "placeholder": "Threashold",
+        "validationType": "integer",
+        "errorElement": {
+            "id": "createPromoThreasholdError",
+            "text": "Please enter an integer for the threashold"
+        }
+    },
+    "hiddenEndInput": {
+        "id": "hiddenCreatePromoEndDate",
+        "name": "endDate"
+    },
+    "submit": "Submit"
+}

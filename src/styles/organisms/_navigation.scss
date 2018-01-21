@@ -3,7 +3,7 @@
     transition: max-height 0.3s ease-in-out;
     border: none;
     overflow: hidden;
-    
+
     .item {
         padding: 0.92em 1.8em;
 
@@ -12,6 +12,16 @@
 
             &:hover {
                 background: rgba(0, 0, 0, 0.03);
+            }
+        }
+
+        &.link {
+            text-decoration: underline;
+            color: #4183c4;
+
+            &:hover {
+                text-decoration: none;
+                color: #1e70bf;
             }
         }
 
