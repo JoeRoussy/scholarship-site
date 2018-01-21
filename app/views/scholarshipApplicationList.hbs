@@ -28,10 +28,15 @@
         <div class="applications">
             {{#each applications}}
                 {{#with this}}
-                    <div class="ui raised segment{{#if isFirst}} first{{/if}}">
-                        <h2>{{ name }}</h2>
-                        <p><a href="mailto:{{ email }}">{{ email }}</a></p>
-                        <p data-hide-target="">{{{addLineBreaks application}}}</p>
+                    <div class="ui raised segments{{#if isFirst}} first{{/if}}">
+                        <div class="ui segment">
+                            <h2>{{ name }}</h2>
+                            <p><a href="mailto:{{ email }}">{{ email }}</a></p>
+                            <p>{{formatDate createdAt}}</p>
+                        </div>
+                        <div class="ui segment">
+                            <p data-hide-target="">{{{addLineBreaks application}}}</p>
+                        </div>
                     </div>
                 {{/with}}
             {{else}}
@@ -39,7 +44,6 @@
                     <p>{{ page.noResultsText }}</p>
                 </div>
             {{/each}}
-
         </div>
     </div>
 </div>
