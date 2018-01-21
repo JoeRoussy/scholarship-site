@@ -23,11 +23,11 @@ export default (ids) => {
         }
 
         // Make sure the links are not followed
-        element.on('click', e => {
-            if (e.target.href) {
+        if (element.attr('href')) {
+            element.on('click', e => {
                 e.preventDefault();
-            }
-        });
+            });
+        }
 
         const clipboard = new Clipboard(`#${id}`, {
             text: trigger => getValueForTrigger(trigger)

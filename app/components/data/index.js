@@ -506,7 +506,6 @@ export const getCurrentReferralPromos = async({
 }) => {
     const now = new Date(moment().startOf('day').toISOString());
 
-    // First get all the current promos
     try {
         return await referralPromosCollection.find({
             startDate: {
@@ -525,11 +524,12 @@ export const getCurrentReferralPromos = async({
 };
 
 // Returns all the promos with information about how may users are eligible for that promotion
-export const getAllPromos = async({
+export const getAllReferralPromos = async({
     referralPromosCollection = requried('referralPromosCollection')
 }) => {
     let promos = [];
 
+    // First get all the promos including all referral associated with each promo
     try {
         promos = await referralPromosCollection.aggregate([
             {
@@ -566,7 +566,7 @@ export const getAllPromos = async({
         });
     }
 
-    // We want to make arrays of referrals for each user that has them in the referrals array
+    // Takes each promo and add a field to indicate how many users are eligible for that promo
     const mappedPromos = promos.map(promo => {
         const {
             referrals,
@@ -606,7 +606,7 @@ export const getAllPromos = async({
     return mappedPromos;
 }
 
-// Returns the all the current promos with information about each referal associated with a particular user
+// Returns the all the current promos with information about each referral associated with a particular user
 export const getCurrentReferralInformation = async({
     userId = required('userId'),
     referralsCollection = required('referralsCollection'),
@@ -707,18 +707,11 @@ export const getCurrentReferralInformation = async({
 
         const [ referralInfo ] = formattedReferrals.filter(x => x.promoId.equals(promoId));
 
-        if (referralInfo) {
-            return {
-                ...promo,
-                referrals: referralInfo.referrals
-            };
-        }
-
         return {
             ...promo,
-            referrals: []
-        };
-    })
+            referrals: referralInfo ? referralInfo.referrals : []
+        }
+    });
 };
 
 
@@ -750,7 +743,7 @@ export const attributeReferral = async({
     }
 };
 
-// Note: This function returns a user as the winner in a well formatted manner (no transformer needed)
+// NOTE: This function returns a user as the winner in a format appropriate to send to the front end (no transformer needed)
 // Does not modify the promo collection to indicate the winner
 export const getWinnerForPromo = async({
     promoId = required('promoId'),
@@ -801,7 +794,6 @@ export const getWinnerForPromo = async({
         },
         {
             $project: {
-                promoId: 1,
                 referree: { $arrayElemAt: [ '$referrees', 0 ] },
                 referrer: { $arrayElemAt: [ '$referrers', 0 ] }
             }
@@ -814,7 +806,6 @@ export const getWinnerForPromo = async({
         },
         {
             $project: {
-                referrals: 1,
                 lengthOfReferrals: { $size: '$referrals' }
             }
         },
@@ -827,12 +818,12 @@ export const getWinnerForPromo = async({
             $project: {
                 _id: '$_id._id',
                 name: '$_id.name',
-                email: '$_id.name'
+                email: '$_id.email'
             }
         }
     ]).toArray();
 
-    // Pick on of these eligible users at random
+    // Pick one of these eligible users at random
     const index = Math.floor(Math.random() * eligibleUsers.length);
 
     return eligibleUsers[index];

@@ -1,5 +1,5 @@
 import { wrap as coroutine } from 'co';
-import { getScholarshipApplicationsWithFilter, getAllPromos } from '../components/data';
+import { getScholarshipApplicationsWithFilter, getAllReferralPromos } from '../components/data';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 import { insertInDb } from '../components/db/service';
 
@@ -65,7 +65,7 @@ export const promos = ({
     let promos = [];
 
     try {
-        promos = yield getAllPromos({
+        promos = yield getAllReferralPromos({
             referralPromosCollection
         });
     } catch (e) {

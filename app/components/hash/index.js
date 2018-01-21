@@ -4,7 +4,7 @@ export const get = ({
     type = 'sha256',
     input = required('input')
 })=> {
-    const sha256 = crypto.createHash(type);
+    const hashHelper = crypto.createHash(type);
 
     let preImage = null;
 
@@ -16,7 +16,7 @@ export const get = ({
         preImage = input;
     }
 
-    return sha256
+    return hashHelper
             .update(preImage)
             .digest('hex');
 }

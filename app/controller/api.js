@@ -332,6 +332,13 @@ export const promoWinnerGeneration = ({
         promoId
     } = req.params;
 
+    if (!promoId) {
+        return res.status(400).json({
+            error: true,
+            message: 'You must pass a promo id to this endpoint: /api/{promoId}/winner'
+        });
+    }
+
     let winner;
 
     // Get the winner
