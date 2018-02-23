@@ -17,6 +17,8 @@ export const isAdmin = (req, res, next) => {
     }
 };
 
+export const index = (req, res) => res.render('adminIndex');
+
 export const applications = ({
     applicationsCollection = required('applicationsCollection'),
     logger = required('logger', 'You must pass in a child logging instance')

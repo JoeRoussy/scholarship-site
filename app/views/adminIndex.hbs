@@ -1,0 +1,17 @@
+{{> navigation page.navigation}}
+
+<div class="adminIndexSection rootSection">
+    <div class="ui container">
+        <h1 class="heading">{{ page.heading }}</h1>
+        <h2 class="heading">{{ page.subHeading }}</h2>
+        <div class="links">
+            {{#each page.links}}
+                {{#with this}}
+                    <div class="linkWrapper">
+                        <a class="ui button" href="{{ href }}">{{ text }}</a>
+                    </div>
+                {{/with}}
+            {{/each}}
+        </div>
+    </div>
+</div>
