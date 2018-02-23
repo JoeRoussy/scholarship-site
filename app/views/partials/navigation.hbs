@@ -6,6 +6,10 @@
         {{> navigationItem this}}
     {{/each}}
 
+    {{#if @root.user.isAdmin}}
+        {{> navigationItem adminItem}}
+    {{/if}}
+
     {{! Hard code the auth items because their logic is more complicated }}
     {{#if @root.user}}
         {{#with profileItem}}

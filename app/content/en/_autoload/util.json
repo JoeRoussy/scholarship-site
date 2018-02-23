@@ -37,6 +37,10 @@
                 "href": "/contact"
             }
         ],
+        "adminItem": {
+            "text": "Admin Portal",
+            "href": "/admin"
+        },
         "loginItem": {
             "text": "Sign In",
             "customClasses": "right authItem",

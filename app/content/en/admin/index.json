@@ -1,0 +1,16 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Admin Portal",
+    "subHeading": "Click the following buttons to manage the applications or the membership promotions.",
+    "links": [
+        {
+            "text": "View Scholarship Applications",
+            "href": "/admin/applications"
+        },
+        {
+            "text": "Promotion Management",
+            "href": "/admin/promos"
+        }
+    ]
+}

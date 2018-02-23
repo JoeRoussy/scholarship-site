@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdmin, applications, promos, createPromo, processCreatePromo } from '../controller/admin.js';
+import { isAdmin, applications, promos, createPromo, processCreatePromo, index } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 import { insert as insertInDb } from '../components/db/service';
@@ -10,6 +10,11 @@ export default ({
     baseLogger = required('baseLogger')
 }) => {
     const router = express.Router();
+
+    router.get('/', [
+        isAdmin,
+        index
+    ]);
 
     router.get('/applications', [
         isAdmin,
