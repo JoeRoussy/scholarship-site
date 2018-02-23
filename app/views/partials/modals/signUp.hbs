@@ -4,7 +4,8 @@
     </div>
     <div class="header">
         <span>{{ header }}</span>
-        <span class="small">{{ subheader }}</span>
+        <span class="small">{{{interpolate subheader @root.prices}}}</span>
+        <span class="small light">{{ disclaimer }}</span>
     </div>
     <div class="content">
         <form

@@ -23,6 +23,7 @@ import { print } from './components/custom-utils';
 import queryParamsPopulation from './components/populate-query-params';
 import { middleware as sessionPopulation } from './components/populate-session';
 import exchangeRatePopulation from './components/exchange-rate-population';
+import pricingPopulation from './components/pricing-population';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -101,6 +102,7 @@ dbConfig()
                 }
             })
         }));
+        app.use(pricingPopulation);
         appRouteConfig({
             app,
             db
