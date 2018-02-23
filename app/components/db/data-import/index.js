@@ -147,7 +147,7 @@ const func = async ({
                 logger.info(programDocument, 'Inserted a program');
             });
 
-            logger.info('Done data import')
+            logger.info('Done data import');
         });
     });
 }
