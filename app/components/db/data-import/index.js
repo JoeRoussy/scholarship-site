@@ -27,7 +27,7 @@ const func = async ({
         }
     });
 
-    logger.info('Starting data import')
+    logger.info('Starting data import');
 
     const fullFilePath = `${process.cwd()}/${spreadsheetPath}`;
 
