@@ -1,5 +1,5 @@
 // This module provides middleware that loads currency conversion information into
-// res.locals. It fetches this information for the db. The db should be refreshed everyday
+// res.locals. It fetches this information from the db. The db should be refreshed everyday
 // with this information so if the data is old, this middleware will make a request
 // for fresh information, save it to the db, and then populate it in res.locals
 

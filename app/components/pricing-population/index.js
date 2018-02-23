@@ -16,7 +16,7 @@ export default (req, res, next) => {
 
     const {
         exchangeRates: {
-            USD: exchangeRateUSD = 0.78748
+            USD: exchangeRateUSD = defaultExchangeRateUSD
         } = {}
     } = res.locals;
 
