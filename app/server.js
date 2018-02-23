@@ -22,6 +22,8 @@ import configureAuth from './components/authentication';
 import { print } from './components/custom-utils';
 import queryParamsPopulation from './components/populate-query-params';
 import { middleware as sessionPopulation } from './components/populate-session';
+import exchangeRatePopulation from './components/exchange-rate-population';
+import pricingPopulation from './components/pricing-population';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -91,6 +93,16 @@ dbConfig()
         loadContentConfig(app);
         loadUser(app);
         templateConfig(app);
+        app.use(exchangeRatePopulation({
+            exchangeRatesCollection: db.collection('exchangeRates'),
+            logger: getChildLogger({
+                baseLogger: Logger,
+                additionalFields: {
+                    module: 'exchange-rate-population'
+                }
+            })
+        }));
+        app.use(pricingPopulation);
         appRouteConfig({
             app,
             db

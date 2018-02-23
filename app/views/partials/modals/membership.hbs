@@ -7,8 +7,9 @@
     </div>
     <div class="content">
         {{#each descriptionParagraphs}}
-            <p>{{ this }}</p>
+            <p>{{{interpolate this @root.prices}}}</p>
         {{/each}}
+        <p class="disclaimer">{{ disclaimer }}</p>
         {{#with button}}
             <div class="contentFooter">
                 <a href="{{ href }}" data-show-dimmer-on-click="{{ dimmerId }}">

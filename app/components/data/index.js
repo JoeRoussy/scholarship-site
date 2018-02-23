@@ -828,3 +828,19 @@ export const getWinnerForPromo = async({
 
     return eligibleUsers[index];
 }
+
+// Gets the current exchange rates
+export const getCurrentExchangeRates = async({
+    exchangeRatesCollection = required('exchangeRatesCollection')
+}) => {
+    // Dates are always saved by start of day
+    const now = new Date(moment().startOf('day').toISOString());
+    const currentRates = await exchangeRatesCollection.find({ validOn: now }).toArray();
+    const [ result ] = currentRates;
+
+    if (!result) {
+        return null;
+    }
+
+    return result.rates;
+}
