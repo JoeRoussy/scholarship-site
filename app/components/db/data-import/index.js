@@ -1,10 +1,22 @@
 import fs from 'fs';
 import csvParser from 'csv-parse';
+import geolib from 'geolib';
+
 import { required, print } from '../../custom-utils';
 import { getChildLogger } from '../../log-factory';
 import { mapSeries } from 'bluebird';
 import { insert } from '../service';
+import config from '../../../config';
 
+const {
+    regex: {
+        sexagesimalPattern
+    } = {}
+} = config;
+
+if (!sexagesimalPattern) {
+    throw new Error('Missing sexagesimalPattern from config');
+}
 
 const func = async ({
     spreadsheetPath = required('spreadsheetPath'),
@@ -36,7 +48,7 @@ const func = async ({
             columns: [
                 'province',
                 'university',
-                'name',
+                'program',
                 'internationalTuition',
                 'domesticTuition',
                 'minimumAverage',
@@ -44,10 +56,14 @@ const func = async ({
                 'language',
                 'toefl',
                 'rank',
-                'notes'
+                'notes',
+                'longitude',
+                'latitude',
+                'link'
             ],
             from: 2, // Skip the heading row
-            skip_empty_lines: true
+            skip_empty_lines: true,
+            relax: true // Preserve quotes (for long and lat)
         }, (err, data) => {
             if (err) {
                 logger.error(err, 'Error parsing CSV');
@@ -69,10 +85,13 @@ const func = async ({
                     - Log the creation of the program
                 */
 
-                const {
+                let {
                     province: provinceName,
                     university: universityName,
-                    name: programName,
+                    program: programName,
+                    link: universityLink,
+                    longitude,
+                    latitude,
                     ...programProperties
                 } = program;
 
@@ -91,6 +110,7 @@ const func = async ({
                     } catch (e) {
                         const message = `Error inserting province with name: ${provinceName}`
                         logger.error(e, message);
+
                         throw new Error(message);
                     }
 
@@ -101,19 +121,42 @@ const func = async ({
 
                 if (!university) {
                     // Need to create this university first
+
+                    // If the latitude and longitude are not in decimal form, we need
+                    // to convert it
+                    if (sexagesimalPattern.test(longitude)) {
+                        // We need to convert to decimal from
+                        longitude = geolib.sexagesimal2decimal(longitude);
+                    } else {
+                        // We just need to parse the number which is currently in a string format
+                        longitude = parseFloat(longitude);
+                    }
+
+                    if (sexagesimalPattern.test(latitude)) {
+                        // We need to convert to decimal from
+                        latitude = geolib.sexagesimal2decimal(latitude);
+                    } else {
+                        // We just need to parse the number which is currently in a string format
+                        latitude = parseFloat(latitude);
+                    }
+
                     try {
                         university = await insert({
                             collection: universities,
                             document: {
                                 name: universityName,
                                 provinceId: province._id,
-                                language: 'english'
+                                language: 'english',
+                                latitude,
+                                longitude,
+                                link: universityLink
                             },
                             returnInsertedDocument: true
                         });
                     } catch (e) {
                         const message = `Error inserting university with name: ${universityName}`
                         logger.error(e, message);
+
                         throw new Error(message);
                     }
 
@@ -136,13 +179,15 @@ const func = async ({
                 } catch (e) {
                     const message = `Error inserting program with name: ${programName}`
                     logger.error(e, message);
+
                     throw new Error(message);
                 }
 
                 logger.info(programDocument, 'Inserted a program');
-            });
-
-            logger.info('Done data import');
+            })
+                .then(() => {
+                    logger.info('Done data import');
+                });
         });
     });
 }
