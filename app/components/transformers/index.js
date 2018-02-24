@@ -11,7 +11,8 @@ export const transformProgramForOutput = program => {
                 name: universityName,
                 _id: uId,
                 latitude,
-                longitude
+                longitude,
+                link
             }
         ],
         universityId,
@@ -24,7 +25,8 @@ export const transformProgramForOutput = program => {
             _id: uId,
             name: universityName,
             latitude,
-            longitude
+            longitude,
+            link
         },
         ...programProps
     };

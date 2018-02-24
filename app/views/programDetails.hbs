@@ -3,7 +3,7 @@
 <div class="programDetails rootSection">
     <div class="programDetailsSection">
         <h1>{{ program.name }}</h1>
-        <h2>{{ program.university.name }}</h2>
+        <h2><a href="//{{ program.university.link }}" target="_blank">{{ program.university.name }}</a></h2>
 
         <div class="innerDetails">
             {{#if program.minimumAverage}}
