@@ -5,11 +5,6 @@ import { getChildLogger } from '../../log-factory';
 import { mapSeries } from 'bluebird';
 import { insert } from '../service';
 
-/*
-    KNOWN ISSUES:
-    - First program from each university has its universityId set as null
-    - First university has its provinceId set as null
-*/
 
 const func = async ({
     spreadsheetPath = required('spreadsheetPath'),
