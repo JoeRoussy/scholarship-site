@@ -21,13 +21,13 @@
             {{#if program.domesticTuition}}
                 <p class="detailRow">
                     <span class="title">{{ page.details.domesticTuition }}</span>
-                    <span class="data">{{ program.domesticTuition }}</span>
+                    <span class="data">{{{formatCurrencyFlat program.domesticTuition @root.selectedUserLanguage}}}</span>
                 </p>
             {{/if}}
             {{#if program.internationalTuition}}
                 <p class="detailRow">
                     <span class="title">{{ page.details.internationalTuition }}</span>
-                    <span class="data">{{ program.internationalTuition }}</span>
+                    <span class="data">{{{formatCurrencyFlat program.internationalTuition @root.selectedUserLanguage}}}</span>
                 </p>
             {{/if}}
             {{#if program.rank}}
