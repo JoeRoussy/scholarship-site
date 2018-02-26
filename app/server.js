@@ -125,7 +125,9 @@ dbConfig()
 
         if (config.db.shouldRunDataImport) {
             runDataImport({
-                spreadsheetPath: 'app/files/database_may_28.csv',
+                spreadsheetPath: 'app/files/Maritime_Provinces_draft_final_19_october.csv',
+                //spreadsheetPath: 'app/files/British_Columbia_draft_final_12_november.csv',
+                //spreadsheetPath: 'app/files/Alberta_draft_final_12_november.csv',
                 baseLogger: Logger,
                 collections: {
                     provinces: db.collection('provinces'),

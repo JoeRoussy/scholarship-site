@@ -12,9 +12,11 @@
         },
         internationalTuition,
         domesticTuition,
-        length
+        length,
+        notes
     }
 --}}
+
 <div class="ui card programCard" data-program-link="/programs/{{ program._id }}">
     <div class="content heading">
         <div class="header">
@@ -30,11 +32,11 @@
         <div class="ui sub header">{{ tuitionInfomation }}</div>
         <div class="text">
             <span class="bold">{{ domestic }}</span>
-            <span>{{ program.domesticTuition }}</span>
+            <span>{{{formatCurrencyFlat program.domesticTuition @root.selectedUserLanguage}}}</span>
         </div>
         <div class="text">
             <span class="bold">{{ international }}</span>
-            <span>{{ program.internationalTuition }}</span>
+            <span>{{{formatCurrencyFlat program.internationalTuition @root.selectedUserLanguage}}}</span>
         </div>
     </div>
 </div>

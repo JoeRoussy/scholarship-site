@@ -3,7 +3,7 @@
 <div class="programDetails rootSection">
     <div class="programDetailsSection">
         <h1>{{ program.name }}</h1>
-        <h2>{{ program.university.name }}</h2>
+        <h2><a href="//{{ program.university.link }}" target="_blank">{{ program.university.name }}</a></h2>
 
         <div class="innerDetails">
             {{#if program.minimumAverage}}
@@ -21,13 +21,13 @@
             {{#if program.domesticTuition}}
                 <p class="detailRow">
                     <span class="title">{{ page.details.domesticTuition }}</span>
-                    <span class="data">{{ program.domesticTuition }}</span>
+                    <span class="data">{{{formatCurrencyFlat program.domesticTuition @root.selectedUserLanguage}}}</span>
                 </p>
             {{/if}}
             {{#if program.internationalTuition}}
                 <p class="detailRow">
                     <span class="title">{{ page.details.internationalTuition }}</span>
-                    <span class="data">{{ program.internationalTuition }}</span>
+                    <span class="data">{{{formatCurrencyFlat program.internationalTuition @root.selectedUserLanguage}}}</span>
                 </p>
             {{/if}}
             {{#if program.rank}}
