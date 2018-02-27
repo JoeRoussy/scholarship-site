@@ -171,7 +171,7 @@ export const membershipAccept = ({
     logger = required('logger', 'You must pass a logging instance'),
     sendMailMessage = required('sendMailMessage'),
     getSignUpMailMessage = required('getSignUpMailMessage'),
-    getMembershipAfterUpMailMessage = required('getMembershipAfterUpMailMessage')
+    getMembershipAfterSignUpMailMessage = required('getMembershipAfterSignUpMailMessage')
 }) => coroutine(function* (req, res) {
     const {
         paymentId,
@@ -264,7 +264,7 @@ export const membershipAccept = ({
         free(req.session, 'isBuyingMembershipAndSigningUp');
         subject = 'Greetings from the Canada Higher Education House';
     } else {
-        mailMessage = getMembershipAfterUpMailMessage({ user: updatedUser });
+        mailMessage = getMembershipAfterSignUpMailMessage({ user: updatedUser });
         subject = 'Thank you for upgrading to a full CHEH membership'
     }
 
