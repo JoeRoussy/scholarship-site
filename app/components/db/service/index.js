@@ -72,6 +72,8 @@ export const insert = async ({
 };
 
 // Will return boolean value indicating operation success if skipValidation is set to true
+// or many documents are updating. If skipValidation is not set to true and a single document
+// is modified, then the new document is returned.
 export const findAndUpdate = async ({
     collection = required('collection'),
     query = required('query'),
@@ -101,7 +103,9 @@ export const findAndUpdate = async ({
     }
 
     if (query._id) {
-        updateResult = await collection.findOneAndUpdate(query, updateObj);
+        updateResult = await collection.findOneAndUpdate(query, updateObj, {
+            returnOriginal: false
+        });
     } else {
         updateResult = await collection.updateMany(query, updateObj);
     }
@@ -117,6 +121,8 @@ export const findAndUpdate = async ({
 
 // Since the callbacks for findOneAndUpdate and updateMany have a different structure, encapsulate the complexity
 // of verification in these two functions
+
+// Returns the new document after the modification
 function singleUpdateValidation(dbResult) {
     const {
         value,
@@ -127,9 +133,10 @@ function singleUpdateValidation(dbResult) {
         throw new Error('Update not successful');
     }
 
-    return ok;
+    return value;
 }
 
+// Returns a value indicating the success of the operation
 function multipleUpdateValidation(dbResult) {
     const {
         result: {

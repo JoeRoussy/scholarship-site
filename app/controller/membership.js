@@ -14,6 +14,7 @@ import {
     getCheckoutExperiences,
     createCheckoutExperienceWithNoShipping
 } from '../components/paypal-helper';
+import { free } from '../components/populate-session';
 
 
 // Process paypal payment for memberships
@@ -167,7 +168,10 @@ export const processMembership = ({
 export const membershipAccept = ({
     transactionsCollection = required('transactionsCollection'),
     usersCollection = required('usersCollection'),
-    logger = required('logger', 'You must pass a logging instance')
+    logger = required('logger', 'You must pass a logging instance'),
+    sendMailMessage = required('sendMailMessage'),
+    getSignUpMailMessage = required('getSignUpMailMessage'),
+    getMembershipAfterUpMailMessage = required('getMembershipAfterUpMailMessage')
 }) => coroutine(function* (req, res) {
     const {
         paymentId,
@@ -232,8 +236,10 @@ export const membershipAccept = ({
     }
 
     // Update the user as a member
+    let updatedUser;
+
     try {
-        const result = yield findAndUpdate({
+        updatedUser = yield findAndUpdate({
             collection: usersCollection,
             query: {
                 _id: convertToObjectId(userId)
@@ -247,6 +253,31 @@ export const membershipAccept = ({
 
         return redirectToError('paypalAccept', res);
     }
+
+    // We need to send an email based on weather this is a new user also buying
+    // a memebrship or if this is an existing user now buying a membership
+    let mailMessage;
+    let subject;
+
+    if (req.session.isBuyingMembershipAndSigningUp) {
+        mailMessage = getSignUpMailMessage({ user: updatedUser });
+        free(req.session, 'isBuyingMembershipAndSigningUp');
+        subject = 'Greetings from the Canada Higher Education House';
+    } else {
+        mailMessage = getMembershipAfterUpMailMessage({ user: updatedUser });
+        subject = 'Thank you for upgrading to a full CHEH membership'
+    }
+
+    // Don't wait for the email to send because it takes a long time but still
+    // log an error if something goes wrong.
+    sendMailMessage({
+        to: updatedUser.email,
+        message: mailMessage,
+        subject
+    })
+        .catch(e => {
+            logger.error(e, { user: updatedUser }, 'Error sending membership mail message for user');
+        });
 
     return res.redirect('/?paypalSuccess=true');
 });

@@ -176,8 +176,14 @@
                 mso-hide: all;
                 visibility: hidden;
                 width: 0; }
+            .centered {
+                text-align: center; }
+            .logo {
+                padding-bottom: 16px; }
             .powered-by a {
                 text-decoration: none; }
+            table.main {
+                padding: 32px 16px; }
             hr {
                 border: 0;
                 border-bottom: 1px solid #f6f6f6;
@@ -251,8 +257,8 @@
                     <div class="content">
                         <table border="0" cellpadding="0" cellspacing="0">
                             <tr>
-                                <td width="250px">
-                                    <img src="{{ rootUrl }}/images/logo.png" alt="Canada Higher Education House">
+                                <td class="logo centered">
+                                    <img height="100px" src="{{ rootUrl }}/images/logo.png" alt="Canada Higher Education House">
                                 </td>
                             </tr>
                         </table>
@@ -266,11 +272,6 @@
                                 <tr>
                                     <td class="content-block">
                                         <span class="apple-link">Canada Higher Education House (address \ PO box here here?)</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="content-block powered-by">
-                                        Powered by <a href="http://htmlemail.io">HTMLemail</a>.
                                     </td>
                                 </tr>
                             </table>

@@ -2,6 +2,7 @@ import express from 'express';
 import { membership, processMembership, membershipAccept } from '../controller/membership';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
+import { sendMessage as sendMailMessage, getSignUpMailMessage, getMembershipAfterUpMailMessage } from '../components/mail-sender';
 
 export default ({
     app = required('app'),
@@ -23,6 +24,9 @@ export default ({
     router.get('/success', membershipAccept({
         transactionsCollection: db.collection('transactions'),
         usersCollection: db.collection('users'),
+        sendMailMessage,
+        getSignUpMailMessage,
+        getMembershipAfterUpMailMessage,
         logger: getChildLogger({
             baseLogger,
             additionalFields: {

@@ -85,7 +85,9 @@ export const login = ({
 
 export const signup = ({
     db = required('db'),
-    logger = required('logger', 'You must pass in a child logging instance')
+    logger = required('logger', 'You must pass in a child logging instance'),
+    getMailMessage = required('getMailMessage'),
+    sendMailMessage = required('sendMailMessage')
 }) => coroutine(function* (req, res) {
     const {
         email,
@@ -197,11 +199,30 @@ export const signup = ({
         }
 
         if (buyMemebership) {
-            // We are logging in and trying to buy the membership right away
+            // We are logging in and trying to buy the membership right away. Let's
+            // remember that in the session before redirecting to the memebrship buy
+            // route
+            req.session.isBuyingMembershipAndSigningUp = true;
+
             return res.redirect('/membership/buy');
         }
 
         // We are just logging in without buying the membership
+        // Send an email welcoming the user before redirecting to home page
+        const mailMessage = getMailMessage({ user: savedUser });
+
+        // Don't wait until the message is sent because that takes a long time but log an error
+        // if there is an issue sending the message
+        sendMailMessage({
+            to: savedUser.email,
+            message: mailMessage,
+            subject: 'Greetings from the Canada Higher Education House'
+        })
+            .catch(e => {
+                logger.error(e, { user: savedUser }, 'Error sending welcome email for user');
+            });
+
+
         return res.redirect('/');
     });
 });

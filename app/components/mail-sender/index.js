@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-//import handlebars from 'ex[ress-handlebars';
 import nodemailerHandlebars from 'nodemailer-express-handlebars';
+import inlineCss from 'nodemailer-juice';
 import config from '../../config';
 
 // Local consts
@@ -33,7 +33,6 @@ export const getApplicationMailMessage = ({
 export const getSignUpMailMessage = ({
     user
 }) => {
-    // We need to render the template based on the user passed in
     const {
         name,
         isMember
@@ -47,6 +46,15 @@ export const getSignUpMailMessage = ({
         template: 'signUp'
     };
 };
+
+export const getMembershipAfterUpMailMessage = ({
+    user
+}) => ({
+    context: {
+        name: user.name
+    },
+    template: 'membershipAfterSignUp'
+});
 
 // This function can take a plaintext message or a message containing an hbs template
 // and a context to render that in
@@ -107,6 +115,8 @@ export const sendMessage = async ({
             viewPath: TEMPLATE_PATH,
             extName: TEMPLATE_EXTENSION
         }));
+
+        transporter.use('compile', inlineCss());
 
         return transporter.sendMail({
             from: noReply,

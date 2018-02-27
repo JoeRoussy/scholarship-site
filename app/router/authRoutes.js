@@ -1,6 +1,7 @@
 import { login, signup, logout } from '../controller/auth';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
+import { sendMessage as sendMailMessage, getSignUpMailMessage } from '../components/mail-sender';
 
 export default ({
     app = required('app'),
@@ -21,6 +22,8 @@ export default ({
     // TODO: Should this not pass collections instead of the whole db?
     app.post('/signup', signup({
         db,
+        sendMailMessage,
+        getMailMessage: getSignUpMailMessage,
         logger: getChildLogger({
             baseLogger,
             additionalFields: {
