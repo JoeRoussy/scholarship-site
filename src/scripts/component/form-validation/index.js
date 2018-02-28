@@ -6,6 +6,7 @@ export default () => {
     $('[data-validate-form]').each((i, e) => {
         const form = $(e);
         const inputsToValidate = form.find('[data-validate]');
+        const successDimmer = form.attr('data-valid-dimmer');
 
         // Attach validation handlers to all the inputs
         inputsToValidate.each((index, el) => {
@@ -37,6 +38,11 @@ export default () => {
             const elementsWithError = form.find('.error[data-validate]');
 
             if (!elementsWithError.length) {
+                // Only toggle success dimmer if the form is valid and we are going to submit it
+                if (successDimmer) {
+                    $(`#${successDimmer}`).dimmer('toggle');
+                }
+
                 form.submit();
             }
         });

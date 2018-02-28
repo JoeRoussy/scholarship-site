@@ -14,6 +14,7 @@
             method="post"
             action="/signup"
             data-validate-form=""
+            data-valid-dimmer="{{ form.inputs.submit.dimmerId }}"
         >
             {{#if @root.queryParams.signupError}}
                 <div class="ui error message">
@@ -110,7 +111,7 @@
                 </div>
             </div>
             <div class="field">
-                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}" data-show-dimmer-on-click="{{ form.inputs.submit.dimmerId }}">
+                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}">
             </div>
         </form>
     </div>
