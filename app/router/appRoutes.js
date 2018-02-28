@@ -12,7 +12,12 @@ import {
     profile
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
-import { sendMessage as sendMailMessage, getContactMailMessage, getApplicationMailMessage } from '../components/mail-sender';
+import {
+    sendMessage as sendMailMessage,
+    getContactMailMessage,
+    getApplicationMailMessage,
+    getApplicationConfirmationMailMessage
+} from '../components/mail-sender';
 import { insert as insertInDb } from '../components/db/service';
 
 export default ({
@@ -58,10 +63,11 @@ export default ({
             processScholarshipApplication({
                 scholarshipApplicationCollection: db.collection('scholarshipApplications'),
                 sendMailMessage,
-                getMailMessage: getApplicationMailMessage,
+                getSystemMailMessage: getApplicationMailMessage,
+                getUserMailMessage: getApplicationConfirmationMailMessage,
                 insertInDb
             }),
-            scholarshipApplication()
+            scholarshipApplication() // We don't pass in the applications collection because we don't need to check for previous applications when we are rendering the success view
         ]);
 
     app.get('/profile', profile({
