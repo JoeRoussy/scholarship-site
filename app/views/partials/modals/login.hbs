@@ -11,7 +11,8 @@
             class="ui form{{#if @root.queryParams.loginError}} error{{/if}}"
             method="post"
             action="/login"
-            data-validate-form
+            data-validate-form=""
+            data-valid-dimmer="{{ form.inputs.submit.dimmerId }}"
         >
             {{#if @root.queryParams.loginError}}
                 <div class="ui error message">
@@ -54,7 +55,7 @@
                 <span id="{{ form.inputs.pass.errorElement.id }}" class="formErrorMessage">{{ form.inputs.pass.errorElement.text }}</span>
             </div>
             <div class="field">
-                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}" data-show-dimmer-on-click="{{ form.inputs.submit.dimmerId }}">
+                <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}">
             </div>
         </form>
     </div>
