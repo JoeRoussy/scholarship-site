@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer';
 import nodemailerHandlebars from 'nodemailer-express-handlebars';
 import inlineCss from 'nodemailer-juice';
+import marked from 'marked';
+
 import config from '../../config';
 
 // Local consts
@@ -9,6 +11,28 @@ const TEMPLATE_LAYOUT_PATH = 'app/components/mail-sender/templates/layouts';
 const TEMPLATE_EXTENSION = '.hbs';
 const DEFAULT_LAYOUT = 'main';
 const TEMPLATE_PARTIALS = 'app/components/mail-sender/templates/partials';
+
+const helpers = {
+    md(text) {
+        if (!text) {
+            return;
+        }
+
+        const renderer = new marked.Renderer();
+        renderer.paragraph = (text) => text;
+
+        return marked(text, {
+            renderer
+        });
+    },
+    lineEndingsToBreaks(text) {
+        if (!text) {
+            return;
+        }
+
+        return text.replace(/\n/g, '<br>');
+    }
+};
 
 const defaultContext = {
     rootUrl: 'http://165.227.40.182:3000'
@@ -57,6 +81,17 @@ export const getMembershipAfterSignUpMailMessage = ({
     },
     template: 'membershipAfterSignUp'
 });
+
+export const getApplicationConfirmationMailMessage = ({
+    name,
+    application
+}) => ({
+    context: {
+        name,
+        application
+    },
+    template: 'scholarshipApplicationConfirmation'
+})
 
 // This function can take a plaintext message or a message containing an hbs template
 // and a context to render that in
@@ -112,7 +147,8 @@ export const sendMessage = async ({
                 extname: TEMPLATE_EXTENSION,
                 layoutsDir: TEMPLATE_LAYOUT_PATH,
                 defaultLayout: DEFAULT_LAYOUT,
-                partialsDir: TEMPLATE_PARTIALS
+                partialsDir: TEMPLATE_PARTIALS,
+                helpers
             },
             viewPath: TEMPLATE_PATH,
             extName: TEMPLATE_EXTENSION

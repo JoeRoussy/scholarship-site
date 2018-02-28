@@ -291,7 +291,8 @@ export const scholarshipApplication = (scholarshipApplicationCollection) => coro
 
 export const processScholarshipApplication = ({
     scholarshipApplicationCollection = required('scholarshipApplicationCollection'),
-    getMailMessage = required('getMailMessage'),
+    getSystemMailMessage = required('getSystemMailMessage'),
+    getUserMailMessage = required('getUserMailMessage'),
     sendMailMessage = required('sendMailMessage'),
     insertInDb = required('insertInDb')
 }) => coroutine(function* (req, res, next) {
@@ -360,18 +361,36 @@ export const processScholarshipApplication = ({
         return next();
     }
 
-    const mailMessage = getMailMessage({
+    const systemMailMessage = getSystemMailMessage({
         name,
         email,
         application: normalizedApplication
     });
 
-    // Do not wait for the message to send because this takes a long time
-    // Log an error if the email fails to send
+    const confirmationMailMessage = getUserMailMessage({
+        name,
+        application: normalizedApplication
+    });
+
+    // Do not wait for the messages to send because this takes a long time
+    // Log an error if the emails fail to send
+
+    // Email to system to so we can read application
     sendMailMessage({
         to: config.email.addresses.admin,
-        message: mailMessage,
+        message: systemMailMessage,
         subject: 'New Scholarship Application'
+    })
+        .catch((e) => {
+            // TODO: Log error with the information about the message
+            // logger.error(e, 'Error sending mail message');
+        });
+
+    // Confirmation to user that we have got the application
+    sendMailMessage({
+        to: email,
+        message: confirmationMailMessage,
+        subject: 'We Have Received Your Scholarship Application!'
     })
         .catch((e) => {
             // TODO: Log error with the information about the message
