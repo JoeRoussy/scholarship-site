@@ -20,7 +20,7 @@
     "geolib": "2.0.24",
     "izitoast": "1.2.0",
     "marked": "0.3.6",
-    "moment": "2.20.1",
+    "moment": "2.21.0",
     "mongodb": "2.2.30",
     "nodemailer": "4.1.0",
     "nodemailer-express-handlebars": "3.0.0",
