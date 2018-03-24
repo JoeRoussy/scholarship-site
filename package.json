@@ -19,7 +19,7 @@
     "express-session": "1.15.5",
     "geolib": "2.0.24",
     "izitoast": "1.2.0",
-    "marked": "0.3.6",
+    "marked": "0.3.9",
     "moment": "2.21.0",
     "mongodb": "2.2.30",
     "nodemailer": "4.1.0",
