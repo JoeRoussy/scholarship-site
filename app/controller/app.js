@@ -168,6 +168,10 @@ export const error = (req, res) => {
 };
 
 export const studyingInCanada = (req, res) => {
+    if (!req.user) {
+        return res.redirect('/');
+    }
+
     res.render('news.hbs', res.locals);
 }
 

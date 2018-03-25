@@ -49,11 +49,37 @@ function loadContent (options, callback) {
     const autoloadPath = `${process.cwd()}/app/content/${_options.lang}/_autoload`;
     const contentPath = `${process.cwd()}/app/content/${_options.lang}${convertPageURL([ page, ...innerParams ].join('/'))}`;
 
-    execFile('find', [ autoloadPath, contentPath, '-type', 'f', '-maxdepth', '1' ], (err, files) => {
+    // First lets load the data in the autoload path. We do this first because if the request is for a bad url, we want to
+    // be able to have our "not found" values in the render context
+    handleFileRead(autoloadPath, (autoloadError, autoloadContent) => {
+        if (autoloadError) {
+            return callback(autoloadError);
+        }
+
+        // Now lets load the data in the actual path
+        handleFileRead(contentPath, (contentError, content) => {
+            if (contentError) {
+                // There was not conent for this request (probably to a non-existant page) so
+                // lets just return the autoload content so all the 404 handling works
+                return callback(null, autoloadContent);
+            }
+
+            // We got autoload content and content for this page so lets merge them
+            return callback(null, {
+                ...autoloadContent,
+                ...content
+            });
+        });
+    });
+};
+
+function handleFileRead(path, callback) {
+    execFile('find', [ path, '-type', 'f', '-maxdepth', '1' ], (err, files) => {
         if (err) {
             return callback(err);
         }
 
+        // Treat files as an array in case this is the autoload
         const content = files
             .trim()
             .split('\n')
@@ -65,8 +91,8 @@ function loadContent (options, callback) {
         }), {});
 
         return callback(null, mergedContent);
-    });
-};
+    });  
+}
 
 function buildContentPath () {
     var _args = [].concat.apply([], arguments);

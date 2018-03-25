@@ -5,6 +5,11 @@
     {{#each items}}
         {{> navigationItem this}}
     {{/each}}
+    {{#if @root.user}}
+        {{#each membersOnlyItems}}
+            {{> navigationItem this}}
+        {{/each}}
+    {{/if}}
 
     {{#if @root.user.isAdmin}}
         {{> navigationItem adminItem}}
@@ -15,7 +20,6 @@
         {{#with profileItem}}
             <div class="item {{ customClasses }}">
                 <div class="vertical borderless menu">
-                    {{!-- <span class="item noHover">{{interpolate text (lookup @root interpolateFromRoot)}}</span> --}}
                     <a class="item link" href="{{ link }}">{{interpolate text @root.user}}</a>
                     {{#unless @root.user.isMember}}
                         <div class="item buttonParent">
