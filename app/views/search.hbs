@@ -17,46 +17,61 @@
         <div class="ui link cards centered">
             {{#each programs}}
                 {{> programCard @root.page.cards program=this}}
+            {{else}}
+                <div class="ui warning icon message">
+                    <i class="triangle exclamation icon"></i>
+                    <div class="content">
+                        <div class="header">
+                            {{ @root.page.noResults.heading }}
+                        </div>
+                        <p>
+                            {{ @root.page.noResults.body }}
+                        </p>
+                    </div>
+                </div>
             {{/each}}
         </div>
     </div>
 
-    <div class="paginationWrapper">
-        {{#if user.isMember}}
-            <div id="dataPaginationMenu" class="ui pagination menu">
-                {{#unless isFirstPage}}
-                    <div class="icon item" data-page="{{math currentPage '-' 1}}">
-                        <i class="left arrow icon"></i>
-                    </div>
-                {{/unless}}
+    {{#if programs.length}}
+        <div class="paginationWrapper">
+            {{#if user.isMember}}
+                <div id="dataPaginationMenu" class="ui pagination menu">
+                    {{#unless isFirstPage}}
+                        <div class="icon item" data-page="{{math currentPage '-' 1}}">
+                            <i class="left arrow icon"></i>
+                        </div>
+                    {{/unless}}
 
-                <div class="item active">
-                    {{math currentPage '+' 1}}
+                    <div class="item active">
+                        {{math currentPage '+' 1}}
+                    </div>
+
+                    {{#unless isLastPage}}
+                        <div class="icon item" data-page="{{math currentPage '+' 1}}">
+                            <i class="right arrow icon"></i>
+                        </div>
+                    {{/unless}}
                 </div>
+            {{/if}}
 
-                {{#unless isLastPage}}
-                    <div class="icon item" data-page="{{math currentPage '+' 1}}">
-                        <i class="right arrow icon"></i>
-                    </div>
-                {{/unless}}
+            <div class="paginationInfo">
+                <span>{{ page.pagination.results }}</span>
+                <span class="value">{{ rangeLow }}</span>
+                <span>{{ page.pagination.divider }}</span>
+                <span class="value">{{ rangeHigh }}</span>
+                <span>{{ page.pagination.of }}</span>
+                <span class="value">{{ count }}</span>
             </div>
-        {{/if}}
-        <div class="paginationInfo">
-            <span>{{ page.pagination.results }}</span>
-            <span class="value">{{ rangeLow }}</span>
-            <span>{{ page.pagination.divider }}</span>
-            <span class="value">{{ rangeHigh }}</span>
-            <span>{{ page.pagination.of }}</span>
-            <span class="value">{{ count }}</span>
+            {{#unless user.isMember}}
+                <div class="memberPlug">
+                    {{#if user}}
+                        <span>{{{ page.pagination.memberPlug.isSignedIn }}}</span>
+                    {{else}}
+                        <span>{{{ page.pagination.memberPlug.notSignedIn }}}</span>
+                    {{/if}}
+                </div>
+            {{/unless}}
         </div>
-        {{#unless user.isMember}}
-            <div class="memberPlug">
-                {{#if user}}
-                    <span>{{{ page.pagination.memberPlug.isSignedIn }}}</span>
-                {{else}}
-                    <span>{{{ page.pagination.memberPlug.notSignedIn }}}</span>
-                {{/if}}
-            </div>
-        {{/unless}}
-    </div>
+    {{/if}}
 </div>

@@ -10,6 +10,10 @@
         "domestic": "Domestic:",
         "international": "International:"
     },
+    "noResults": {
+        "heading": "We could not find any programs for that search",
+        "body": "Please try another search!"
+    },
     "pagination": {
         "results": "Results",
         "divider": "-",
