@@ -25,16 +25,18 @@
                 "href": "/#aboutUs"
             },
             {
-                "text": "Studying in Canada",
-                "href": "/studying-in-canada"
-            },
-            {
                 "text": "Apply for Scholarship",
                 "href": "/scholarship-application"
             },
             {
                 "text": "Contact",
                 "href": "/contact"
+            }
+        ],
+        "membersOnlyItems": [
+            {
+                "text": "Studying in Canada",
+                "href": "/studying-in-canada"
             }
         ],
         "adminItem": {
