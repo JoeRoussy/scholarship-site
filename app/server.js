@@ -15,6 +15,7 @@ import apiRouteConfig from './router/apiRoutes.js';
 import authRouteConfig from './router/authRoutes.js';
 import memberRouteConfig from './router/membershipRoutes.js';
 import adminRouteConfig from './router/adminRoutes.js';
+import notFoundRouteConfig from './router/errorRoutes.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
@@ -121,6 +122,11 @@ dbConfig()
             app,
             db,
             baseLogger: Logger
+        });
+
+        // Configure the 404 route at the end
+        notFoundRouteConfig({
+            app
         });
 
         if (config.db.shouldRunDataImport) {
