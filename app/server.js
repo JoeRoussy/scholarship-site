@@ -56,7 +56,11 @@ dbConfig()
             store: new MongoStore({
                 db,
                 touchAfter: 24 * 3600 // Only update the session every 24 hours unless a modification to the session is made
-            })
+            }),
+            cookie: {
+                secure: process.env.NODE_ENV === 'production', // Using secure cookie requires an https connection
+                maxAge: 30 * 24 * 3600 * 1000 // Cookie identifiying session expires in one month (value passed in milliseconds)
+            }
         }));
         app.use(passport.initialize());
         app.use(passport.session());
