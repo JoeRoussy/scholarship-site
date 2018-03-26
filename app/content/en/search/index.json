@@ -14,6 +14,11 @@
         "heading": "We could not find any programs for that search",
         "body": "Please try another search!"
     },
+    "overQuota": {
+        "heading": "You have exceeded your monthly quota",
+        "memberBody": "You only have 30 searches per month. <a href=\"#\" data-modal=\"membershipModal\">Become a member</a> to access unlimited results",
+        "visitorBody": "You only have 3 searches per month. <a href=\"#\" data-modal=\"signUpModal\">Join</a> to get 30 searches per month. If you also choose to buy a full membership, you will get unlimited searches and all the other perks of full memerbship."
+    },
     "pagination": {
         "results": "Results",
         "divider": "-",

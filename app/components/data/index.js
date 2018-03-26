@@ -850,7 +850,7 @@ export const getSearchForUserId = async({
     userId = required('userId')
 }) => {
     try {
-        return await searchesCollection.find({ userId }).toArray();
+        return await searchesCollection.findOne({ userId });
     } catch (e) {
         throw new RuntimeError({
             err: e,

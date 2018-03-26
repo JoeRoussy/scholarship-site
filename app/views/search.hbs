@@ -18,17 +18,37 @@
             {{#each programs}}
                 {{> programCard @root.page.cards program=this}}
             {{else}}
-                <div class="ui warning icon message">
-                    <i class="triangle exclamation icon"></i>
-                    <div class="content">
-                        <div class="header">
-                            {{ @root.page.noResults.heading }}
+                {{#if overQuota}}
+                    <div class="ui warning icon message">
+                        <i class="triangle exclamation icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                {{ @root.page.overQuota.heading }}
+                            </div>
+                            {{#if user}}
+                                <p>
+                                    {{{md @root.page.overQuota.memberBody true}}}
+                                </p>
+                            {{else}}
+                                <p>
+                                    {{{md @root.page.overQuota.visitorBody true}}}
+                                </p>
+                            {{/if}}
                         </div>
-                        <p>
-                            {{ @root.page.noResults.body }}
-                        </p>
                     </div>
-                </div>
+                {{else}}
+                    <div class="ui warning icon message">
+                        <i class="triangle exclamation icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                {{ @root.page.noResults.heading }}
+                            </div>
+                            <p>
+                                {{ @root.page.noResults.body }}
+                            </p>
+                        </div>
+                    </div>
+                {{/if}}
             {{/each}}
         </div>
     </div>

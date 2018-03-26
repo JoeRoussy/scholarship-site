@@ -29,6 +29,9 @@ export const middleware = ({
 	let searchCounterDocument;
 
 	if (req.user) {
+		// We do not want to be working off of a search id in the session if we have someone signed in
+		delete req.session.searchCounterId;
+
 		// Members do not have any restrictions
 		if (req.user.isMember) {
 			return next();
@@ -50,25 +53,41 @@ export const middleware = ({
 			});
 		}
 
-		if (searchCounterDocument.count >= userLimit) {
-			return next({
-					key: OVER_QUOTA_ERROR,
-					message: 'Current user is not allowed to execute any more searches'
+		if (!searchCounterDocument) {
+			// If this user does not have a search counter document we need to make them one
+			try {
+				searchCounterDocument = yield createNewSearchesDocument(searchesCollection, req.user._id);
+			} catch (e) {
+				logger.error(e, 'Error creating search counter document');
+
+				return next({
+					key: GENERAL_ERROR,
+					message: 'Error creating search counter document'
 				});
+			}
+
+			return next();	
 		} else {
-			// Need to increment the counter and let the user continue with their search
-			return yield incrementSearchCount({
-				searchesCollection,
-				searchCounterDocument,
-				next,
-				logger
-			});
+			// This user already had a search counter document so we need to check the count and increment it of we are still under
+			if (searchCounterDocument.count >= userLimit) {
+				return next({
+						key: OVER_QUOTA_ERROR,
+						message: 'Current user is not allowed to execute any more searches'
+					});
+			} else {
+				// Need to increment the counter and let the user continue with their search
+				return yield incrementSearchCount({
+					searchesCollection,
+					searchCounterDocument,
+					next,
+					logger
+				});
+			}
 		}
 	} else {
 		// There is no user logged in and we need to resort to the session
 		if (req.session.searchCounterId) {
 			// This user has visited before so we need to get the search document and act based on that
-			console.log('search limit middleware sees a searches document')
 			try {
 				searchCounterDocument = yield getDocById({
 					collection: searchesCollection,
@@ -83,9 +102,6 @@ export const middleware = ({
 					message: errorMessage
 				});
 			}
-
-			console.log('found searchCounterDocument')
-			console.log(JSON.stringify(searchCounterDocument, null, 4))
 
 			if (!searchCounterDocument) {
 				// The counter id in the session is wrong so delete it and return a general error
@@ -114,8 +130,6 @@ export const middleware = ({
 
 		} else {
 			// This is a new visitor so we need to make a search document for them and set the search counter in the session
-			console.log('search limit middleware does not see a search document')
-
 			try {
 				searchCounterDocument = yield createNewSearchesDocument(searchesCollection);
 			} catch (e) {
@@ -139,7 +153,7 @@ function createNewSearchesDocument(searchesCollection, userId) {
 	return insert({
 		collection: searchesCollection,
 		document: {
-			userId,
+			userId: convertToObjectId(userId),
 			count: 1
 		},
 		returnInsertedDocument: true
@@ -154,8 +168,6 @@ const incrementSearchCount = async({
 	next,
 	logger
 }) => {
-	console.log('incrementing search count...')
-
 	try {
 		await findAndUpdate({
 			collection: searchesCollection,
