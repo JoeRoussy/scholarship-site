@@ -4,6 +4,11 @@
             "heading": "Congragulations!",
             "body": "You are now a full member of the Canada Higher Education House.",
             "type": "success"
+        },
+        "searchError": {
+        	"heading": "Something went wrong",
+        	"body": "Your search could not be processed. Please try again later",
+        	"type": "error"
         }
     }
 }

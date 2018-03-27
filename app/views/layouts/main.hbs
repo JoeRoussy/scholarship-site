@@ -54,6 +54,10 @@
             {{> notification page.notifications.paypalSuccess}}
         {{/if}}
 
+        {{#if queryParams.searchError}}
+            {{> notification page.notifications.searchError}}
+        {{/if}}        
+
         {{> modals/login page.login}}
         {{> modals/signUp page.signUp}}
         {{> modals/membership page.membership}}

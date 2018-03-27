@@ -844,3 +844,17 @@ export const getCurrentExchangeRates = async({
 
     return result.rates;
 }
+
+export const getSearchForUserId = async({
+    searchesCollection = required('searchesCollection'),
+    userId = required('userId')
+}) => {
+    try {
+        return await searchesCollection.findOne({ userId });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not find search for user with id: ${userId}`
+        });    
+    }
+};

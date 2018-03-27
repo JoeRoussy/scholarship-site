@@ -12,6 +12,7 @@ import {
     profile
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
+import { getChildLogger } from '../components/log-factory';
 import {
     sendMessage as sendMailMessage,
     getContactMailMessage,
@@ -19,6 +20,7 @@ import {
     getApplicationConfirmationMailMessage
 } from '../components/mail-sender';
 import { insert as insertInDb } from '../components/db/service';
+import { middleware as searchLimitMiddleware, handleError as handleSearchError } from '../components/search-limits';
 
 export default ({
     app = required('app'),
@@ -45,12 +47,29 @@ export default ({
 
     app.route('/search')
         .get([
+            searchLimitMiddleware({
+                searchesCollection: db.collection('searches'),
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'search-limit'
+                    }
+                })
+            }),
             search({
                 provincesCollection: db.collection('provinces'),
                 universitiesCollection: db.collection('universities'),
                 programsCollection: db.collection('programs')
             }),
-            setupSearchPagination
+            setupSearchPagination,
+            handleSearchError({
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'search-limit-errors'
+                    }
+                })
+            })
         ]);
 
     app.get('/programs/:programId', programDetails({
