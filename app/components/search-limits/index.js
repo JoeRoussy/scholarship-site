@@ -71,9 +71,9 @@ export const middleware = ({
             // This user already had a search counter document so we need to check the count and increment it of we are still under
             if (searchCounterDocument.count >= userLimit) {
                 return next({
-                        key: OVER_QUOTA_ERROR,
-                        message: 'Current user is not allowed to execute any more searches'
-                    });
+                    key: OVER_QUOTA_ERROR,
+                    message: 'Current user is not allowed to execute any more searches'
+                });
             } else {
                 // Need to increment the counter and let the user continue with their search
                 return yield incrementSearchCount({
@@ -127,7 +127,6 @@ export const middleware = ({
                     logger
                 });
             }
-
         } else {
             // This is a new visitor so we need to make a search document for them and set the search counter in the session
             try {
