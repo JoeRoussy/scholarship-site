@@ -16,6 +16,12 @@ if (!config) {
     throw new Error('Could not load config');
 }
 
+const {
+    errors: {
+        generic: GENERAL_ERROR = required('general', 'Need to add this in the config')
+    }
+} = config;
+
 export const search = ({
     provincesCollection = required('provincesCollection', 'You must pass in the provinces db collection'),
     universitiesCollection = required('universitiesCollection', 'You must pass in the universities db collection'),
@@ -410,7 +416,6 @@ export const processScholarshipApplication = ({
 });
 
 export const profile = ({
-    usersCollection = required('usersCollection'),
     referralsCollection = required('referralsCollection'),
     referralPromosCollection = required('referralPromosCollection'),
     transactionsCollection = required('transactionsCollection')
@@ -454,6 +459,12 @@ export const profile = ({
     res.locals.user = user;
     res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
 
-
     return res.render('profile');
 });
+
+export const errorHandler = function(err, req, res, next) {
+    res.status(500);
+    res.locals.errorKey = err.key || GENERAL_ERROR;
+
+    return res.render('serverError', res.locals);
+};

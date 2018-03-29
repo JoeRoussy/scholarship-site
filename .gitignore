@@ -6,3 +6,4 @@ public/
 app/config
 semantic/dist
 site_copy/
+.eslintrc
