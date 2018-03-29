@@ -1,0 +1,12 @@
+{{> navigation page.navigation}}
+
+<div class="serverError rootSection">
+    <div class="ui container">
+        <div class="ui error message">
+            <div class="header">{{ page.internalError.heading }}</div>
+            <p>
+                {{lookup page.internalError.body @root.errorKey}}
+            </p>
+        </div>
+    </div>
+</div>

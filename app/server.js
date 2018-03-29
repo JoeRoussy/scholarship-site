@@ -16,6 +16,7 @@ import authRouteConfig from './router/authRoutes.js';
 import memberRouteConfig from './router/membershipRoutes.js';
 import adminRouteConfig from './router/adminRoutes.js';
 import notFoundRouteConfig from './router/errorRoutes.js';
+import { errorHandler } from './controller/app.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
 import runDataImport from './components/db/data-import';
@@ -132,6 +133,9 @@ dbConfig()
         notFoundRouteConfig({
             app
         });
+
+        // Configure error handling
+        app.use(errorHandler);
 
         if (config.db.shouldRunDataImport) {
             runDataImport({

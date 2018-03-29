@@ -14,12 +14,15 @@ import config from '../../config';
 const {
     searchCounting: {
         errors: {
-            general: GENERAL_ERROR = required('general', 'Need to add this in the config'),
+            general: GENERAL_SEARCH_ERROR = required('general', 'Need to add this in the config'),
             overQuota: OVER_QUOTA_ERROR = required('overQuota', 'Need to add this in the config')       
         } = {},
         visitorLimit = required('visitorLimit', 'Need to add this in the config'),
         userLimit = required('userLimit', 'Need to add this in the config')
-    } = {}
+    } = {},
+    errors: {
+        generic: GENERAL_ERROR = required('general', 'Need to add this in the config')
+    }
 } = config;
 
 export const middleware = ({
@@ -48,7 +51,7 @@ export const middleware = ({
             logger.error(e, errorMessage);
 
             return next({
-                key: GENERAL_ERROR,
+                key: GENERAL_SEARCH_ERROR,
                 message: errorMessage
             });
         }
@@ -61,7 +64,7 @@ export const middleware = ({
                 logger.error(e, 'Error creating search counter document');
 
                 return next({
-                    key: GENERAL_ERROR,
+                    key: GENERAL_SEARCH_ERROR,
                     message: 'Error creating search counter document'
                 });
             }
@@ -98,7 +101,7 @@ export const middleware = ({
                 logger.error(e, errorMessage);
 
                 return next({
-                    key: GENERAL_ERROR,
+                    key: GENERAL_SEARCH_ERROR,
                     message: errorMessage
                 });
             }
@@ -108,7 +111,7 @@ export const middleware = ({
                 delete req.session.searchCounterId;
 
                 return next({
-                    key: GENERAL_ERROR,
+                    key: GENERAL_SEARCH_ERROR,
                     message: 'Could not find a search counter document using the id in the sesssion'
                 });
             }
@@ -135,7 +138,7 @@ export const middleware = ({
                 logger.error(e, 'Error creating search counter document');
 
                 return next({
-                    key: GENERAL_ERROR,
+                    key: GENERAL_SEARCH_ERROR,
                     message: 'Error creating search counter document'
                 });
             }
@@ -182,7 +185,7 @@ const incrementSearchCount = async({
         logger.error(e, errorMessage);
 
         return next({
-            key: GENERAL_ERROR,
+            key: GENERAL_SEARCH_ERROR,
             message: errorMessage
         });
     }
@@ -194,7 +197,7 @@ const incrementSearchCount = async({
 export const handleError = ({
     logger = required('logger', 'You must pass in a logging instance for this function to use')
 }) => (err, req, res, next) => {
-    if (err.key === GENERAL_ERROR) {
+    if (err.key === GENERAL_SEARCH_ERROR) {
 
         // We should just redirect to the homepage with a flag for showing a toast
         return res.redirect('/?searchError=true');
@@ -205,11 +208,12 @@ export const handleError = ({
 
         return res.render('search', res.locals);
     } else {
-        logger.error({ error: err }, 'Invalid error for search limit middleware.');
+        const errorMessage = 'Invalid error for search limit middleware.'
+        logger.error({ error: err }, errorMessage);
 
-        return res.status(500).json({
-            error: true,
-            message: 'Your request could not be processed'
+        return next({
+            key: GENERAL_ERROR,
+            message: errorMessage
         });
     }
 };
