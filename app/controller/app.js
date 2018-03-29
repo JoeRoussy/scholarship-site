@@ -463,6 +463,7 @@ export const profile = ({
 });
 
 export const errorHandler = function(err, req, res, next) {
+    res.status(500);
     res.locals.errorKey = err.key || GENERAL_ERROR;
 
     return res.render('serverError', res.locals);
