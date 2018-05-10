@@ -13,6 +13,21 @@
                             {{#unless winner}}
                                 <p class="description">{{{md (interpolate @root.page.threashold this) true}}}</p>
                                 <p class="description">{{{md (interpolate @root.page.numberEligible this) true}}}</p>
+                                {{#if this.contenders}}
+                                    {{#cond this.contenders.length '==' 1}}
+                                        <p class="description">{{ @root.page.singleContenderText }}</p>
+                                    {{else}}
+                                        <p class="description">{{ @root.page.mutlipleContendersText }}</p>
+                                    {{/cond}}
+                                    <ol class="description list">
+                                        {{#each this.contenders}}
+                                            <li>
+                                                <span>{{ this.name }}</span>
+                                                <a href="mailto:{{ this.email }}">{{ this.email }}</a>
+                                            </li>
+                                        {{/each}}
+                                    </ol>
+                                {{/if}}  
                             {{/unless}}
                         </div>
                         {{#if winner}}
@@ -22,21 +37,24 @@
                                 <a href="mailto:{{ winner.email }}">{{ winner.email }}</a>
                             </div>
                         {{else}}
-                            <div class="drawButtonWrapper">
-                                <button
-                                    class="ui button green"
-                                    type="button"
-                                    data-promo-id="{{ _id }}"
-                                    data-promo-drawing-button
-                                    {{#unless this.numberEligible}}
-                                        disabled
-                                    {{/unless}}
-                                    data-error-title="{{ @root.page.findWinnerButton.errorTitle }}"
-                                    data-error-message="{{ @root.page.findWinnerButton.errorMessage }}"
-                                >
-                                    {{ @root.page.findWinnerButton.text }}
-                                </button>
-                            </div>
+                            {{#if this.contenders}}
+                                <div class="drawButtonWrapper">
+                                    <button
+                                        class="ui button green"
+                                        type="button"
+                                        data-promo-id="{{ _id }}"
+                                        data-promo-drawing-button
+                                        data-error-title="{{ @root.page.findWinnerButton.errorTitle }}"
+                                        data-error-message="{{ @root.page.findWinnerButton.errorMessage }}"
+                                    >
+                                        {{#cond this.contenders.length '==' 1}}
+                                            {{ @root.page.findWinnerButton.singleWinnerText }}
+                                        {{else}}
+                                            {{ @root.page.findWinnerButton.multipleWinnerText }}
+                                        {{/cond}}
+                                    </button>
+                                </div>
+                            {{/if}}
                         {{/if}}
                     </div>
                 {{/with}}

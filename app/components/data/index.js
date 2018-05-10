@@ -596,10 +596,35 @@ export const getAllReferralPromos = async({
             return accumulator;
         }, 0);
 
-        return {
+        // Also include potential winners for the current promo
+        // For these purposes, a winner would be anyone who has the most referrals that is above the threashold for the
+        // promo. It is an array incase there is a tie for first place.
+        let currentMax = -1;
+
+        const contenderIds = Object.keys(eligibility).reduce((accumulator, current) => {
+            if (eligibility[current] >= currentMax && eligibility[current] >= threashold) {
+                accumulator.push(current);
+                currentMax = eligibility[current];
+            }
+
+            return accumulator;
+        }, []);
+
+        const newPromo = {
             numberEligible,
             threashold,
-            ...promoProps
+            ...promoProps   
+        };
+
+        if (newPromo.winner || !contenderIds.length) {
+            // We do not need to include the "winner ids" because we have already computed a winner or there is no possible winners
+            return newPromo;
+        }
+
+        // We have not assigned a winner so we should include the contender ids
+        return {
+            contenderIds,
+            ...newPromo
         };
     });
 
@@ -714,8 +739,6 @@ export const getCurrentReferralInformation = async({
     });
 };
 
-
-
 export const attributeReferral = async({
     referrerId = required('referrerId'),
     referreeId = required('referreeId'),
@@ -818,15 +841,28 @@ export const getWinnerForPromo = async({
             $project: {
                 _id: '$_id._id',
                 name: '$_id.name',
-                email: '$_id.email'
+                email: '$_id.email',
+                lengthOfReferrals: 1
             }
         }
     ]).toArray();
 
-    // Pick one of these eligible users at random
-    const index = Math.floor(Math.random() * eligibleUsers.length);
+    // Figure out who can win and if there is a tie for first
+    const maxReferals = eligibleUsers.reduce((accumulator, current) => {
+        if (current.lengthOfReferrals > accumulator) {
+            return current.lengthOfReferrals;
+        }
 
-    return eligibleUsers[index];
+        return accumulator;
+    }, -1);
+
+    const potentialWinners = eligibleUsers.filter(x => x.lengthOfReferrals === maxReferals);
+
+    // Pick one of the people tied for the win at random
+    // NOTE: This also handles the case where there is only one potential winner
+    const index = Math.floor(Math.random() * potentialWinners.length);
+
+    return potentialWinners[index];
 }
 
 // Gets the current exchange rates

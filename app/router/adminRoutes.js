@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAdmin, applications, promos, createPromo, processCreatePromo, index } from '../controller/admin.js';
+import { isAdmin, applications, promos, createPromo, processCreatePromo, index, populateUsersInPromo } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 import { insert as insertInDb } from '../components/db/service';
@@ -37,6 +37,15 @@ export default ({
                 baseLogger,
                 additionalFields: {
                     module: 'admin-promos-view'
+                }
+            })
+        }),
+        populateUsersInPromo({
+            usersCollection: db.collection('users'),
+            logger: getChildLogger({
+                baseLogger,
+                additionalFields: {
+                    module: 'admin-promos-populate-winner-ids'
                 }
             })
         })
