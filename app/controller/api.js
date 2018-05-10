@@ -357,7 +357,6 @@ export const promoWinnerGeneration = ({
         });
     }
 
-
     if (!winner) {
         logger.warn({ promoId }, 'No winner returned for this promotion');
 
