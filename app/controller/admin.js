@@ -86,7 +86,7 @@ export const promos = ({
 export const populateUsersInPromo = ({
     usersCollection = required('usersCollection'),
     logger = required('logger', 'You must pass in a child logging instance')
-}) => coroutine(function* (req, res) {
+}) => coroutine(function* (req, res, next) {
     // Go through each res.locals.promos and populate the data for the referrals (which are in the winner ids)
     res.locals.promos = yield Bluebird.map(res.locals.promos, async function(promo) {
         if (!promo.contenderIds) {
@@ -109,9 +109,14 @@ export const populateUsersInPromo = ({
             contenders,
             ...promoProps
         };
-    });
+    })
+        .catch((e) => {
+            logger.error(e, 'Error getting contenders for promo');
 
-    // TODO: Add a catch that returns an error
+            // Render an error
+            return next('Error getting contenders for promo');
+        })
+    
 
     return res.render('promos', res.locals);
 });

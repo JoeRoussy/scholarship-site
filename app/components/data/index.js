@@ -621,7 +621,7 @@ export const getAllReferralPromos = async({
             return newPromo;
         }
 
-        // We have not assigned a winner so we should include the potential winner ids
+        // We have not assigned a winner so we should include the contender ids
         return {
             contenderIds,
             ...newPromo
