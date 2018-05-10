@@ -1,7 +1,11 @@
+import Bluebird from 'bluebird';
+
 import { wrap as coroutine } from 'co';
-import { getScholarshipApplicationsWithFilter, getAllReferralPromos } from '../components/data';
+import { getScholarshipApplicationsWithFilter, getAllReferralPromos, getDocById } from '../components/data';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 import { insertInDb } from '../components/db/service';
+import { transformUserForOutput } from '../components/transformers';
+
 
 export const isAdmin = (req, res, next) => {
     const {
@@ -63,7 +67,7 @@ export const applications = ({
 export const promos = ({
     referralPromosCollection = required('referralPromosCollection'),
     logger = required('logger', 'You must pass in a child logging instance')
-}) => coroutine(function* (req, res) {
+}) => coroutine(function* (req, res, next) {
     let promos = [];
 
     try {
@@ -75,6 +79,39 @@ export const promos = ({
     }
 
     res.locals.promos = promos;
+
+    return next();
+});
+
+export const populateUsersInPromo = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass in a child logging instance')
+}) => coroutine(function* (req, res) {
+    // Go through each res.locals.promos and populate the data for the referrals (which are in the winner ids)
+    res.locals.promos = yield Bluebird.map(res.locals.promos, async function(promo) {
+        if (!promo.contenderIds) {
+            // No users to populate
+            return promo;
+        }
+
+        const {
+            contenderIds,
+            ...promoProps
+        } = promo;
+
+        const contenders = await Bluebird.map(contenderIds, (winnerId) => getDocById({
+            collection: usersCollection,
+            id: winnerId
+        }))
+            .map(transformUserForOutput);
+
+        return {
+            contenders,
+            ...promoProps
+        };
+    });
+
+    // TODO: Add a catch that returns an error
 
     return res.render('promos', res.locals);
 });

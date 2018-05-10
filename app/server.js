@@ -139,7 +139,9 @@ dbConfig()
 
         if (config.db.shouldRunDataImport) {
             runDataImport({
-                spreadsheetPath: 'app/files/Maritime_Provinces_draft_final_19_october.csv',
+                //spreadsheetPath: 'app/files/manitoba_draft_final_1_march_2018.csv',
+                spreadsheetPath: 'app/files/saskatchewan_draft_final_1_march_2018.csv',
+                //spreadsheetPath: 'app/files/Maritime_Provinces_draft_final_19_october.csv',
                 //spreadsheetPath: 'app/files/British_Columbia_draft_final_12_november.csv',
                 //spreadsheetPath: 'app/files/Alberta_draft_final_12_november.csv',
                 baseLogger: Logger,
