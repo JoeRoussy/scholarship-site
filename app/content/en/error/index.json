@@ -8,7 +8,8 @@
         "paypalCheckout": "Something went wrong processing your paypal checkout",
         "paypalAccept": "Something went wrong processing your paypal payment",
         "paypalNotLoggedIn": "It seems like you are no longer logged in",
-        "nonMemberScholarshipApplication": "It seems like you are not a member"
+        "nonMemberScholarshipApplication": "It seems like you are not a member",
+        "facebookLogin": "Error loggin in with facebook"
     },
     "descriptions": {
         "default": "Please try your action again, if the problem persists, please [contact us](/contact).",
@@ -16,6 +17,7 @@
         "paypalCheckout": "Please try the checkout process again. If the problem persists, please [contact us](/contact).",
         "paypalAccept": "Please [contact us](/contact) to sort out the issue.",
         "paypalNotLoggedIn": "Your payment has not been processed. Please log back in and try to become a member again.",
-        "nonMemberScholarshipApplication": "You must be a member to submit a scholarship application. Please [contact us](/contact) if you are a member and are trying to submit an application."
+        "nonMemberScholarshipApplication": "You must be a member to submit a scholarship application. Please [contact us](/contact) if you are a member and are trying to submit an application.",
+        "facebookLogin": "Please try again or [contact us](/contact) if the error persists."
     }
 }

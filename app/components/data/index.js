@@ -8,6 +8,9 @@ import {
     convertToObjectId,
     getRegex
 } from '../custom-utils';
+import { free } from '../populate-session';
+import { generateHash } from '../authentication';
+import { get as getHash } from '../hash';
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
 
@@ -894,3 +897,104 @@ export const getSearchForUserId = async({
         });    
     }
 };
+
+// TODO: This function needs to not take req or refId. 
+export const processReferrals = async({
+    refId,
+    req = required('req'),
+    usersCollection = required('usersCollection'),
+    referralPromosCollection = required('referralPromosCollection'),
+    referralsCollection = required('referralsCollection'),
+    newUser = required('newUser')
+}) => {
+    // Now that the user has been made, see if we need to credit anyone with a referral
+    if (refId) {
+        let referrer = null;
+
+        try {
+            referrer = await getUserByReferralCode({
+                usersCollection,
+                refId
+            });
+        } catch (e) {
+            throw new RuntimeError({
+                err: e,
+                msg: `Could not find user with refId: ${redId}`
+            });
+        }
+
+        if (referrer) {
+            // Update any promos going on now to have this new user as eligible
+            try {
+                await attributeReferral({
+                    referrerId: referrer._id,
+                    referreeId: newUser._id,
+                    referralPromosCollection,
+                    referralsCollection
+                });
+            } catch (e) {
+                throw new RuntimeError({
+                    err: e,
+                    msg: `Error attributing referral for user with refId: ${redId} for new user with id: ${newUser._id}`
+                });
+            }
+        }
+
+        free(req.session, 'refId');
+    }
+
+    return true;
+};
+
+// Makes a user in the db and returns a promise for saving it in the db
+// Will hash password before saving it (if present) and will also assign a ref id for referrals
+// Saved provider information of this is a third party sign in
+export const createUser = async({
+    name = required('name'),
+    email = required('email'),
+    password,
+    provider,
+    providerId,
+    usersCollection = required('usersCollection')
+}) => {
+    // Make sure we have all the information we need
+    if (!password && !(provider || providerId)) {
+        throw new Error('If you don\'t pass a password for a created user you need to pass a provider and a provider id from the thrid party auth service');
+    }
+
+    let newUser = {
+        name,
+        email
+    };
+
+    if (password) {
+        // This is a local sign in. We need to hash the password
+        const hashedPassword = await generateHash(password);
+
+        newUser = {
+            ...newUser,
+            password: hashedPassword
+        };
+    } else {
+        // This is an external sign in. We need to save the provider information
+        newUser = {
+            ...newUser,
+            provider,
+            providerId
+        };
+    }
+
+    // Every user needs a ref id
+    newUser = {
+        ...newUser,
+        refId: getHash({ input: email })
+    };
+
+
+    // Now try and save the user to the db
+    return insert({
+        collection: usersCollection,
+        document: newUser,
+        returnInsertedDocument: true
+    });
+}
