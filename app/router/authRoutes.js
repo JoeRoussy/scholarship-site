@@ -34,7 +34,7 @@ export default ({
 
     app.get('/login/facebook', passport.authenticate('facebook', { scope: 'email' }));
     app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect: '/?checkForReferral=true', // TODO: Add middleware for this
+        successRedirect: '/?checkForReferral=true',
         failureRedirect: '/error?errorKey=facebookLogin'
     }));
 

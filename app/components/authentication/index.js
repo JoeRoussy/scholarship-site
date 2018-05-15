@@ -1,11 +1,13 @@
 import bcrypt from 'bcrypt';
 import config from '../../config';
 import { wrap as coroutine } from 'co';
-import { getDocById, getUserByEmail } from '../data';
+import { getDocById, getUserByEmail, createUser } from '../data';
 import { insert as saveToDb } from '../db/service';
 import passportLocal from 'passport-local';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
+import passportFacebook from 'passport-facebook';
 import { required } from '../custom-utils';
+
+const FacebookStrategy = passportFacebook.Strategy;
 
 const {
     saltRounds,
@@ -139,7 +141,7 @@ export default ({
         }
 
         // NOTE: Referrals will be processed in the success callback using middleware looking for the appropriate query parameter
-        return done(null, facebookUser);
+        return done(null, savedUser);
     })));
 
 }

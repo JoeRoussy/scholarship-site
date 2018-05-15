@@ -898,7 +898,6 @@ export const getSearchForUserId = async({
     }
 };
 
-// TODO: This function needs to not take req or refId. 
 export const processReferrals = async({
     refId,
     req = required('req'),

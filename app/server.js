@@ -9,6 +9,7 @@ import loadContentConfig from './components/content';
 import loadRequest from './components/load-request';
 import loadConfigElements from './components/load-config';
 import loadUser from './components/load-user';
+import processReferrals from './components/process-referrals'
 import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
@@ -109,6 +110,17 @@ dbConfig()
             })
         }));
         app.use(pricingPopulation);
+        app.use(processReferrals({
+            usersCollection: db.collection('users'),
+            referralPromosCollection: db.collection('referralPromos'),
+            referralsCollection: db.collection('referrals'),
+            logger: getChildLogger({
+                baseLogger: Logger,
+                additionalFields: {
+                    module: 'third-part-sign-in-referral-promotion'
+                }
+            })
+        }));
         appRouteConfig({
             app,
             db
