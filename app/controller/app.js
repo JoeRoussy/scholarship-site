@@ -469,5 +469,9 @@ export const errorHandler = function(err, req, res, next) {
     res.status(500);
     res.locals.errorKey = err.key || GENERAL_ERROR;
 
+    // Throw an error in the logs just in case this was not picked up before
+    console.log('From error handler middleware:');
+    console.error(err);
+
     return res.render('serverError', res.locals);
 };

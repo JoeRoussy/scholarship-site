@@ -3,7 +3,8 @@
         "heading": "Something went wrong",
         "body": {
             "GENERIC_ERROR": "An error occured while processing your request. Our support team is working on the issue.",
-            "FACEBOOK_MISSING_EMAIL": "An email is required to log in with facebook."
+            "EXTERNAL_LOGIN_MISSING_EMAIL": "We could not find an email associated with your account.",
+            "EXTERNAL_LOGIN_MISSING_NAME": "We could not find an email associated with your account."
         }
     }
 }
