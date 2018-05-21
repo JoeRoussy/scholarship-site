@@ -9,6 +9,7 @@ import loadContentConfig from './components/content';
 import loadRequest from './components/load-request';
 import loadConfigElements from './components/load-config';
 import loadUser from './components/load-user';
+import processReferrals from './components/process-referrals';
 import templateConfig from './components/template-config';
 import appRouteConfig from './router/appRoutes.js';
 import apiRouteConfig from './router/apiRoutes.js';
@@ -26,6 +27,8 @@ import queryParamsPopulation from './components/populate-query-params';
 import { middleware as sessionPopulation } from './components/populate-session';
 import exchangeRatePopulation from './components/exchange-rate-population';
 import pricingPopulation from './components/pricing-population';
+import { sendMessage as sendMailMessage, getSignUpMailMessage } from './components/mail-sender';
+import { sendWelcomeMessageToFacebookUser } from './controller/auth';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -70,12 +73,36 @@ dbConfig()
             extended: true
         }));
         app.use(bodyParser.json());
-        app.use(sessionPopulation(config.session.loadedQueryKeys))
+        app.use(sessionPopulation(config.session.loadedQueryKeys));
+        loadConfigElements(app);
         app.use(language);
+
+        // It is important to load the content first in case we need to redner an error page
+        app.use(exchangeRatePopulation({
+            exchangeRatesCollection: db.collection('exchangeRates'),
+            logger: getChildLogger({
+                baseLogger: Logger,
+                additionalFields: {
+                    module: 'exchange-rate-population'
+                }
+            })
+        }));
+        loadContentConfig(app);
+        app.use(pricingPopulation);
 
         configureAuth({
             passport,
-            db
+            db,
+            onFacebookUserCreated: sendWelcomeMessageToFacebookUser({
+                getMailMessage: getSignUpMailMessage,
+                sendMailMessage    
+            }),
+            logger: getChildLogger({
+                baseLogger: Logger,
+                additionalFields: {
+                    module: 'core-passport-auth'
+                }
+            })
         });
         authRouteConfig({
             app,
@@ -95,20 +122,19 @@ dbConfig()
                 }
             })
         });
-        loadConfigElements(app);
-        loadContentConfig(app);
         loadUser(app);
         templateConfig(app);
-        app.use(exchangeRatePopulation({
-            exchangeRatesCollection: db.collection('exchangeRates'),
+        app.use(processReferrals({
+            usersCollection: db.collection('users'),
+            referralPromosCollection: db.collection('referralPromos'),
+            referralsCollection: db.collection('referrals'),
             logger: getChildLogger({
                 baseLogger: Logger,
                 additionalFields: {
-                    module: 'exchange-rate-population'
+                    module: 'third-part-sign-in-referral-promotion'
                 }
             })
         }));
-        app.use(pricingPopulation);
         appRouteConfig({
             app,
             db

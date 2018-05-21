@@ -147,6 +147,7 @@ export const home = (req, res) => {
     res.render('home', res.locals);
 };
 
+// This route handler will render an error page with a 200 response. It can be redirected to if needed.
 export const error = (req, res) => {
     // Render the error page with a paragraph based on the key passed in
     const {
@@ -462,6 +463,8 @@ export const profile = ({
     return res.render('profile');
 });
 
+// This serves pages with a 500 response. It is meant for server errors to be returned to the client.
+// It is invoked by calling next(e)
 export const errorHandler = function(err, req, res, next) {
     res.status(500);
     res.locals.errorKey = err.key || GENERAL_ERROR;

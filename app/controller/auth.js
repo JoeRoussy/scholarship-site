@@ -1,12 +1,17 @@
 import config from '../config';
 import passport from 'passport';
 import { print, required } from '../components/custom-utils';
-import { generateHash } from '../components/authentication';
 import { wrap as coroutine } from 'co';
-import { getUserByEmail, getUserByReferralCode, attributeReferral } from '../components/data';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
-import { get as getHash } from '../components/hash';
 import { free } from '../components/populate-session';
+import {
+    getUserByEmail,
+    getUserByReferralCode,
+    attributeReferral,
+    processReferrals,
+    createUser
+ } from '../components/data';
+
 
 if (!config) {
     throw new Error('Could not find config!');
@@ -132,21 +137,14 @@ export const signup = ({
     }
 
     // No user exists with this email so lets make a user.
-    const hashedPassword = yield generateHash(password);
-    const newUser = {
-        email,
-        password: hashedPassword,
-        name,
-        refId: getHash({ input: email })
-    };
-
     let savedUser = null;
 
     try {
-        savedUser = yield saveToDb({
-            collection: db.collection('users'),
-            document: newUser,
-            returnInsertedDocument: true
+        savedUser = yield createUser({
+            name,
+            email,
+            password,
+            usersCollection: db.collection('users')
         });
     } catch (e) {
         logger.error({
@@ -154,40 +152,18 @@ export const signup = ({
             ...savedUser
         }, 'Error saving new user to db');
 
-        return res.redirect(`/?signupError=${signupErrorMessages.generic}`);
+        return res.redirect(`/?signupError=${signupErrorMessages.generic}`);        
     }
 
     // Now that the user has been made, see if we need to credit anyone with a referral
-    if (refId) {
-        let referrer = null;
-
-        try {
-            referrer = yield getUserByReferralCode({
-                usersCollection: db.collection('users'),
-                refId
-            });
-        } catch (e) {
-            // No need to mess this signup up because we could not find a referrer
-            logger.error(err.err, err.msg);
-        }
-
-        if (referrer) {
-            // Update any promos going on now to have this new user as eligible
-            try {
-                yield attributeReferral({
-                    referrerId: referrer._id,
-                    referreeId: savedUser._id,
-                    referralPromosCollection: db.collection('referralPromos'),
-                    referralsCollection: db.collection('referrals')
-                });
-            } catch (e) {
-                // Again, we don't want to break this sign in because we could not complete some referral assignment
-                logger.error(e.err, e.msg);
-            }
-        }
-
-        free(req.session, 'refId');
-    }
+    yield processReferrals({
+        refId,
+        req,
+        usersCollection: db.collection('users'),
+        referralPromosCollection: db.collection('referralPromos'),
+        referralsCollection: db.collection('referrals'),
+        newUser: savedUser
+    });
 
     // Now that the user has been made, log them in
     req.login(savedUser, err => {
@@ -232,3 +208,19 @@ export const logout = (req, res) => {
 
     return res.redirect('/');
 }
+
+// Take nessesary dependencies and returns a function that takes the new user and sends a welcome email to them
+// Logging errors is left to the caller
+export const sendWelcomeMessageToFacebookUser = ({
+    getMailMessage = required('getMailMessage'),
+    sendMailMessage = required('sendMailMessage')
+}) => coroutine(function* (newUser) {
+    const mailMessage = getMailMessage({ user: newUser });
+
+    // TODO: This should have a catch that rethrows an error with some messaging. We can do this once we bring in the RethrownError class.
+    return sendMailMessage({
+        to: newUser.email,
+        message: mailMessage,
+        subject: 'Greetings from the Canada Higher Education House'
+    });
+});

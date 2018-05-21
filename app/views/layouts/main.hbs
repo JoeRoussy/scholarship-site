@@ -58,9 +58,16 @@
             {{> notification page.notifications.searchError}}
         {{/if}}        
 
-        {{> modals/login page.login}}
-        {{> modals/signUp page.signUp}}
-        {{> modals/membership page.membership}}
+        {{#if page.login}}
+            {{> modals/login page.login}}
+        {{/if}}
+        {{#if page.signUp}}
+            {{> modals/signUp page.signUp}}
+        {{/if}}
+        {{#if page.membership}}
+            {{> modals/membership page.membership}}
+        {{/if}}
+
         {{> backEndGlobalImport}}
 
         {{#each page.assets.scripts.footer}}
