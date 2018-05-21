@@ -38,7 +38,7 @@ export default ({
         failureRedirect: '/error?errorKey=facebookLogin'
     }));
 
-    app.get('/auth/google', passport.authenticate('google', { scope: [ 'profile', 'email' ] }));
+    app.get('/login/google', passport.authenticate('google', { scope: [ 'profile', 'email' ] }));
     app.get('/auth/google/callback', passport.authenticate('google', {
         successRedirect: '/?checkForReferral=true',
         failureRedirect: '/error?errorKey=facebookLogin'
