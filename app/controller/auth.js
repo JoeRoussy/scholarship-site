@@ -211,7 +211,7 @@ export const logout = (req, res) => {
 
 // Take nessesary dependencies and returns a function that takes the new user and sends a welcome email to them
 // Logging errors is left to the caller
-export const sendWelcomeMessageToFacebookUser = ({
+export const sendWelcomeMessageToExternalLoginUser = ({
     getMailMessage = required('getMailMessage'),
     sendMailMessage = required('sendMailMessage')
 }) => coroutine(function* (newUser) {

@@ -28,7 +28,7 @@ import { middleware as sessionPopulation } from './components/populate-session';
 import exchangeRatePopulation from './components/exchange-rate-population';
 import pricingPopulation from './components/pricing-population';
 import { sendMessage as sendMailMessage, getSignUpMailMessage } from './components/mail-sender';
-import { sendWelcomeMessageToFacebookUser } from './controller/auth';
+import { sendWelcomeMessageToExternalLoginUser } from './controller/auth';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -93,7 +93,7 @@ dbConfig()
         configureAuth({
             passport,
             db,
-            onFacebookUserCreated: sendWelcomeMessageToFacebookUser({
+            onExternalSignup: sendWelcomeMessageToExternalLoginUser({
                 getMailMessage: getSignUpMailMessage,
                 sendMailMessage    
             }),
