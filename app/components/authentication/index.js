@@ -35,7 +35,7 @@ const {
 
 const _externalLogin = async({
     profile = required('profile'),
-    onSignUp = required('onSignup'),
+    onSignUp = required('onSignUp'),
     done = required('done'),
     logger = required('logger'),
     usersCollection = required('usersCollection')
@@ -80,7 +80,7 @@ const _externalLogin = async({
     }
 
     if (currentUser) {
-        // This user has already signed in before with facebook and we have them in our db
+        // This user has already signed in before with the external service and we have them in our db
         return done(null, currentUser);
     }
 
@@ -100,13 +100,13 @@ const _externalLogin = async({
     }
 
     // Now that a new user has been saved, call the onCreation method if we were passed one
-    if (typeof onSignup === 'function') {
-        onSignup(savedUser)
+    if (typeof onSignUp === 'function') {
+        onSignUp(savedUser)
             .catch((e) => {
                 // If there is an error, do not hold up creation of the user because this functionality is not mission critical
                 // and may be a slow process (like sending an email)
                 // Instead we will just log an error
-                logger.error(e, 'Error sending email for new facebook user');
+                logger.error(e, 'Error sending email for new external login user');
             })
     }
 
