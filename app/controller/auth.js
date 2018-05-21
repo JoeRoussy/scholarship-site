@@ -1,10 +1,8 @@
 import config from '../config';
 import passport from 'passport';
 import { print, required } from '../components/custom-utils';
-//import { generateHash } from '../components/authentication';
 import { wrap as coroutine } from 'co';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
-//import { get as getHash } from '../components/hash';
 import { free } from '../components/populate-session';
 import {
     getUserByEmail,
@@ -210,3 +208,19 @@ export const logout = (req, res) => {
 
     return res.redirect('/');
 }
+
+// Take nessesary dependencies and returns a function that takes the new user and sends a welcome email to them
+// Logging errors is left to the caller
+export const sendWelcomeMessageToFacebookUser = ({
+    getMailMessage = required('getMailMessage'),
+    sendMailMessage = required('sendMailMessage')
+}) => coroutine(function* (newUser) {
+    const mailMessage = getMailMessage({ user: newUser });
+
+    // TODO: This should have a catch that rethrows an error with some messaging. We can do this once we bring in the RethrownError class.
+    return sendMailMessage({
+        to: newUser.email,
+        message: mailMessage,
+        subject: 'Greetings from the Canada Higher Education House'
+    });
+});

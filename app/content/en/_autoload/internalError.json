@@ -2,7 +2,8 @@
     "internalError": {
         "heading": "Something went wrong",
         "body": {
-            "GENERIC_ERROR": "An error occured while processing your request. Our support team is working on the issue."
+            "GENERIC_ERROR": "An error occured while processing your request. Our support team is working on the issue.",
+            "FACEBOOK_MISSING_EMAIL": "An email is required to log in with facebook."
         }
     }
 }

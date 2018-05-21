@@ -6,6 +6,7 @@ import { insert as saveToDb } from '../db/service';
 import passportLocal from 'passport-local';
 import passportFacebook from 'passport-facebook';
 import { required } from '../custom-utils';
+import { sendMessage as sendMailMessage, getSignUpMailMessage } from '../mail-sender';
 
 const FacebookStrategy = passportFacebook.Strategy;
 
@@ -30,7 +31,9 @@ export const comparePasswords = async (password, hash) => await bcrypt.compare(p
 
 export default ({
     passport = required('passport'),
-    db = required('db')
+    db = required('db'),
+    logger = required('logger', 'You must pass in a logger to this function'),
+    onFacebookUserCreated
 }) => {
     const LocalStrategy = passportLocal.Strategy;
 
@@ -111,6 +114,14 @@ export default ({
         // First, see if this user is in our database
         let facebookUser = null;
 
+        // If we did not get an email we need to show an error
+        if (!email) {
+            return done({
+                key: 'FACEBOOK_MISSING_EMAIL',
+                message: 'Email is required to log in with facebook.'
+            });
+        }
+
         try {
             facebookUser = yield getUserByEmail({
                 usersCollection: db.collection('users'),
@@ -138,6 +149,17 @@ export default ({
             });
         } catch (e) {
             return done(e);   
+        }
+
+        // Now that a new user has been saved, call the onCreation method if we were passed one
+        if (typeof onFacebookUserCreated === 'function') {
+            onFacebookUserCreated(savedUser)
+                .catch((e) => {
+                    // If there is an error, do not hold up creation of the user because this functionality is not mission critical
+                    // and may be a slow process (like sending an email)
+                    // Instead we will just log an error
+                    logger.error(e, 'Error sending email for new facebook user');
+                })
         }
 
         // NOTE: Referrals will be processed in the success callback using middleware looking for the appropriate query parameter
