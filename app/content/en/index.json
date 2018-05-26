@@ -10,7 +10,7 @@
         "firstCard": {
             "heading": "Canadian Higher Education",
             "image": {
-                "src": "https://upload.wikimedia.org/wikipedia/en/thumb/c/cf/Flag_of_Canada.svg/1280px-Flag_of_Canada.svg.png",
+                "src": "/images/studentsGraduating.jpg",
                 "alt": "canadian flag"
             },
             "description": "Canadian Universities are consistently ranked among the very best in the world. Our programs are of the highest quality. Every field is represented on our campuses but there is also a lot of diversity. We invite you to explore the many opportunities we have right across our country."
@@ -18,7 +18,7 @@
         "secondCard": {
             "heading": "Scholarship Opportunities",
             "image": {
-                "src": "http://www.ocfcheer.com/uploads/scholarships.jpg",
+                "src": "/images/studentWithBooks.jpg",
                 "alt": "scholarships"
             },
             "description": "CHEH is a member driven organization aimed at enabling Canadians and international student to attend the University and program of their choice. Complete our online application form to tell us why you want to attend a Canadian university. Good luck."
@@ -26,7 +26,7 @@
         "thirdCard": {
             "heading": "Domestic and International Students",
             "image": {
-                "src": "https://www.thesil.ca/wp-content/uploads/2017/04/university-lecture.jpg",
+                "src": "/images/studentsSitting.jpg",
                 "alt": "university students"
             },
             "description": "CHEH wants to: (a) Raise awareness of the excellence of Canadian higher education; (b) Create scholarship opportunities to aid students wishing to attend higher education in Canada; (c) Enrich the Canadian campus with the best and brightest students from Canada and around the world."
