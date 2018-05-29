@@ -1,0 +1,31 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "User List",
+    "formDescription": "Use the following form to refine the user list. Leave the fields blank to get all users.",
+    "errorMessage": {
+        "heading": "Error Processing Search",
+        "message": "Something went wrong processing the search. Check if other parts of the site are working."
+    },
+    "inputs": {
+        "nameInput": {
+            "label": "Name",
+            "type": "text",
+            "name": "name",
+            "placeholder": "Name"
+        },
+        "emailInput": {
+            "label": "Email",
+            "type": "text",
+            "name": "email",
+            "placeholder": "Email"
+        }
+    },
+    "submit": "Search",
+    "userTitle": "List of Users",
+    "userListDescription": "Sorted by date of registration",
+    "joinedAt": "Joined on:",
+    "noResults": "Your search returned no results.",
+    "admin": "Admin",
+    "member": "Member"
+}

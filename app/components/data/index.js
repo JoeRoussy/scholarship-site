@@ -422,6 +422,43 @@ export const getUsers = async({
     }
 }
 
+// Search for a user by email or name
+export const searchUserByEmailOrName = async({
+    usersCollection = required('usersCollection'),
+    email,
+    name
+}) => {
+    if (!email && !name) {
+        throw new Error('You need to either pass a name or an email');
+    }
+
+    let query = {};
+
+    if (email) {
+        query.email = {
+            $regex: getRegex(email),
+            $options: 'i'
+        };
+    }
+
+    if (name) {
+        query.name = {
+            $regex: getRegex(name),
+            $options: 'i'
+        };
+    }
+
+    try {
+        return await usersCollection.find(query).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting users with query',
+            err: e
+        });
+    }
+}
+
+
 // Take a user and return a new object that includes when they joined and how long they have been a member for
 export const populateMembershipInformation = async({
     user = required('user'),

@@ -1,8 +1,18 @@
 import express from 'express';
-import { isAdmin, applications, promos, createPromo, processCreatePromo, index, populateUsersInPromo } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 import { insert as insertInDb } from '../components/db/service';
+import {
+    isAdmin,
+    applications,
+    promos,
+    createPromo,
+    processCreatePromo,
+    index,
+    populateUsersInPromo,
+    userSearch,
+    processUserSearch
+} from '../controller/admin.js';
 
 export default ({
     app = required('app'),
@@ -15,6 +25,32 @@ export default ({
         isAdmin,
         index
     ]);
+
+    router.route('/user-search')
+        .get([
+            isAdmin,
+            userSearch({
+                usersCollection: db.collection('users'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'admin-user-search'
+                    }
+                })
+            })
+        ])
+        .post([
+            isAdmin,
+            processUserSearch({
+                usersCollection: db.collection('users'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'admin-process-user-search'
+                    }
+                })
+            })
+        ]);
 
     router.get('/applications', [
         isAdmin,

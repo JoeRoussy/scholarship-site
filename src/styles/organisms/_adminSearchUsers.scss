@@ -1,0 +1,44 @@
+.adminSearchUsers.rootSection {
+    .formDescription {
+        text-align: center;
+    }
+
+    #userSearchForm {
+        max-width: 400px;
+        margin: 32px auto 0;
+    }
+
+    .userListSection {
+        margin-top: 32px;
+
+        h2.heading, .userListDescription {
+            text-align: center;
+        }
+
+        .userListWrapper {
+            margin-top: 10px;
+
+            .noResults {
+                margin-top: 32px;
+                font-size: 1.5em;
+                font-weight: bold;
+            }
+
+            .ui.card {
+                .content.heading {
+                    .header {
+                        .statusText {
+                            display: block;
+                            color: #21ba45;
+                            font-size: 0.8em;
+
+                            &.orange {
+                                color: #f2711c;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
