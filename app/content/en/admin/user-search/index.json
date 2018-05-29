@@ -25,5 +25,7 @@
     "userTitle": "List of Users",
     "userListDescription": "Sorted by date of registration",
     "joinedAt": "Joined on:",
-    "noResults": "Your search returned no results."
+    "noResults": "Your search returned no results.",
+    "admin": "Admin",
+    "member": "Member"
 }

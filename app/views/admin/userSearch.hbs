@@ -45,7 +45,13 @@
                     <div class="ui card">
                         <div class="content heading">
                             <div class="header">
-                                {{ this.name }}
+                                <span>{{ this.name }}</span>
+                                {{#if this.isAdmin}}
+                                    <span class="statusText orange">{{ @root.page.admin }}</span>
+                                {{/if}}
+                                {{#if this.isMember}}
+                                    <span class="statusText">{{ @root.page.member }}</span>
+                                {{/if}}
                             </div>
                         </div>
                         <div class="content">
