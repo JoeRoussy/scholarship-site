@@ -1,0 +1,49 @@
+{{> navigation page.navigation}}
+
+<div class="scholarshipApplicationList rootSection">
+    <div class="ui container">
+        <h1>{{ page.heading }}</h1>
+        <form class="ui form calendarGroup">
+            <div class="fields">
+                <div class="ui grid">
+                    <div class="sixteen wide tablet eight wide computer column">
+                        <div class="field first">
+                            {{> datePicker page.calendar.start}}
+                        </div>
+                        <div class="field">
+                            {{> datePicker page.calendar.end}}
+                        </div>
+                        <div class="field">
+                            {{#with page.updateButton}}
+                                <button id="{{ id }}" class="ui green button" type="button">{{ text }}</button>
+                            {{/with}}
+                        </div>
+                    </div>
+                    <div class="sixteen wide tablet eight wide computer column">
+                        {{> searchBar page.searchBar value=populatedQueryObjects.user.name}}
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="applications">
+            {{#each applications}}
+                {{#with this}}
+                    <div class="ui raised segments{{#if isFirst}} first{{/if}}">
+                        <div class="ui segment">
+                            <h2>{{ name }}</h2>
+                            <p><a href="mailto:{{ email }}">{{ email }}</a></p>
+                            <p>{{formatDate createdAt}}</p>
+                        </div>
+                        <div class="ui segment">
+                            <p data-hide-target="">{{{addLineBreaks application}}}</p>
+                        </div>
+                    </div>
+                {{/with}}
+            {{else}}
+                <div class="noResultsWrapper">
+                    <p>{{ page.noResultsText }}</p>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

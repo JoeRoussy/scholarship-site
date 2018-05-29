@@ -1,10 +1,16 @@
 import Bluebird from 'bluebird';
 
 import { wrap as coroutine } from 'co';
-import { getScholarshipApplicationsWithFilter, getAllReferralPromos, getDocById } from '../components/data';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 import { insertInDb } from '../components/db/service';
 import { transformUserForOutput } from '../components/transformers';
+import {
+    getScholarshipApplicationsWithFilter,
+    getAllReferralPromos,
+    getDocById,
+    getUsers,
+    searchUserByEmailOrName
+} from '../components/data';
 
 
 export const isAdmin = (req, res, next) => {
@@ -21,7 +27,7 @@ export const isAdmin = (req, res, next) => {
     }
 };
 
-export const index = (req, res) => res.render('adminIndex');
+export const index = (req, res) => res.render('admin/index');
 
 export const applications = ({
     applicationsCollection = required('applicationsCollection'),
@@ -53,7 +59,7 @@ export const applications = ({
         // If we have not found any applications render the page without any
         res.locals.applications = [];
 
-        return res.render('scholarshipApplicationList', res.locals);
+        return res.render('admin/scholarshipApplicationList', res.locals);
     }
 
     // Render the template with the applications
@@ -61,7 +67,7 @@ export const applications = ({
 
     res.locals.applications[0].isFirst = true;
 
-    return res.render('scholarshipApplicationList', res.locals);
+    return res.render('admin/scholarshipApplicationList', res.locals);
 });
 
 export const promos = ({
@@ -118,10 +124,10 @@ export const populateUsersInPromo = ({
         })
     
 
-    return res.render('promos', res.locals);
+    return res.render('admin/promos', res.locals);
 });
 
-export const createPromo = (req, res) => res.render('createPromo');
+export const createPromo = (req, res) => res.render('admin/createPromo');
 
 export const processCreatePromo = ({
     referralPromosCollection = required('referralPromosCollection'),
@@ -163,4 +169,65 @@ export const processCreatePromo = ({
     res.locals.requestSuccess = true;
 
     return next();
+});
+
+// This is GET route so we are going to list all the users and render the page
+export const userSearch = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass a logging instance to this function')
+}) => coroutine(function* (req, res) {
+    let allUsersResult = [];
+
+    try {
+        allUsersResult = yield getUsers({ usersCollection });
+    } catch (e) {
+        logger.error(e, 'Error getting all users');
+
+        // If this fails lets just return a 500
+        return next(e);
+    }
+
+    res.locals.users = allUsersResult;
+
+    return res.render('admin/userSearch');
+});
+
+// This is the POST route. We have either got a name or an email query and we need to set the result in res.locals
+export const processUserSearch = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass a logging instance to this function')
+}) => coroutine(function* (req, res) {
+    const {
+        name,
+        email
+    } = req.body;
+
+    if (!name && !email) {
+        // We might as well not even be searching
+        return res.redirect('/admin/user-search');
+    }
+
+    let users = [];
+
+    try {
+        users = yield searchUserByEmailOrName({
+            usersCollection,
+            name,
+            email
+        });
+    } catch (e) {
+        logger.error(e, `Error processing user search query for name: ${name} and email: ${email}`);
+        res.locals.formError = true;
+
+        return res.render('admin/userSearch');
+    }
+
+    res.locals = {
+        ...res.locals,
+        users,
+        nameValue: name,
+        emailValue: email
+    };
+
+    return res.render('admin/userSearch');
 });

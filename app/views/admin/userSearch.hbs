@@ -1,0 +1,64 @@
+{{> navigation page.navigation}}
+
+
+<div class="adminSearchUsers rootSection">
+    <div class="ui container">
+        <h1 class="heading">{{ page.heading }}</h1>
+        <p class="formDescription">{{ page.formDescription }}</p>
+        
+        <form
+            id="userSearchForm"
+            class="ui form {{#if formHandlingError}} error{{/if}}"
+            action=""
+            method="POST"
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ page.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ page.errorMessage.body }}</p>
+                </div>
+            {{/if}}
+            <div class="field">
+                {{#with page.inputs.nameInput}}
+                    <label>{{ label }}</label>
+                    <input type="{{ type }}" name={{ name }} placeholder="{{ placeholder }}" value={{ @root.nameValue }}>
+                {{/with}}
+            </div>
+            <div class="field">
+                {{#with page.inputs.emailInput}}
+                    <label>{{ label }}</label>
+                    <input type="{{ type }}" name={{ name }} placeholder="{{ placeholder }}" value={{ @root.emailValue }}>
+                {{/with}}
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
+            </div>
+        </form>
+        
+        <div class="userListSection">
+            <h2 class="heading">{{ page.userTitle }}</h2>
+            <p class="userListDescription">{{ page.userListDescription }}</p>
+            <div class="userListWrapper ui cards centered">
+                {{#each users}}
+                    <div class="ui card">
+                        <div class="content heading">
+                            <div class="header">
+                                {{ this.name }}
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="text">
+                                <a href="mailto:{{ this.email }}">{{ this.email }}</a>
+                            </div>
+                            <div class="text joined">{{ @root.page.joinedAt }} {{formatDate this.createdAt}}</div>
+                        </div>
+                    </div>
+                {{else}}
+                    <p class="noResults">{{ page.noResults }}</p>
+                {{/each}}
+            </div>
+        </div>
+    </div>  
+</div>
