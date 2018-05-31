@@ -274,7 +274,7 @@ export const userAnalytics = ({
 
     // Find the number of users who joined over the given time frame - also see how many are members
     let newUsers = null;
-    let graphData = null;
+    let userGraphData = null;
 
     try {
         newUsers = yield getNewUsersInPastTimeFrame({
@@ -290,7 +290,7 @@ export const userAnalytics = ({
     if (!newUsers.length) {
         res.locals.userData = [];
     } else {
-        graphData = formatForUserRegistraction(newUsers);
+        userGraphData = formatForUserRegistraction(newUsers);
     }
 
 
@@ -300,8 +300,7 @@ export const userAnalytics = ({
     res.locals.userCount = userCount;
     res.locals.memberCount = memberCount;
     res.locals.memberPercentage = memberPercentage;
-    res.locals.userData = graphData.userData;
-    res.locals.memberData = graphData.memberData;
+    res.locals.userGraphData = userGraphData;
 
     return res.render('admin/analytics');
 });

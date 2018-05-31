@@ -5,7 +5,7 @@
 import moment from 'moment';
 import { print } from '../custom-utils';
 
-const formatAsDate = (date) => date.format('MMMM D YYYY');
+const formatAsDate = (date) => moment(date).format('MMMM D YYYY');
 
 export const formatForUserRegistraction = data => {
     // Find total range of dates we are dealing with
