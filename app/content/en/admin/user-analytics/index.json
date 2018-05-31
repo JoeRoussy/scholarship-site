@@ -1,0 +1,8 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Analytics",
+    "userSectionHeading": "Users",
+    "usersSummary": "The site has {userCount} registered users. {memberCount} of them are paid members. That means {memberPercentage}% of our users are paid members.",
+    "applicationsSectionHeading": "Scholarship Applications"
+}

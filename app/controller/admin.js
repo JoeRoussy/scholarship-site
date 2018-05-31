@@ -4,13 +4,28 @@ import { wrap as coroutine } from 'co';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 import { insertInDb } from '../components/db/service';
 import { transformUserForOutput } from '../components/transformers';
+import config from '../config';
+import { formatForUserRegistraction } from '../components/graph-data-formatting';
 import {
     getScholarshipApplicationsWithFilter,
     getAllReferralPromos,
     getDocById,
     getUsers,
-    searchUserByEmailOrName
+    getNonAdminUsers,
+    searchUserByEmailOrName,
+    getNewUsersInPastTimeFrame
 } from '../components/data';
+
+const {
+    admin: {
+        defaultUserTimeseries: DEFAULT_USER_TIMESERIES,
+        defaultApplicationTimeseries: DEFAULT_APPLICATION_TIMESERIES
+    } = {}
+} = config;
+
+if (!DEFAULT_APPLICATION_TIMESERIES || !DEFAULT_USER_TIMESERIES) {
+    throw new Error('Missing config elements for admin module');
+}
 
 
 export const isAdmin = (req, res, next) => {
@@ -175,7 +190,7 @@ export const processCreatePromo = ({
 export const userSearch = ({
     usersCollection = required('usersCollection'),
     logger = required('logger', 'You must pass a logging instance to this function')
-}) => coroutine(function* (req, res) {
+}) => coroutine(function* (req, res, next) {
     let allUsersResult = [];
 
     try {
@@ -230,4 +245,63 @@ export const processUserSearch = ({
     };
 
     return res.render('admin/userSearch');
+});
+
+export const userAnalytics = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass a logging instance to this function')
+}) => coroutine(function* (req, res, next) {
+    const {
+        userTimeFrame = DEFAULT_USER_TIMESERIES,
+        applicationTimeFrame = DEFAULT_APPLICATION_TIMESERIES
+    } = req.query;
+
+    // Find the count of users on the site, see how many are members
+    let allUsers = [];
+
+    try {
+        allUsers = yield getNonAdminUsers({ usersCollection });
+    } catch(e) {
+        logger.error(e, 'Error getting all users');
+
+        return next(e);
+    }
+
+    const members = allUsers.filter(x => x.isMember);
+    const userCount = allUsers.length;
+    const memberCount = members.length;
+    const memberPercentage = (memberCount / userCount * 100).toFixed(0);
+
+    // Find the number of users who joined over the given time frame - also see how many are members
+    let newUsers = null;
+    let graphData = null;
+
+    try {
+        newUsers = yield getNewUsersInPastTimeFrame({
+            usersCollection,
+            timeFrame: userTimeFrame
+        });
+    } catch (e) {
+        logger.error(e, 'Error getting data about users joining');
+
+        return next(e);
+    }
+
+    if (!newUsers.length) {
+        res.locals.userData = [];
+    } else {
+        graphData = formatForUserRegistraction(newUsers);
+    }
+
+
+    // Find the number of applications in the given time frame
+
+    
+    res.locals.userCount = userCount;
+    res.locals.memberCount = memberCount;
+    res.locals.memberPercentage = memberPercentage;
+    res.locals.userData = graphData.userData;
+    res.locals.memberData = graphData.memberData;
+
+    return res.render('admin/analytics');
 });

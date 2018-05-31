@@ -422,6 +422,24 @@ export const getUsers = async({
     }
 }
 
+// Get all the users that are not admins
+export const getNonAdminUsers = async({
+    usersCollection = required('usersCollection')
+}) => {
+    try {
+        return await usersCollection.find({
+            isAdmin: {
+                $ne: true
+            }
+        }).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting non admin users',
+            err: e
+        });
+    }
+}
+
 // Search for a user by email or name
 export const searchUserByEmailOrName = async({
     usersCollection = required('usersCollection'),
@@ -1033,4 +1051,41 @@ export const createUser = async({
         document: newUser,
         returnInsertedDocument: true
     });
+}
+
+export const getNewUsersInPastTimeFrame = async({
+    usersCollection = required('usersCollection'),
+    timeFrame = required('timeFrame')
+}) => {
+    let users = [];
+
+    let today = moment().startOf('day');
+    let targetDate = null;
+
+    if (timeFrame === 'week') {
+        targetDate = moment().startOf('day').subtract(1, 'weeks');
+    } else if (timeFrame === 'month') {
+        targetDate = moment().startOf('day').subtract(1, 'months');
+    } else if (timeFrame === 'year') {
+        targetDate = moment().startOf('day').subtract(1, 'years');
+    } else {
+        throw new Error(`${timeFrame} is not a valid timeframe. Must be 'week', 'month', or 'year'`);
+    }
+
+    try {
+        // Only get up to yesterday
+        users = await usersCollection.find({
+            createdAt: {
+                $gte: new Date(targetDate.toISOString()),
+                $lt: new Date(today.toISOString())
+            }
+        }).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not find users with the timeframe: ${timeFrame}`
+        });
+    }
+
+    return users;
 }
