@@ -2,7 +2,7 @@
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "User List",
-    "formDescription": "Use the following form to refine the user list. Leave the fields blank to get all users.",
+    "formDescription": "Use the following form to refine the user list. Leave the fields blank and hit search again to get all users.",
     "errorMessage": {
         "heading": "Error Processing Search",
         "message": "Something went wrong processing the search. Check if other parts of the site are working."
