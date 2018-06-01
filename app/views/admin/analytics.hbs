@@ -38,9 +38,26 @@
                     </div>
                 {{/with}}
             </div>
+
             <div class="userPlotWrapper">
+                <h3 class="heading">{{ page.userGraphTitle }}</h3>
+                <div class="ui compact menu">
+                    {{#with page.timeFrameDropdown}}
+                        <div class="ui simple dropdown item">
+                            {{ placeholder }}
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                {{#each options}}
+                                    {{!-- <div class="item">
+                                        <a href="{{ this.href }}">{{ this.title }}</a>
+                                    </div> --}}
+                                    <a class="item" href="{{ this.href }}">{{ this.title }}</a>
+                                {{/each}}
+                            </div>
+                        </div>
+                    {{/with}}
+                </div>
                 {{#if @root.userGraphData}}
-                    <h3 class="heading">{{ page.userGraphTitle }}</h3>
                     <canvas id="userPlot" source-data="{{stringify @root.userGraphData}}"></canvas>
                 {{else}}
                     <div class="noDataMessage">
