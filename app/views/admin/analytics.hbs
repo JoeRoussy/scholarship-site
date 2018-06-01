@@ -6,9 +6,54 @@
 
         <div class="userAnalyticsSection">
             <h2 class="heading">{{ page.userSectionHeading }}</h2>
-            <p class="usersSummary">{{interpolate page.usersSummary @root}}</p>
+            <div class="userSummarySection">
+                {{#with page.usersSummary}}
+                    <div class="ui raised segments splitStatsCards">
+                        <div class="ui segment userCounts">
+                            <div class="ui two column divided stackable centered grid">
+                                <div class="row">
+                                    <div class="center aligned column">
+                                        <div class="innerContent userCount">
+                                            {{#with userCount}}
+                                                <span class="title">{{ title }}</span>
+                                                <span class="description">{{ description }}</span>
+                                                <div class="value">{{ @root.userCount }}</div>
+                                            {{/with}}
+                                        </div>
+                                    </div>
+                                    <div class="center aligned column">
+                                        <div class="innerContent memberCount">
+                                            {{#with memberCount}}
+                                                <span class="title">{{ title }}</span>
+                                                <div class="value">{{ @root.memberCount }}</div>
+                                            {{/with}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui center aligned blue inverted segment">
+                            <p>{{interpolate membershipPercentage @root}}</p>
+                        </div>
+                    </div>
+                {{/with}}
+            </div>
             <div class="userPlotWrapper">
-                <canvas id="userPlot" source-data="{{stringify @root.userGraphData}}"></canvas>
+                {{#if @root.userGraphData}}
+                    <h3 class="heading">{{ page.userGraphTitle }}</h3>
+                    <canvas id="userPlot" source-data="{{stringify @root.userGraphData}}"></canvas>
+                {{else}}
+                    <div class="noDataMessage">
+                        <div class="ui warning message">
+                            {{#with page.noUserGraphDataWarning}}
+                                <div class="header">
+                                    {{ title }}
+                                </div>
+                                <p>{{ body }}</p>
+                            {{/with}}
+                        </div>
+                    </div>
+                {{/if}}
             </div>
         </div>
 

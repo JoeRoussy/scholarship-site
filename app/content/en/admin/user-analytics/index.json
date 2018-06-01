@@ -3,6 +3,20 @@
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Analytics",
     "userSectionHeading": "Users",
-    "usersSummary": "The site has {userCount} registered users. {memberCount} of them are paid members. That means {memberPercentage}% of our users are paid members.",
+    "usersSummary": {
+        "userCount": {
+            "title": "Registered Users",
+            "description": "Includes members. Excludes admins."
+        },
+        "memberCount": {
+            "title": "Paid Members"
+        },
+        "membershipPercentage": "{memberPercentage}% of our users are paid members."
+    },
+    "userGraphTitle": "User Registration Over Time",
+    "noUserGraphDataWarning": {
+        "title": "No users have registered in that time frame.",
+        "body": "Choose another time frame"
+    },
     "applicationsSectionHeading": "Scholarship Applications"
 }
