@@ -39,3 +39,26 @@ export const formatForUserRegistraction = data => {
         userData
     };
 };
+
+export const formatForScholarshipApplications = data => {
+    // Find total range of dates we are dealing with
+    const sortedData = data.sort((a, b) => moment(a).isAfter(moment(b)) ? 1 : -1);
+    const minDate = moment(sortedData[0].createdAt).startOf('day');
+    const maxDate = moment().subtract(1, 'days').startOf('day');
+
+    let formattedData = {};
+    let currentDate = minDate;
+
+    while (currentDate.isSameOrBefore(maxDate)) {
+        formattedData[formatAsDate(currentDate)] = 0;
+        currentDate = moment(currentDate.add(1, 'days'));
+    }
+
+    // Now set the values of the formatted data set
+    sortedData.forEach(application => {
+        const applicationDate = formatAsDate(application.createdAt);
+        formattedData[applicationDate]++;
+    });
+
+    return formattedData;
+};

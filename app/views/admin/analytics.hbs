@@ -4,16 +4,30 @@
     <div class="ui container">
         <h1 class="heading">{{ page.heading }}</h1>
 
+        <div class="ui compact menu">
+            {{#with page.timeFrameDropdown}}
+                <div class="ui simple dropdown item">
+                    {{ placeholder }}
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        {{#each options}}
+                            <a class="item" href="{{ this.href }}">{{ this.title }}</a>
+                        {{/each}}
+                    </div>
+                </div>
+            {{/with}}
+        </div>
+
         <div class="userAnalyticsSection">
             <h2 class="heading">{{ page.userSectionHeading }}</h2>
             <div class="userSummarySection">
                 {{#with page.usersSummary}}
                     <div class="ui raised segments splitStatsCards">
-                        <div class="ui segment userCounts">
+                        <div class="ui segment">
                             <div class="ui two column divided stackable centered grid">
                                 <div class="row">
                                     <div class="center aligned column">
-                                        <div class="innerContent userCount">
+                                        <div class="innerContent first">
                                             {{#with userCount}}
                                                 <span class="title">{{ title }}</span>
                                                 <span class="description">{{ description }}</span>
@@ -22,7 +36,7 @@
                                         </div>
                                     </div>
                                     <div class="center aligned column">
-                                        <div class="innerContent memberCount">
+                                        <div class="innerContent second">
                                             {{#with memberCount}}
                                                 <span class="title">{{ title }}</span>
                                                 <div class="value">{{ @root.memberCount }}</div>
@@ -41,19 +55,6 @@
 
             <div class="userPlotWrapper">
                 <h3 class="heading">{{ page.userGraphTitle }}</h3>
-                <div class="ui compact menu">
-                    {{#with page.timeFrameDropdown}}
-                        <div class="ui simple dropdown item">
-                            {{ placeholder }}
-                            <i class="dropdown icon"></i>
-                            <div class="menu">
-                                {{#each options}}
-                                    <a class="item" href="{{ this.href }}">{{ this.title }}</a>
-                                {{/each}}
-                            </div>
-                        </div>
-                    {{/with}}
-                </div>
                 {{#if @root.userGraphData}}
                     <canvas id="userPlot" source-data="{{stringify @root.userGraphData}}"></canvas>
                 {{else}}
@@ -73,7 +74,53 @@
 
         <div class="applicationAnalyticsSection">
             <h2 class="heading">{{ page.applicationsSectionHeading }}</h2>
+            <div class="applicationsSummarySection">
+                {{#with page.applicationsSummary}}
+                    <div class="ui raised segments splitStatsCards">
+                        <div class="ui segment">
+                            <div class="ui two column divided stackable centered grid">
+                                <div class="row">
+                                    <div class="center aligned column">
+                                        <div class="innerContent first">
+                                            {{#with totalApplicationsCount}}
+                                                <span class="title">{{ title }}</span>
+                                                <div class="value">{{ @root.totalApplicationsCount }}</div>
+                                            {{/with}}
+                                        </div>
+                                    </div>
+                                    <div class="center aligned column">
+                                        <div class="innerContent second">
+                                            {{#with yearlyApplicationsCount}}
+                                                <span class="title">{{ title }}</span>
+                                                <div class="value">{{ @root.yearlyApplicationsCount }}</div>
+                                            {{/with}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{/with}}
+            </div>
+        </div>
 
+        <div class="applicationsPlotWrapper">
+                <h3 class="heading">{{ page.applicationsGraphTitle }}</h3>
+                {{#if @root.applicationGraphData}}
+                    <canvas id="applicationPlot" source-data="{{stringify @root.applicationGraphData}}"></canvas>
+                {{else}}
+                    <div class="noDataMessage">
+                        <div class="ui warning message">
+                            {{#with page.noApplicationGraphDataWarning}}
+                                <div class="header">
+                                    {{ title }}
+                                </div>
+                                <p>{{ body }}</p>
+                            {{/with}}
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
         </div>
     </div>
 </div>

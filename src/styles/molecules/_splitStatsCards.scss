@@ -1,5 +1,5 @@
 .splitStatsCards {
-    .ui.segment.userCounts {
+    .ui.segment {
         .center.aligned.column {
             .innerContent {
                 padding-top: 50px;
@@ -22,13 +22,13 @@
                     line-height: 1.5em;
                 }
 
-                &.userCount {
+                &.first {
                     .value {
                         color: #2185d0; // Blue
                     }
                 }
 
-                &.memberCount {
+                &.second {
                     .value {
                         color: #21ba45; // Green
                     }

@@ -46,4 +46,32 @@ export default () => {
             }
         });
     }
+
+    const applicationPlot = $('#applicationPlot');
+
+    if (applicationPlot.length) {
+        // Configure the data for the plot
+        const sourceData = JSON.parse(applicationPlot.attr('source-data'));
+
+        const labels = Object.keys(sourceData);
+        let values = [];
+
+        Object.keys(sourceData).forEach(key => {
+            values.push(sourceData[key]);
+        });
+
+        const applicationChart = new Chart(applicationPlot, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        data: values,
+                        fill: false,
+                        borderColor: '#21ba45' // Green
+                    }
+                ]
+            }
+        });
+    }
 };

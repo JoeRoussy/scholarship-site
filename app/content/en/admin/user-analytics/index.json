@@ -15,7 +15,7 @@
     },
     "userGraphTitle": "User Registration Over Time",
     "noUserGraphDataWarning": {
-        "title": "No users have registered in that time frame.",
+        "title": "No users have registered in given time frame.",
         "body": "Choose another time frame"
     },
     "timeFrameDropdown": {
@@ -23,17 +23,30 @@
         "options": [
             {
                 "title": "Last Week",
-                "href": "/admin/user-analytics?userTimeFrame=week"
+                "href": "/admin/user-analytics?timeFrame=week"
             },
             {
                 "title": "Last Month",
-                "href": "/admin/user-analytics?userTimeFrame=month"
+                "href": "/admin/user-analytics?timeFrame=month"
             },
             {
                 "title": "Last Year",
-                "href": "/admin/user-analytics?userTimeFrame=year"
+                "href": "/admin/user-analytics?timeFrame=year"
             }
         ]
     },
-    "applicationsSectionHeading": "Scholarship Applications"
+    "applicationsSectionHeading": "Scholarship Applications",
+    "applicationsSummary": {
+        "totalApplicationsCount": {
+            "title": "Total Applications Recieved"
+        },
+        "yearlyApplicationsCount": {
+            "title": "Applications Recieved In The Last Year"
+        }
+    },
+    "applicationsGraphTitle": "Scholarship Applications Over Time",
+    "noApplicationGraphDataWarning": {
+        "title": "No scholarship applications have been placed for the given time frame",
+        "body": "Choose another time frame"
+    }
 }

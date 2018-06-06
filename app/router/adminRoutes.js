@@ -57,6 +57,7 @@ export default ({
         isAdmin,
         userAnalytics({
             usersCollection: db.collection('users'),
+            scholarshipApplicationsCollection: db.collection('scholarshipApplications'),
             logger: getChildLogger({
                 baseLogger,
                 additionalFields: {
