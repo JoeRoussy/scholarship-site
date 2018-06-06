@@ -61,12 +61,33 @@ export default ({
             return next();
         }
 
+        // We are only getting the rates in base EUR, so convert them to base CAD by dividing the base EUR rate by the base EUR rate for CAD
+        const {
+            rates: {
+                CAD: eurToCad
+            } = {}
+        } = ratesResponse;
+
+        const cadRates = Object.keys(ratesResponse.rates).reduce((accumulator, key) => {
+            if (key == 'CAD') {
+                return accumulator;
+            } else if (key == 'EUR') {
+                accumulator[key] = 1.0 / eurToCad
+            } else {
+                accumulator[key] = ratesResponse.rates[key] / eurToCad;
+            }
+
+            return accumulator;
+        }, {});
+
         try {
             yield insertInDb({
                 collection: exchangeRatesCollection,
                 document: {
+                    ...ratesResponse,
                     validOn: moment().startOf('day').toDate(),
-                    ...ratesResponse
+                    rates: cadRates,
+                    base: 'CAD'
                 }
             });
         } catch (e) {
@@ -76,7 +97,7 @@ export default ({
             return next();
         }
 
-        rates = ratesResponse.rates;
+        rates = cadRates;
     }
 
     res.locals.exchangeRates = rates;
