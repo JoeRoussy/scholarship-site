@@ -48,9 +48,6 @@
                             <i class="dropdown icon"></i>
                             <div class="menu">
                                 {{#each options}}
-                                    {{!-- <div class="item">
-                                        <a href="{{ this.href }}">{{ this.title }}</a>
-                                    </div> --}}
                                     <a class="item" href="{{ this.href }}">{{ this.title }}</a>
                                 {{/each}}
                             </div>
@@ -75,7 +72,8 @@
         </div>
 
         <div class="applicationAnalyticsSection">
-            
+            <h2 class="heading">{{ page.applicationsSectionHeading }}</h2>
+
         </div>
     </div>
 </div>
