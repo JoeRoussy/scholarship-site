@@ -1,21 +1,41 @@
 .adminAnalytics {
-    .userSummarySection {
-        margin-top: 40px;
-    }
+    .userAnalyticsSection {
+        margin-top: 20px;
 
-    .userPlotWrapper {
-        margin-top: 50px;
-
-        h3.heading {
-            text-align: center;
+        .userSummarySection {
+            margin-top: 40px;
         }
 
-        .noDataMessage {
-            margin-top: 15px;
+        .userPlotWrapper {
+            margin-top: 50px;
+
+            h3.heading {
+                text-align: center;
+            }
+
+            .noDataMessage {
+                margin-top: 15px;
+            }
         }
     }
 
     .applicationAnalyticsSection {
-        margin-top: 40px;
+        margin-top: 80px;
+
+        .applicationsSummarySection {
+            margin-top: 40px;
+        }
+
+        .applicationsPlotWrapper {
+            margin-top: 50px;
+
+            h3.heading {
+                text-align: center;
+            }
+
+            .noDataMessage {
+                margin-top: 15px;
+            }
+        }
     }
 }
