@@ -38,6 +38,18 @@ async function getUniversitiesForProvince({
 
 const objectIdIntersectComparator = (element, array) => array.some(x => x.equals(element));
 
+const getTargetDateForTimeFrame = (timeFrame) => {
+    if (timeFrame === 'week') {
+        return moment().startOf('day').subtract(1, 'weeks');
+    } else if (timeFrame === 'month') {
+        return moment().startOf('day').subtract(1, 'months');
+    } else if (timeFrame === 'year') {
+        return moment().startOf('day').subtract(1, 'years');
+    } else {
+        throw new Error(`${timeFrame} is not a valid timeframe. Must be 'week', 'month', or 'year'`);
+    }
+}
+
 // Takes the ID for a province and returns the an array of university IDs for it. Returns an empty array
 // if the province cannot be found
 // TODO: Might want to merge this with the function above that does almost the same thing (with the rule that you cannot pass an id and name)
@@ -417,6 +429,24 @@ export const getUsers = async({
     } catch (e) {
         throw new RuntimeError({
             msg: 'Error getting users',
+            err: e
+        });
+    }
+}
+
+// Get all the users that are not admins
+export const getNonAdminUsers = async({
+    usersCollection = required('usersCollection')
+}) => {
+    try {
+        return await usersCollection.find({
+            isAdmin: {
+                $ne: true
+            }
+        }).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            msg: 'Error getting non admin users',
             err: e
         });
     }
@@ -1034,3 +1064,88 @@ export const createUser = async({
         returnInsertedDocument: true
     });
 }
+
+export const getNewUsersInPastTimeFrame = async({
+    usersCollection = required('usersCollection'),
+    timeFrame = required('timeFrame')
+}) => {
+    let users = [];
+
+    let today = moment().startOf('day');
+    let targetDate = getTargetDateForTimeFrame(timeFrame);
+
+    try {
+        // Only get up to yesterday
+        users = await usersCollection.find({
+            createdAt: {
+                $gte: new Date(targetDate.toISOString()),
+                $lt: new Date(today.toISOString())
+            }
+        }).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not find users with the timeframe: ${timeFrame}`
+        });
+    }
+
+    return users;
+}
+
+export const getTotalScholarshipApplicationCount = async({
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection')
+}) => {
+    try {
+        return await scholarshipApplicationsCollection.count();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: 'Error counting total number of scholarship applications'
+        });
+    }
+}
+
+export const getYearlyScholarshipApplicationCount = async({
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection')
+}) => {
+    try {
+        return await scholarshipApplicationsCollection.count({
+            createdAt: {
+                $gte: new Date(moment().subtract(1, 'years').toISOString())
+            }
+        });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: 'Error counting total number of scholarship applications'
+        });
+    }
+}
+
+export const getScholarshipApplicationsInPastTimeFrame = async({
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection'),
+    timeFrame = required('timeFrame')
+}) => {
+    let applications = [];
+
+    let today = moment().startOf('day');
+    let targetDate = getTargetDateForTimeFrame(timeFrame);
+
+    try {
+        // Only get up to yesterday
+        applications = await scholarshipApplicationsCollection.find({
+            createdAt: {
+                $gte: new Date(targetDate.toISOString()),
+                $lt: new Date(today.toISOString())
+            }
+        }).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not find scholarship applications with the timeframe: ${timeFrame}`
+        });
+    }
+
+    return applications;
+}
+

@@ -8,6 +8,7 @@
     "bluebird": "3.5.0",
     "body-parser": "1.18.0",
     "bunyan": "1.8.10",
+    "chart.js": "2.7.2",
     "clipboard": "1.7.1",
     "co": "4.6.0",
     "connect-mongo": "2.0.0",

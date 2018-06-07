@@ -12,6 +12,7 @@ import datePicker from './component/date-picker';
 import { init as applicationCalandarControllerInit } from './component/application-calandar-controller';
 import clipboardCopy from './component/clipboard-copy';
 import promoWinner from './component/promo-winner-draw-controller';
+import graphConfig from './component/graph-config';
 
 // Generic semantic UI setup
 
@@ -31,3 +32,4 @@ applicationNameSearch();
 applicationCalandarControllerInit();
 clipboardCopy([ 'profileReferralLink' ]);
 promoWinner();
+graphConfig();

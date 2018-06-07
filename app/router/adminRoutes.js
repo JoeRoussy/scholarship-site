@@ -11,7 +11,8 @@ import {
     index,
     populateUsersInPromo,
     userSearch,
-    processUserSearch
+    processUserSearch,
+    userAnalytics
 } from '../controller/admin.js';
 
 export default ({
@@ -51,6 +52,20 @@ export default ({
                 })
             })
         ]);
+
+    router.get('/user-analytics', [
+        isAdmin,
+        userAnalytics({
+            usersCollection: db.collection('users'),
+            scholarshipApplicationsCollection: db.collection('scholarshipApplications'),
+            logger: getChildLogger({
+                baseLogger,
+                additionalFields: {
+                    module: 'admin-process-user-search'
+                }
+            })
+        })
+    ]);
 
     router.get('/applications', [
         isAdmin,

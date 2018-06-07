@@ -1,0 +1,39 @@
+.splitStatsCards {
+    .ui.segment {
+        .center.aligned.column {
+            .innerContent {
+                padding-top: 50px;
+                padding-bottom: 50px;
+
+                .title {
+                    display: block;
+                    font-size: 2em;
+                    font-weight: bold;
+                }
+
+                .description {
+                    display: block;
+                    margin-top: 10px;
+                }
+
+                .value {
+                    margin-top: 10px;
+                    font-size: 3em;
+                    line-height: 1.5em;
+                }
+
+                &.first {
+                    .value {
+                        color: #2185d0; // Blue
+                    }
+                }
+
+                &.second {
+                    .value {
+                        color: #21ba45; // Green
+                    }
+                }
+            }
+        }
+    }
+}

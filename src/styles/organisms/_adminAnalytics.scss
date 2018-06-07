@@ -1,0 +1,41 @@
+.adminAnalytics {
+    .userAnalyticsSection {
+        margin-top: 20px;
+
+        .userSummarySection {
+            margin-top: 40px;
+        }
+
+        .userPlotWrapper {
+            margin-top: 50px;
+
+            h3.heading {
+                text-align: center;
+            }
+
+            .noDataMessage {
+                margin-top: 15px;
+            }
+        }
+    }
+
+    .applicationAnalyticsSection {
+        margin-top: 80px;
+
+        .applicationsSummarySection {
+            margin-top: 40px;
+        }
+
+        .applicationsPlotWrapper {
+            margin-top: 50px;
+
+            h3.heading {
+                text-align: center;
+            }
+
+            .noDataMessage {
+                margin-top: 15px;
+            }
+        }
+    }
+}

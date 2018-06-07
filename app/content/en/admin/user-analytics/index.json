@@ -1,0 +1,52 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Analytics",
+    "userSectionHeading": "Users",
+    "usersSummary": {
+        "userCount": {
+            "title": "Registered Users",
+            "description": "Includes members. Excludes admins."
+        },
+        "memberCount": {
+            "title": "Paid Members"
+        },
+        "membershipPercentage": "{memberPercentage}% of our users are paid members."
+    },
+    "userGraphTitle": "User Registration Over Time",
+    "noUserGraphDataWarning": {
+        "title": "No users have registered in given time frame.",
+        "body": "Choose another time frame"
+    },
+    "timeFrameDropdown": {
+        "placeholder": "Choose A Time Frame",
+        "options": [
+            {
+                "title": "Last Week",
+                "href": "/admin/user-analytics?timeFrame=week"
+            },
+            {
+                "title": "Last Month",
+                "href": "/admin/user-analytics?timeFrame=month"
+            },
+            {
+                "title": "Last Year",
+                "href": "/admin/user-analytics?timeFrame=year"
+            }
+        ]
+    },
+    "applicationsSectionHeading": "Scholarship Applications",
+    "applicationsSummary": {
+        "totalApplicationsCount": {
+            "title": "Total Applications Received"
+        },
+        "yearlyApplicationsCount": {
+            "title": "Applications Received In The Last Year"
+        }
+    },
+    "applicationsGraphTitle": "Scholarship Applications Over Time",
+    "noApplicationGraphDataWarning": {
+        "title": "No scholarship applications have been placed for the given time frame",
+        "body": "Choose another time frame"
+    }
+}

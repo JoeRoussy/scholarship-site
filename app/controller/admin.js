@@ -4,13 +4,30 @@ import { wrap as coroutine } from 'co';
 import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
 import { insertInDb } from '../components/db/service';
 import { transformUserForOutput } from '../components/transformers';
+import config from '../config';
+import { formatForUserRegistraction, formatForScholarshipApplications } from '../components/graph-data-formatting';
 import {
     getScholarshipApplicationsWithFilter,
     getAllReferralPromos,
     getDocById,
     getUsers,
-    searchUserByEmailOrName
+    getNonAdminUsers,
+    searchUserByEmailOrName,
+    getNewUsersInPastTimeFrame,
+    getTotalScholarshipApplicationCount,
+    getYearlyScholarshipApplicationCount,
+    getScholarshipApplicationsInPastTimeFrame
 } from '../components/data';
+
+const {
+    admin: {
+        defaultUserTimeseries: DEFAULT_USER_TIMESERIES
+    } = {}
+} = config;
+
+if (!DEFAULT_USER_TIMESERIES) {
+    throw new Error('Missing config elements for admin module');
+}
 
 
 export const isAdmin = (req, res, next) => {
@@ -175,7 +192,7 @@ export const processCreatePromo = ({
 export const userSearch = ({
     usersCollection = required('usersCollection'),
     logger = required('logger', 'You must pass a logging instance to this function')
-}) => coroutine(function* (req, res) {
+}) => coroutine(function* (req, res, next) {
     let allUsersResult = [];
 
     try {
@@ -230,4 +247,105 @@ export const processUserSearch = ({
     };
 
     return res.render('admin/userSearch');
+});
+
+export const userAnalytics = ({
+    usersCollection = required('usersCollection'),
+    scholarshipApplicationsCollection = required('scholarshipApplicationsCollection'),
+    logger = required('logger', 'You must pass a logging instance to this function')
+}) => coroutine(function* (req, res, next) {
+    const {
+        timeFrame = DEFAULT_USER_TIMESERIES,
+    } = req.query;
+
+    // Find the count of users on the site, see how many are members
+    let allUsers = [];
+
+    try {
+        allUsers = yield getNonAdminUsers({ usersCollection });
+    } catch(e) {
+        logger.error(e, 'Error getting all users');
+
+        return next(e);
+    }
+
+    const members = allUsers.filter(x => x.isMember);
+    const userCount = allUsers.length;
+    const memberCount = members.length;
+    const memberPercentage = (memberCount / userCount * 100).toFixed(0);
+
+    // Find the number of users who joined over the given time frame - also see how many are members
+    let newUsers = null;
+    let userGraphData = null;
+
+    try {
+        newUsers = yield getNewUsersInPastTimeFrame({
+            usersCollection,
+            timeFrame
+        });
+    } catch (e) {
+        logger.error(e, 'Error getting data about users joining');
+
+        return next(e);
+    }
+
+    if (!newUsers.length) {
+        res.locals.userData = [];
+    } else {
+        userGraphData = formatForUserRegistraction(newUsers);
+    }
+
+    // Find the scholarship applications overall and in the last year
+    let allScholarshipApplicationsCount = null;
+    let yearlyScholarshipApplicationsCount = null;
+
+    try {
+        allScholarshipApplicationsCount = yield getTotalScholarshipApplicationCount({
+            scholarshipApplicationsCollection
+        });
+    } catch (e) {
+        logger.error(e, 'Error getting count of all scholarship applications');
+
+        return next(e);
+    }
+
+    try {
+        yearlyScholarshipApplicationsCount = yield getYearlyScholarshipApplicationCount({
+            scholarshipApplicationsCollection
+        });
+    } catch (e) {
+        logger.error(e, 'Error getting count of all scholarship applications');
+
+        return next(e);
+    }
+
+    // Find the applications in the given time frame
+    let applicationsForTimeFrame = null;
+    let applicationGraphData = null;
+
+    try {
+        applicationsForTimeFrame = yield getScholarshipApplicationsInPastTimeFrame({
+            scholarshipApplicationsCollection,
+            timeFrame
+        });
+    } catch (e) {
+        logger.error(e, `Error getting scholarship application data for timeframe: ${timeFrame}`);
+
+        return next(e);
+    }
+
+    if (applicationsForTimeFrame.length) {
+        applicationGraphData = formatForScholarshipApplications(applicationsForTimeFrame);
+    }
+    
+    res.locals.userCount = userCount;
+    res.locals.memberCount = memberCount;
+    res.locals.memberPercentage = memberPercentage;
+    res.locals.userGraphData = userGraphData;
+
+    res.locals.totalApplicationsCount = allScholarshipApplicationsCount;
+    res.locals.yearlyApplicationsCount = yearlyScholarshipApplicationsCount;
+    res.locals.applicationGraphData = applicationGraphData;
+
+    return res.render('admin/analytics');
 });
