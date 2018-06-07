@@ -45,6 +45,24 @@
             text-align: center;
         }
 
+        .referralButtonWrapper {
+            margin-top: 25px;
+            margin-bottom: 50px;
+            text-align: center;
+
+            .failSafe {
+                margin-top: 10px;
+                text-align: center;
+                font-size: 0.8em;
+                font-style: italic;
+                color: #333333;
+
+                a {
+                    font-style: normal;
+                }
+            }
+        }
+
         .promo {
             margin-top: 25px;
         }
