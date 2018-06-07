@@ -13,10 +13,8 @@
     },
     "to": "to",
     "referralLink": {
-        "heading": "Referral Link:",
         "href": "/?refId={refId}",
-        "text": "Click here to copy",
-        "description": "Getting others to sign up with this link will add one referral to all current promotions. Gain referrals to be eligible for referral prizes!",
+        "text": "Copy referral link",
         "success": {
             "title": "Link copied!",
             "message": "Share the link with your friends for a chance to win prizes!"
@@ -24,11 +22,14 @@
         "error": {
             "title": "Your browser does not support clipboard copying.",
             "message": "Plese copy your referral link manually: {value}. You can do this using your \"copy\" command now."
-        }
+        },
+        "failSafe": "If the button does not work copy the following link:"
     },
     "promoThreashholdTemplate": "Requires **{threashold}** referrals to be eligible for prize.",
     "eligible": "You are eligible for this prize",
     "notEligible": "You need {value} more referrals to be eligible for this prize",
     "winner": "A winner has been drawn for this promotion",
-    "noReferrals": "*You do not have any referrals for this promotion.*"
+    "noWinner": "A winner still needs to be drawn for this promotion",
+    "noReferrals": "*You do not have any referrals for this promotion.*",
+    "promoDescription": "Refer your friends to win a prize! Click the button below to get a link and share it with your friends. If they sign up you will be credited with one referral. The user with the most referrals at the end of a promotion will win!"
 }

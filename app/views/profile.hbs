@@ -38,59 +38,55 @@
                     </div>
                 </div>
             {{/if}}
-            <div class="row">
-                {{#with page.referralLink}}
-                    <div class="label">
-                        {{ heading }}
-                    </div>
-                    <div class="value">
-                        <p>
-                            <a
-                                id="profileReferralLink"
-                                href="{{interpolate href @root.user}}"
-                                data-success-title="{{ success.title }}"
-                                data-success-message="{{ success.message }}"
-                            >
-                                {{ text }}
-                            </a>
+        </div>
+        {{#if currentPromos.length}}
+            <div class="promosData">
+                <h2>{{ page.headings.promos }}</h2>
+                <p class="promosDescription">{{ page.promoDescription }}</p>
+                <div class="referralButtonWrapper">
+                    {{#with page.referralLink}}
+                        <a
+                            id="profileReferralLink"
+                            class="ui green button"
+                            href="{{interpolate href @root.user}}"
+                            data-success-title="{{ success.title }}"
+                            data-success-message="{{ success.message }}"
+                        >
+                            {{ text }}
+                        </a>
+                        <p class="failSafe">
+                            <span>{{ failSafe }}</span><br>
+                            <a href="{{interpolate href @root.user}}" data-set-text-as-href="true">{{interpolate href @root.user}}</a>
                         </p>
-                        <p class="description">{{ description }}</p>
-                    </div>
-                {{/with}}
-            </div>
-        </div>
-        <div class="promosData">
-            <h2>{{ page.headings.promos }}</h2>
-            {{#each currentPromos}}
-                {{#with this}}
-                    <div class="promo ui raised segment">
-                        <div class="promoInformation">
-                            <h3 class="heading name">{{ name }}</h3>
-                            <h4 class="heading dateRange">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h4>
-                            <p class="description">{{{md (interpolate @root.page.promoThreashholdTemplate this) true}}}</p>
-                        </div>
-                        <div class="referralsList">
-                            <h4 class="heading">{{ @root.page.headings.referrals }}</h4>
-                            {{#each referrals}}
-                                <p>{{math @index '+' 1}}. {{maskEmail this.email}} - {{{formatDate this.createdAt}}}</p>
-                            {{else}}
-                                <p>{{{md @root.page.noReferrals true}}}</p>
-                            {{/each}}
-                        </div>
-                        <div class="referralsReport">
-                            {{#if winner}}
-                                <p class="ui orange header">{{ @root.page.winner }}</p>
-                            {{else}}
-                                {{#cond referrals.length '>=' threashold}}
-                                    <p class="ui green header">{{ @root.page.eligible }}</p>
+                    {{/with}}
+                </div>
+                {{#each currentPromos}}
+                    {{#with this}}
+                        <div class="promo ui raised segment">
+                            <div class="promoInformation">
+                                <h3 class="heading name">{{ name }}</h3>
+                                <h4 class="heading dateRange">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h4>
+                                <p class="description">{{{md (interpolate @root.page.promoThreashholdTemplate this) true}}}</p>
+                            </div>
+                            <div class="referralsList">
+                                <h4 class="heading">{{ @root.page.headings.referrals }}</h4>
+                                {{#each referrals}}
+                                    <p>{{math @index '+' 1}}. {{maskEmail this.email}} - {{{formatDate this.createdAt}}}</p>
                                 {{else}}
-                                    <p class="ui orange header">{{inlineInterpolate @root.page.notEligible (math threashold '-' referrals.length)}}</p>
-                                {{/cond}}
-                            {{/if}}
+                                    <p>{{{md @root.page.noReferrals true}}}</p>
+                                {{/each}}
+                            </div>
+                            <div class="referralsReport">
+                                {{#if winner}}
+                                    <p class="ui orange header">{{ @root.page.winner }}</p>
+                                {{else}}
+                                    <p class="ui orange header">{{ @root.page.noWinner }}</p>
+                                {{/if}}
+                            </div>
                         </div>
-                    </div>
-                {{/with}}
-            {{/each}}
-        </div>
+                    {{/with}}
+                {{/each}}
+            </div>
+        {{/if}}
     </div>
 </div>

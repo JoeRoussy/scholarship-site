@@ -13,6 +13,7 @@ import { init as applicationCalandarControllerInit } from './component/applicati
 import clipboardCopy from './component/clipboard-copy';
 import promoWinner from './component/promo-winner-draw-controller';
 import graphConfig from './component/graph-config';
+import setTextAsHref from './component/set-text-as-href';
 
 // Generic semantic UI setup
 
@@ -33,3 +34,4 @@ applicationCalandarControllerInit();
 clipboardCopy([ 'profileReferralLink' ]);
 promoWinner();
 graphConfig();
+setTextAsHref();
