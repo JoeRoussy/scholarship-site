@@ -38,10 +38,10 @@
     "applicationsSectionHeading": "Scholarship Applications",
     "applicationsSummary": {
         "totalApplicationsCount": {
-            "title": "Total Applications Recieved"
+            "title": "Total Applications Received"
         },
         "yearlyApplicationsCount": {
-            "title": "Applications Recieved In The Last Year"
+            "title": "Applications Received In The Last Year"
         }
     },
     "applicationsGraphTitle": "Scholarship Applications Over Time",
