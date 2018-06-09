@@ -112,6 +112,14 @@
                 </div>
             </div>
             <div class="field">
+                <div class="ui checkbox">
+                    <input id="{{ form.inputs.caslConfirmation.id }}" type="{{ form.inputs.caslConfirmation.type }}" name="{{ form.inputs.caslConfirmation.name }}">
+                    <label for="{{ form.inputs.caslConfirmation.id }}">
+                        {{{ form.inputs.caslConfirmation.label }}}
+                    </label>
+                </div>
+            </div>
+            <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}">
             </div>
         </form>

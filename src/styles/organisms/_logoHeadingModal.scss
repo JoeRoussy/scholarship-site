@@ -72,6 +72,20 @@
                         }
                     }
                 }
+
+                .ui.checkbox.extraSpace {
+                    margin-bottom: 12px;
+                }
+            }
+        }
+
+        a {
+            color: #4183c4; // blue
+            text-decoration: underline;
+
+            &:hover {
+                color:  #1e70bf; // dark blue
+                text-decoration: none;
             }
         }
 

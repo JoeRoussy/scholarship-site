@@ -77,6 +77,12 @@
                         "text": "Please make sure the passwords match"
                     }
                 },
+                "caslConfirmation": {
+                    "id": "signupcaslConfirmation",
+                    "label": "Click here to sign up for our mailing list<br><br>With it you can receive information about promotions, updates and offers from the Canadian Higher Education House. You can unsubscribe at any time by selecting the unsubscribe link in any of these emails. If you have any questions, please feel free to <a href=\"/contact\">contact us</a>.",
+                    "name": "caslConfirmation",
+                    "type": "checkbox"
+                },
                 "membership": {
                     "id": "signupMembership",
                     "label": "Purchase full membership (you will be redirected to paypal to complete payment)",
