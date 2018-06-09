@@ -1021,6 +1021,7 @@ export const createUser = async({
     password,
     provider,
     providerId,
+    caslConfirmation,
     usersCollection = required('usersCollection')
 }) => {
     // Make sure we have all the information we need
@@ -1030,7 +1031,8 @@ export const createUser = async({
 
     let newUser = {
         name,
-        email
+        email,
+        caslConfirmation
     };
 
     if (password) {
