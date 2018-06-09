@@ -98,7 +98,8 @@ export const signup = ({
         email,
         password,
         name,
-        buyMemebership
+        buyMemebership,
+        caslConfirmation
     } = req.body;
 
     const {
@@ -144,6 +145,7 @@ export const signup = ({
             name,
             email,
             password,
+            caslConfirmation: !!caslConfirmation,
             usersCollection: db.collection('users')
         });
     } catch (e) {
