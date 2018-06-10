@@ -1,0 +1,35 @@
+{
+    "title": "Scholarship Site",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Change Password",
+    "returnToProfile": "Return to Profile",
+    "errorMessage": {
+        "heading": "Something went wrong",
+        "body": "Your could not be changed. Please <a href=\"/contact\">contact us</a> for further assistance."
+    },
+    "newPassword": {
+        "id": "newPasswordInput",
+        "label": "New Password",
+        "name": "newPassword",
+        "type": "password",
+        "placeholder": "New Password",
+        "validationType": "text",
+        "errorElement": {
+            "id": "newPasswordError",
+            "text": "Please enter a password"
+        }
+    },
+    "confirmNewPassword": {
+        "id": "confirmNewPasswordInput",
+        "label": "Confirm New Password",
+        "name": "confirmNewPassword",
+        "type": "password",
+        "placeholder": "Confirm New Password",
+        "validationType": "equal",
+        "errorElement": {
+            "id": "confirmNewPasswordError",
+            "text": "Passwords must be equal"
+        }
+    },
+    "submit": "Reset Password"
+}

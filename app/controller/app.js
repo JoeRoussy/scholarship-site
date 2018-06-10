@@ -525,6 +525,35 @@ export const processEditProfile = ({
     });
 });
 
+export const editPassword = (req, res) => {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    return res.render('profile/editPassword');
+};
+
+export const processEditPassword = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    // TODO: Actually edit the password
+
+    return res.redirect('/?passwordEditSucces=true');
+});
+
 // This serves pages with a 500 response. It is meant for server errors to be returned to the client.
 // It is invoked by calling next(e)
 export const errorHandler = function(err, req, res, next) {
