@@ -9,7 +9,8 @@
         "email": "Email:",
         "promos": "Referral Promotions",
         "referralLink": "Referral Link:",
-        "referrals": "Your Referrals"
+        "referrals": "Your Referrals",
+        "personalData": "Your Data"
     },
     "to": "to",
     "referralLink": {
@@ -32,5 +33,12 @@
     "noWinner": "A winner still needs to be drawn for this promotion",
     "noReferrals": "*You do not have any referrals for this promotion.*",
     "promoDescription": "Refer your friends to win a prize! Click the button below to get a link and share it with your friends. If they sign up you will be credited with one referral. The user with the most referrals at the end of a promotion will win the prize for that promotion!",
-    "editProfile": "Edit Profile"
+    "editProfile": "Edit Profile",
+    "personalData": {
+        "descriptionParagraphs": [
+            "We at the Canada Higher Education House take data privacy seriously and support data privacy laws and regulations such as the <a href=\"https://www.eugdpr.org/\" target=\"_blank\">GDPR</a>.",
+            "We want to be clear about what data we store and how we use it, which is why we allow our users to download all the data we have associated with them. For more information, see our <a href=\"/privacy-policy\">Privacy Policy</a>."
+        ],
+        "button": "Download Your Data"
+    }
 }

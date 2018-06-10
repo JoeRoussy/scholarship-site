@@ -91,5 +91,16 @@
                 {{/each}}
             </div>
         {{/if}}
+        <div class="personalDataSection">
+            <h2>{{ page.headings.personalData }}</h2>
+            {{#with page.personalData}}
+                {{#each descriptionParagraphs}}
+                    <p class="description">{{{ this }}}</p>
+                {{/each}}
+                <div class="dataDownloadbuttonWrapper">
+                    <a href="/api/users/me/personal-data" class="ui green button" target="_blank">{{ button }}</a>
+                </div>
+            {{/with}}
+        </div>
     </div>
 </div>
