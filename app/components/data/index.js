@@ -1097,7 +1097,7 @@ export const updateUser = ({
                 _id: userId
             },
             update
-        })
+        });
     } catch (e) {
         throw new RuntimeError({
             err: e,
@@ -1141,6 +1141,32 @@ export const deleteUser = async({
         });
     }
 };
+
+export const editPassword = async({
+    usersCollection = required('usersCollection'),
+    userId = required('userId'),
+    newPassword = required('newPassword')
+}) => {
+    // Hash the password
+    const hashedPassword = await generateHash(newPassword);
+
+    try {
+        return findAndUpdate({
+            collection: usersCollection,
+            query: {
+                _id: userId
+            },
+            update: {
+                password: hashedPassword
+            }
+        });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: 'Could not update password'
+        });
+    }
+}
 
 export const getNewUsersInPastTimeFrame = async({
     usersCollection = required('usersCollection'),

@@ -66,6 +66,10 @@
             {{> notification page.notifications.profileUpdated}}
         {{/if}}
 
+        {{#if queryParams.passwordEditSucces}}
+            {{> notification page.notifications.passwordEditSucces}}
+        {{/if}}
+
         {{#if page.login}}
             {{> modals/login page.login}}
         {{/if}}

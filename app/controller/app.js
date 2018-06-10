@@ -5,7 +5,8 @@ import {
     countProgramsForFilter,
     getCurrentReferralInformation,
     populateMembershipInformation,
-    updateUser
+    updateUser,
+    editPassword as editUserPassword
 } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
@@ -549,7 +550,32 @@ export const processEditPassword = ({
         return res.redirect('/');
     }
 
-    // TODO: Actually edit the password
+    const {
+        newPassword
+    } = req.body;
+
+    if (!newPassword) {
+        logger.warn('Tried to process edit password with no new password');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    try {
+        yield editUserPassword({
+            usersCollection,
+            userId: user._id,
+            newPassword
+        });
+    } catch (e) {
+        logger.error(e, `Could not change password for user with id: ${user._id}`);
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Log the user out sop they need to log in with the new password (makes old logins on other devices no longer valid)
+    req.logout();
 
     return res.redirect('/?passwordEditSucces=true');
 });
