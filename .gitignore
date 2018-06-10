@@ -7,3 +7,4 @@ app/config
 semantic/dist
 site_copy/
 .eslintrc
+app/user-data-files/*

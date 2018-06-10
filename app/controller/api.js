@@ -1,6 +1,7 @@
 /*
     All loggers in this module should a module key in the form: api-function-name
 */
+import fs from 'fs';
 
 import { required, print, unique, getRegex, convertToObjectId } from '../components/custom-utils';
 import {
@@ -23,6 +24,18 @@ import {
 import { ObjectId } from 'mongodb';
 import { wrap as coroutine } from 'co';
 import { findAndUpdate } from '../components/db/service';
+import config from '../config';
+
+const {
+    files: {
+        userDataRelativePath: USER_DATA_FILES_RELATIVE_PATH,
+        userDataFileName: USER_DATA_FILE_NAME
+    } = {}
+} = config;
+
+if (!USER_DATA_FILES_RELATIVE_PATH || !USER_DATA_FILE_NAME) {
+    throw new Error('Missing config element: files.userDataRelativePath');
+}
 
 
 export const programSearch = ({
@@ -461,8 +474,27 @@ export const getPersonalData = ({
     }
 
     // Write the file on disk
+    const filePath = `${process.cwd()}${USER_DATA_FILES_RELATIVE_PATH}${user._id}.json`;
+    const fileContents = JSON.stringify(userData, null, 4);
 
-    // Send the file as a response
+    fs.writeFile(filePath, fileContents, (err) => {
+        if (err) {
+            logger.error(e, `Error writting data for user with id: ${user._id}`)
+        
+            return next(e);
+        }
 
-    return res.send(JSON.stringify(userData, null, 4));
+        // Send the file as a response
+        return res.sendFile(filePath, {
+            headers: {
+                'Content-Disposition': `attachment; filename="${USER_DATA_FILE_NAME}"`
+            }
+        }, (err) => {
+            if (err) {
+                logger.error(e, `Error sending user data for user with id: ${user._id}`)
+            
+                return next(e);
+            }
+        });
+    });
 });
