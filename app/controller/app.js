@@ -5,7 +5,8 @@ import {
     countProgramsForFilter,
     getCurrentReferralInformation,
     populateMembershipInformation,
-    updateUser
+    updateUser,
+    editPassword as editUserPassword
 } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
@@ -523,6 +524,60 @@ export const processEditProfile = ({
 
         return res.redirect('/?profileUpdated=true');
     });
+});
+
+export const editPassword = (req, res) => {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    return res.render('profile/editPassword');
+};
+
+export const processEditPassword = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    const {
+        newPassword
+    } = req.body;
+
+    if (!newPassword) {
+        logger.warn('Tried to process edit password with no new password');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    try {
+        yield editUserPassword({
+            usersCollection,
+            userId: user._id,
+            newPassword
+        });
+    } catch (e) {
+        logger.error(e, `Could not change password for user with id: ${user._id}`);
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Log the user out sop they need to log in with the new password (makes old logins on other devices no longer valid)
+    req.logout();
+
+    return res.redirect('/?passwordEditSucces=true');
 });
 
 // This serves pages with a 500 response. It is meant for server errors to be returned to the client.

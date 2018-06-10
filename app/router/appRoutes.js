@@ -11,7 +11,9 @@ import {
     processScholarshipApplication,
     profile,
     editProfile,
-    processEditProfile
+    processEditProfile,
+    editPassword,
+    processEditPassword
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
@@ -111,5 +113,20 @@ export default ({
                 })
             }),
             editProfile
+        ]);
+
+    app.route('/profile/edit/password')
+        .get(editPassword)
+        .post([
+            processEditPassword({
+                usersCollection: db.collection('users'),
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'profile-edit-password'
+                    }
+                })
+            }),
+            editPassword
         ]);
 };
