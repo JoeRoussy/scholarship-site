@@ -56,7 +56,15 @@
 
         {{#if queryParams.searchError}}
             {{> notification page.notifications.searchError}}
-        {{/if}}        
+        {{/if}}
+
+        {{#if queryParams.profileDeleteSuccess}}
+            {{> notification page.notifications.profileDeleteSuccess}}
+        {{/if}}
+
+        {{#if queryParams.profileUpdated}}
+            {{> notification page.notifications.profileUpdated}}
+        {{/if}}
 
         {{#if page.login}}
             {{> modals/login page.login}}
@@ -66,6 +74,9 @@
         {{/if}}
         {{#if page.membership}}
             {{> modals/membership page.membership}}
+        {{/if}}
+        {{#if page.deleteProfileModal}}
+            {{> modals/deleteProfile page.deleteProfileModal}}
         {{/if}}
 
         {{> backEndGlobalImport}}

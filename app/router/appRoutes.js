@@ -9,7 +9,9 @@ import {
     processContact,
     scholarshipApplication,
     processScholarshipApplication,
-    profile
+    profile,
+    editProfile,
+    processEditProfile
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
@@ -96,4 +98,18 @@ export default ({
         transactionsCollection: db.collection('transactions')
     }));
 
-}
+    app.route('/profile/edit')
+        .get(editProfile)
+        .post([
+            processEditProfile({
+                usersCollection: db.collection('users'),
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'profile-edit'
+                    }
+                })
+            }),
+            editProfile
+        ]);
+};

@@ -9,6 +9,16 @@
         	"heading": "Something went wrong",
         	"body": "Your search could not be processed. Please try again later",
         	"type": "error"
+        },
+        "profileDeleteSuccess": {
+            "heading": "Profile Deleted",
+            "body": "Your profile and all associated data has been deleted",
+            "type": "success"
+        },
+        "profileUpdated": {
+            "heading": "Profile Updated",
+            "body": "Your profile has been updated",
+            "type": "success"
         }
     }
 }

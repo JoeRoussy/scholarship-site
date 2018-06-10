@@ -1,0 +1,56 @@
+{{> navigation page.navigation}}
+
+<div class="profileEditSection rootSection">
+    <div class="ui container">
+        <div class="buttonWrapper">
+            <a href="/profile/edit/password" class="ui blue button floatRight">{{ page.editPassword }}</a>
+            {{#with page.deleteProfile}}
+                <button class="ui red button" data-modal="{{ modal }}">{{ text }}</button>
+            {{/with}}
+        </div>
+        <h1 class="heading">{{ page.heading }}</h1>
+        <form
+            id="profileEditForm"
+            class="ui form {{#if formHandlingError}} error{{/if}}"
+            method="post"
+            data-validate-form
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ page.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{{ page.errorMessage.body }}}</p>
+                </div>
+            {{/if}}
+
+            <div class="field">
+                <label>{{ page.nameInput.label }}</label>
+                <input
+                    type="{{ page.nameInput.type }}"
+                    name="{{ page.nameInput.name }}"
+                    placeholder="{{ page.nameInput.placeholder }}"
+                    data-validate="{{ page.nameInput.validationType }}"
+                    data-error-element-id="{{ page.nameInput.errorElement.id }}"
+                    value="{{ @root.user.name }}"
+                >
+                <span id="{{ page.nameInput.errorElement.id }}" class="formErrorMessage">{{ page.nameInput.errorElement.text }}</span>
+            </div>
+            <div class="field">
+                <label>{{ page.emailInput.label }}</label>
+                <input
+                    type="{{ page.emailInput.type }}"
+                    name="{{ page.emailInput.name }}"
+                    placeholder="{{ page.emailInput.placeholder }}"
+                    data-validate="{{ page.emailInput.validationType }}"
+                    data-error-element-id="{{ page.emailInput.errorElement.id }}"
+                    value="{{ @root.user.email }}"
+                >
+                <span id="{{ page.emailInput.errorElement.id }}" class="formErrorMessage">{{ page.emailInput.errorElement.text }}</span>
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
+            </div>
+        </form>
+    </div>
+</div>

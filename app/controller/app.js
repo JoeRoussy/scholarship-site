@@ -4,7 +4,8 @@ import {
     getProgramById,
     countProgramsForFilter,
     getCurrentReferralInformation,
-    populateMembershipInformation
+    populateMembershipInformation,
+    updateUser
 } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
@@ -460,7 +461,68 @@ export const profile = ({
     res.locals.user = user;
     res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
 
-    return res.render('profile');
+    return res.render('profile/index');
+});
+
+export const editProfile = (req, res) => {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    res.locals.user = user;
+
+    return res.render('profile/edit');
+};
+
+export const processEditProfile = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.redirect('/');
+    }
+
+    const {
+        name,
+        email
+    } = req.body;
+
+    // Update the current user that is logged in
+    let newUser = null;
+
+    try {
+        newUser = yield updateUser({
+            usersCollection,
+            name,
+            email,
+            userId: user._id
+        });
+    } catch (e) {
+        logger.error(e, 'Error updating user');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Log the user in so the values are correct
+    req.login(newUser, (err) => {
+        if (err) {
+            logger.error(err, 'Error logging in user after updating values');
+            res.locals.formHandlingError = true;
+
+            return next();
+        }
+
+        return res.redirect('/?profileUpdated=true');
+    });
 });
 
 // This serves pages with a 500 response. It is meant for server errors to be returned to the client.

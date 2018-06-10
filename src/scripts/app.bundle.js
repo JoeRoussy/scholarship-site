@@ -14,8 +14,7 @@ import clipboardCopy from './component/clipboard-copy';
 import promoWinner from './component/promo-winner-draw-controller';
 import graphConfig from './component/graph-config';
 import setTextAsHref from './component/set-text-as-href';
-
-// Generic semantic UI setup
+import deleteProfileHandler from './component/delete-profile-handler';
 
 
 // Component Init
@@ -35,3 +34,4 @@ clipboardCopy([ 'profileReferralLink' ]);
 promoWinner();
 graphConfig();
 setTextAsHref();
+deleteProfileHandler();

@@ -1,0 +1,46 @@
+{
+    "title": "Scholarship Site",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Edit Profile",
+    "editPassword": "Change Password",
+    "deleteProfile": {
+        "text": "Delete Profile",
+        "modal": "deleteProfileModal"
+    },
+    "errorMessage": {
+        "heading": "Something went wrong",
+        "body": "Your profile edits could not be saved. Please <a href=\"/contact\">contact us</a> for further assistance."
+    },
+    "nameInput": {
+        "label": "Name",
+        "name": "name",
+        "type": "text",
+        "placeholder": "Name",
+        "validationType": "text",
+        "errorElement": {
+            "id": "profileEditNameError",
+            "text": "Please enter your name"
+        }
+    },
+    "emailInput": {
+        "label": "Email",
+        "name": "email",
+        "type": "text",
+        "placeholder": "Email",
+        "validationType": "email",
+        "errorElement": {
+            "id": "profileEditEmailError",
+            "text": "Please enter an email"
+        }
+    },
+    "submit": "Submit",
+    "deleteProfileModal": {
+        "id": "deleteProfileModal",
+        "header": "Delete Profile",
+        "body": "We take data privacy seriously. When you delete your profile we will permanently delete all your data. If you confirm, your profile will be deleted. This is not reversible.<br><br>Are you sure you want to delete your profile?",
+        "deny": "Cancel",
+        "accept": "Yes, delete my profile",
+        "errorTitle": "Error",
+        "errorMessage": "Your request could not be processed. Please try again later"
+    }
+}
