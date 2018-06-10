@@ -62,6 +62,10 @@
             {{> notification page.notifications.profileDeleteSuccess}}
         {{/if}}
 
+        {{#if queryParams.profileUpdated}}
+            {{> notification page.notifications.profileUpdated}}
+        {{/if}}
+
         {{#if page.login}}
             {{> modals/login page.login}}
         {{/if}}

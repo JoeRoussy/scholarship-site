@@ -100,13 +100,16 @@ export default ({
 
     app.route('/profile/edit')
         .get(editProfile)
-        .post(processEditProfile({
-            usersCollection: db.collection('users'),
-            logger: getChildLogger({
-                baseLogger: Logger,
-                additionalFields: {
-                    module: 'profile-edit'
-                }
-            })
-        }));
+        .post([
+            processEditProfile({
+                usersCollection: db.collection('users'),
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'profile-edit'
+                    }
+                })
+            }),
+            editProfile
+        ]);
 };

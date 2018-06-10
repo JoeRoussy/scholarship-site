@@ -495,7 +495,7 @@ export const processEditProfile = ({
         email
     } = req.body;
 
-    // TODO: Update the current user that is logged in
+    // Update the current user that is logged in
     let newUser = null;
 
     try {
@@ -512,7 +512,17 @@ export const processEditProfile = ({
         return next();
     }
 
-    return res.redirect('/profile?updated=true');
+    // Log the user in so the values are correct
+    req.login(newUser, (err) => {
+        if (err) {
+            logger.error(err, 'Error logging in user after updating values');
+            res.locals.formHandlingError = true;
+
+            return next();
+        }
+
+        return res.redirect('/?profileUpdated=true');
+    });
 });
 
 // This serves pages with a 500 response. It is meant for server errors to be returned to the client.

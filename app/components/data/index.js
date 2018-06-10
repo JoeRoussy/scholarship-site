@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { insert } from '../db/service';
+import { insert, findAndUpdate } from '../db/service';
 import {
     required,
     print,
@@ -1067,8 +1067,8 @@ export const createUser = async({
     });
 }
 
-// Updates a new user with a name and email (both optional) and returns the new user
-export const updateUser = async({
+// Updates a new user with a name and email (both optional) and returns a promise for a new user
+export const updateUser = ({
     usersCollection = required('usersCollection'),
     userId = required('userId'),
     name,
@@ -1079,42 +1079,31 @@ export const updateUser = async({
     if (name) {
         update = {
             ...update,
-            $set: {
-                name
-            }
-        }
+            name
+        };
     }
 
     if (email) {
         update = {
             ...update,
-            $set: {
-                email
-            }
-        }
+            email
+        };
     }
 
-    let modifyResponse = null;
-
     try {
-        modifyResponse = await usersCollection({ _id: userId }, update);
+        return findAndUpdate({
+            collection: usersCollection,
+            query: {
+                _id: userId
+            },
+            update
+        })
     } catch (e) {
         throw new RuntimeError({
             err: e,
             msg: `Could not update user with name: ${name} and email: ${email}`
         });
     }
-
-    const {
-        value: newUser,
-        ok
-    } = modifyResponse;
-
-    if (!ok || !newUser) {
-        throw new Error('Did not get ok result from user update');
-    }
-
-    return newUser;
 };
 
 export const deleteUser = async({
