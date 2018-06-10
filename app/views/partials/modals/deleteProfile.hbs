@@ -1,0 +1,19 @@
+<div id="{{ id }}" class="ui modal small">
+    <i class="close icon"></i>
+    <div class="header">
+        <span>{{ header }}</span>
+    </div>
+    <div class="content">
+        <p>{{{ body }}}</p>
+    </div>
+    <div class="actions">
+        <div class="ui green deny button">{{ deny }}</div>
+        <div class="ui red button"
+            data-delete-profile-button=""
+            data-error-title="{{ errorTitle }}"
+            data-error-message="{{ errorMessage }}"
+        >
+            {{ accept }}
+        </div>
+    </div>
+</div>

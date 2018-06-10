@@ -5,7 +5,8 @@ import {
     universitiesSearch,
     getUniversityById,
     usersSearch,
-    promoWinnerGeneration
+    promoWinnerGeneration,
+    deleteProfile
 } from '../controller/api.js';
 import { isAdmin } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
@@ -75,6 +76,17 @@ export default ({
         })
     ]);
 
+    router.delete('/users/me', deleteProfile({
+        usersCollection: db.collection('users'),
+        referralsCollection: db.collection('referrals'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-users-delete-profile'
+            }
+        })
+    }));
+
     router.get('/promo/:promoId/winner', promoWinnerGeneration({
         referralPromosCollection: db.collection('referralPromos'),
         referralsCollection: db.collection('referrals'),
@@ -84,7 +96,7 @@ export default ({
                 module: 'api-promo-winner-generation'
             }
         })
-    }))
+    }));
 
     app.use('/api', router);
-}
+};

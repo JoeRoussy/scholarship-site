@@ -10,7 +10,8 @@ import {
     getUniversitiesWithFilter,
     getUsers,
     getScholarshipApplicationsWithFilter,
-    getWinnerForPromo
+    getWinnerForPromo,
+    deleteUser
 } from '../components/data';
 import {
     transformProgramForOutput,
@@ -374,11 +375,11 @@ export const promoWinnerGeneration = ({
                 _id: convertToObjectId(promoId)
             },
             update: {
-                winnerId: winner._id
+                winnerId: convertToObjectId(winner._id)
             }
         });
     } catch (e) {
-        logger.error(e, 'Could not update promo with id: ${promoId} with winner with id: ${winner._id}');
+        logger.error(e, `Could not update promo with id: ${promoId} with winner with id: ${winner._id}`);
 
         return res.status(500).json({
             error: true,
@@ -390,3 +391,41 @@ export const promoWinnerGeneration = ({
         user: winner
     });
 });
+
+export const deleteProfile = ({
+    usersCollection = required('usersCollection'),
+    referralsCollection = required('referralsCollection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => coroutine(function* (req, res) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.status(403).json({
+            error: true,
+            message: 'No user logged in.'
+        });
+    }
+
+    try {
+        yield deleteUser({
+            usersCollection,
+            referralsCollection,
+            userId: convertToObjectId(user._id)
+        });
+    } catch (e) {
+        logger.error(e, `Could not delete user with id: ${user._id}`);
+
+        return res.status(500).json({
+            error: true,
+            message: 'A winner could not be found for this promotion'
+        });
+    }
+
+    req.logout();
+
+    return res.status(200).json({
+        message: 'User deleted'
+    });
+})

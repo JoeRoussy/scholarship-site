@@ -1067,6 +1067,92 @@ export const createUser = async({
     });
 }
 
+// Updates a new user with a name and email (both optional) and returns the new user
+export const updateUser = async({
+    usersCollection = required('usersCollection'),
+    userId = required('userId'),
+    name,
+    email
+}) => {
+    let update = {};
+
+    if (name) {
+        update = {
+            ...update,
+            $set: {
+                name
+            }
+        }
+    }
+
+    if (email) {
+        update = {
+            ...update,
+            $set: {
+                email
+            }
+        }
+    }
+
+    let modifyResponse = null;
+
+    try {
+        modifyResponse = await usersCollection({ _id: userId }, update);
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not update user with name: ${name} and email: ${email}`
+        });
+    }
+
+    const {
+        value: newUser,
+        ok
+    } = modifyResponse;
+
+    if (!ok || !newUser) {
+        throw new Error('Did not get ok result from user update');
+    }
+
+    return newUser;
+};
+
+export const deleteUser = async({
+    usersCollection = required('usersCollection'),
+    referralsCollection = required('referralsCollection'),
+    userId = required('userId')
+}) => {
+    // Delete any referrals pointing to this user
+    try {
+        await referralsCollection.deleteMany({ referreeId: userId });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not delete the referrals pointing to the user with id: ${userId}`
+        });
+    }
+
+    // Delete this user's referrals
+    try {
+        await referralsCollection.deleteMany({ referrerId: userId });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not delete the could not delete the referrals of the user with id: ${userId}`
+        });
+    }
+
+    // Delete this user's profile
+    try {
+        await usersCollection.findOneAndDelete({ _id: userId });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not delete user with id ${userId}`
+        });
+    }
+};
+
 export const getNewUsersInPastTimeFrame = async({
     usersCollection = required('usersCollection'),
     timeFrame = required('timeFrame')
