@@ -1168,6 +1168,46 @@ export const editPassword = async({
     }
 }
 
+export const getPersonalData = async({
+    usersCollection = required('usersCollection'),
+    userId = required('userId')
+}) => {
+    let result = null;
+
+    try {
+        result = await usersCollection.aggregate([
+            {
+                $match: {
+                    _id: userId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'referrals',
+                    localField: '_id',
+                    foreignField: 'referrerId',
+                    as: 'referrals'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'scholarshipApplications',
+                    localField: '_id',
+                    foreignField: 'userId',
+                    as: 'scholarshipApplications'
+                }
+            }
+        ]).toArray()
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not get personal data for user with id ${userId}`
+        });
+    }
+
+    return result[0];
+}
+
 export const getNewUsersInPastTimeFrame = async({
     usersCollection = required('usersCollection'),
     timeFrame = required('timeFrame')

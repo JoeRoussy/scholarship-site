@@ -11,7 +11,8 @@ import {
     getUsers,
     getScholarshipApplicationsWithFilter,
     getWinnerForPromo,
-    deleteUser
+    deleteUser,
+    getPersonalData as getPersonalDataForUser
 } from '../components/data';
 import {
     transformProgramForOutput,
@@ -428,4 +429,40 @@ export const deleteProfile = ({
     return res.status(200).json({
         message: 'User deleted'
     });
-})
+});
+
+export const getPersonalData = ({
+    usersCollection = required('usersCollection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.status(403).json({
+            error: true,
+            message: 'No user logged in.'
+        });
+    }
+
+    // Get an object containing all the user data
+    let userData = null;
+
+    try {
+        userData = yield getPersonalDataForUser({
+            usersCollection,
+            userId: user._id
+        });
+    } catch (e) {
+        logger.error(e, `Error getting personal data for user with id: ${user._id}`)
+        
+        return next(e);
+    }
+
+    // Write the file on disk
+
+    // Send the file as a response
+
+    return res.send(JSON.stringify(userData, null, 4));
+});

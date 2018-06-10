@@ -6,7 +6,8 @@ import {
     getUniversityById,
     usersSearch,
     promoWinnerGeneration,
-    deleteProfile
+    deleteProfile,
+    getPersonalData
 } from '../controller/api.js';
 import { isAdmin } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
@@ -83,6 +84,16 @@ export default ({
             baseLogger,
             additionalFields: {
                 module: 'api-users-delete-profile'
+            }
+        })
+    }));
+
+    router.get('/users/me/personal-data', getPersonalData({
+        usersCollection: db.collection('users'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-users-get-personal-data'
             }
         })
     }));
