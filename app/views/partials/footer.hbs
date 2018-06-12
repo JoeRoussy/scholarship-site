@@ -1,0 +1,25 @@
+<footer class="footer">
+    <div class="ui container">
+        <div class="footerSpacing">
+            <div class="ui centered stackable two column grid">
+                <div class="center aligned column">
+                    {{#with logo}}
+                        <img class="ui image mainLogo" src="{{ src }}" alt="{{ alt }}">
+                    {{/with}}
+                </div>
+                <div class="center aligned column">
+                    <div class="row">
+                        {{#with contact}}
+                            <a href="{{ href }}">{{ text }}</a>
+                        {{/with}}
+                    </div>
+                    <div class="row">
+                        {{#with privacy}}
+                            <a href="{{ href }}">{{ text }}</a>
+                        {{/with}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

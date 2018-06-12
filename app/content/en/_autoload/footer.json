@@ -1,0 +1,16 @@
+{
+    "footer": {
+        "logo": {
+            "src": "/images/logo.png",
+            "alt": "Canada Higher Education House"
+        },
+        "contact": {
+            "text": "Contact Us",
+            "href": "/contact"
+        },
+        "privacy": {
+            "text": "Privacy Policy",
+            "href": "/privacy-policy"
+        }
+    }
+}

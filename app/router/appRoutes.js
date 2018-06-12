@@ -13,7 +13,8 @@ import {
     editProfile,
     processEditProfile,
     editPassword,
-    processEditPassword
+    processEditPassword,
+    privacyPolicy
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
@@ -129,4 +130,6 @@ export default ({
             }),
             editPassword
         ]);
+
+    app.get('/privacy-policy', privacyPolicy);
 };

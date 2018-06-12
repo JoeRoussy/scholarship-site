@@ -34,10 +34,6 @@
     },
     "aboutUs": {
         "heading": "About the Canadian Higher Education House",
-        "image": {
-            "src": "/images/logo.png",
-            "alt": "canadian higher education house"
-        },
         "content": "Welcome to the Canada Higher Education House. CHEH is committed to spreading the word about the quality of higher education in Canada. We aim to create opportunities for students from Canada and around the world to attend College or University with the support of earned scholarships. CHEH’s comprehensive site will tell you more about the programs available at institutions across Canada as well as how you may earn scholarship support to attend. Come join us."
     }
 }

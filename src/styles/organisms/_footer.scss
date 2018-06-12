@@ -1,0 +1,25 @@
+footer.footer {
+    background-color: #ddd;
+
+    .footerSpacing {
+        padding: 30px;
+
+        .mainLogo {
+            max-width: 250px;
+        }
+
+        .row {
+            margin-top: 22px;
+            margin-bottom: 22px;
+
+            a {
+                color: black;
+                text-decoration: underline;
+
+                &:hover {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{{> navigation page.navigation}}
+
+<div class="privacyPolicy rootSection">
+    <div class="ui container">
+        <h1 class="heading">{{ page.heading }}</h1>
+        <div class="body">
+            {{#each page.paragraphs}}
+                <p>{{{ this }}}</p>
+            {{/each}}
+        </div>
+        <div class="logoWrapper">
+            {{#with page.logo}}
+                <img src="{{ src }}" alt="{{ alt }}">
+            {{/with}}
+        </div>
+    </div>
+</div>

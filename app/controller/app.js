@@ -580,6 +580,8 @@ export const processEditPassword = ({
     return res.redirect('/?passwordEditSucces=true');
 });
 
+export const privacyPolicy = (req, res) => res.render('privacy');
+
 // This serves pages with a 500 response. It is meant for server errors to be returned to the client.
 // It is invoked by calling next(e)
 export const errorHandler = function(err, req, res, next) {

@@ -1,0 +1,16 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Privacy Policy",
+    "paragraphs": [
+        "The Canada Higher Education House Website is intended to serve as a tool to inform users about studying in Canadian universities and allow them to apply for scholarships offered by the Canada Higher Education House.",
+        "In the course of providing this online service, information is exchanged back and forth between the Canada Higher Education House servers, online users, and their browsers. In some instances on this site, you may be asked to list your name, email address, and other information. Canada Higher Education House believes that your personal information deserves utmost protection. Your data is only collected for the purposes of: offering a customized experience on the Canada Higher Education House website, processing scholarship applications, attributing referrals, and contacting you if you win a scholarship or referral prize. While you can visit the site without registering or providing any personal information, you will need to register if you want to apply for a scholarship application, be eligible for a referral prize, or use the program search functionality extensively.",
+        "The Canada Higher Education House only collects the information we need to let you use our services. We will never sell or share your information with a third party unless issued a lawful subpoena.",
+        "The Canada Higher Education House uses cookies for the sole purpose of remembering users previously logged in on a given device. We do not track our users across the internet.",
+        "If you have any questions about the data we store or how we use it, please <a href=\"/contact\">contact us</a>."
+    ],
+    "logo": {
+        "src": "/images/logo.png",
+        "alt": "Canada Higher Education House"
+    }
+}
