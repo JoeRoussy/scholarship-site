@@ -52,7 +52,6 @@ dbConfig()
         }
 
         // Now that we know the db is connected, continue setting up the app
-        // TODO: Use secure cookies in production along with setting 'trust proxy' to 1 on the app
          app.use(session({
             secret: config.session.secret,
             resave: false, // don't save the session if unmodified
@@ -62,7 +61,6 @@ dbConfig()
                 touchAfter: 24 * 3600 // Only update the session every 24 hours unless a modification to the session is made
             }),
             cookie: {
-                secure: process.env.NODE_ENV === 'production', // Using secure cookie requires an https connection
                 maxAge: 30 * 24 * 3600 * 1000 // Cookie identifiying session expires in one month (value passed in milliseconds)
             }
         }));
