@@ -72,8 +72,8 @@ export const transformScholarshipApplicationForOutput = application => {
             {
                 _id: uId,
                 name: uName
-            }
-        ],
+            } = {}
+        ] = [],
         userId,
         ...applicationProps
     } = application;
