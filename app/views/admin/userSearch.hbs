@@ -47,10 +47,15 @@
                             <div class="header">
                                 <span>{{ this.name }}</span>
                                 {{#if this.isAdmin}}
-                                    <span class="statusText orange">{{ @root.page.admin }}</span>
+                                    <span class="statusText purple">{{ @root.page.admin }}</span>
                                 {{/if}}
                                 {{#if this.isMember}}
                                     <span class="statusText">{{ @root.page.member }}</span>
+                                {{/if}}
+                                {{#if this.caslConfirmation}}
+                                    <span class="statusText green">{{ @root.page.casl.confirmed }}</span>
+                                {{else}}
+                                    <span class="statusText orange">{{ @root.page.casl.notConfirmed }}</span>
                                 {{/if}}
                             </div>
                         </div>

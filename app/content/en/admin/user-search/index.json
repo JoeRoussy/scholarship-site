@@ -27,5 +27,9 @@
     "joinedAt": "Joined on:",
     "noResults": "Your search returned no results.",
     "admin": "Admin",
-    "member": "Member"
+    "member": "Member",
+    "casl": {
+        "confirmed": "Agreed to receive marketing emails.",
+        "notConfirmed": "DID NOT AGREE to receive marketing emails. "
+    }
 }
