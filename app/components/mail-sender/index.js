@@ -66,7 +66,7 @@ export const getSignUpMailMessage = ({
         context: {
             name,
             isMember,
-            preheader: 'Thank you for joining the Canadian Higher Education House!'
+            preheader: 'Thank you for joining the Canada Higher Education House!'
         },
         template: 'signUp'
     };
