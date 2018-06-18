@@ -63,7 +63,9 @@ const func = async ({
             ],
             from: 2, // Skip the heading row
             skip_empty_lines: true,
-            relax: true // Preserve quotes (for long and lat)
+            relax: true, // Preserve quotes (for long and lat)
+            ltrim: true,
+            rtrim: true
         }, (err, data) => {
             if (err) {
                 logger.error(err, 'Error parsing CSV');
@@ -94,6 +96,10 @@ const func = async ({
                     latitude,
                     ...programProperties
                 } = program;
+
+                // Manuall trim that lat and lgn since they are quoted in the csv and the parser does not do this
+                longitude = longitude.trim();
+                latitude = latitude.trim();
 
                 let province = await provinces.findOne({ name: provinceName });
 
