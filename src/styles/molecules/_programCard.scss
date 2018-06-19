@@ -11,6 +11,11 @@
         >.ui.sub.header {
             margin-bottom: 10px;
             font-size: 0.93em;
+
+            &.basic {
+                margin-top: 0;
+                font-weight: normal;
+            }
         }
     }
 }
