@@ -1,5 +1,8 @@
 import { required, print } from '../../custom-utils';
 
+// This module lets all the underlying errors bubble up.
+// TODO: Is this really a good idea. Should normalize the error still.
+
 const addDate = (doc) => ({
     ...doc,
     createdAt: new Date()
@@ -118,6 +121,19 @@ export const findAndUpdate = async ({
         }
     }
 };
+
+export const deleteOne = asnyc({
+    collection = required('collection'),
+    query = required('query')
+}) => {
+    const result = await collection.findOneAndDelete(query);
+
+    if (!result && result.ok) {
+        throw new Error('Did not get good response from delete');
+    }
+
+    return result.value;
+}
 
 // Since the callbacks for findOneAndUpdate and updateMany have a different structure, encapsulate the complexity
 // of verification in these two functions

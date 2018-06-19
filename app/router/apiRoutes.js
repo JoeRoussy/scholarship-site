@@ -7,7 +7,9 @@ import {
     usersSearch,
     promoWinnerGeneration,
     deleteProfile,
-    getPersonalData
+    getPersonalData,
+    addFavoriteProgram,
+    removeFavoriteProgram
 } from '../controller/api.js';
 import { isAdmin } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
@@ -94,6 +96,26 @@ export default ({
             baseLogger,
             additionalFields: {
                 module: 'api-users-get-personal-data'
+            }
+        })
+    }));
+
+    router.post('/users/me/favoritePrograms', addFavoriteProgram({
+        favoriteProgramsCollection: db.collection('favoritePrograms'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-users-add-favorite-program'
+            }
+        })
+    }));
+
+    router.delete('/users/me/favoritePrograms/:id', removeFavoriteProgram({
+        favoriteProgramsCollection: db.collection('favoritePrograms'),
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-users-remove-favorite-program'
             }
         })
     }));
