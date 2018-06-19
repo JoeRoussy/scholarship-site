@@ -202,7 +202,7 @@ export const programDetails = ({
     const program = yield getProgramById({
         programsCollection,
         id: programId
-    })
+    });
 
     if (!program) {
         // TODO: Render error

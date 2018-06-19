@@ -200,6 +200,8 @@ export const getProgramsWithFilter = async ({
     const filters = getFilters(name, universityIds);
 
     // Build up the aggregation Operatiors
+    // We use unwind after a lookup where we know there will be only one
+    // value as a bit of a hacky join without getting an array of universities for each program
     const aggregationOperators = [
         {
             $match: filters
@@ -209,8 +211,22 @@ export const getProgramsWithFilter = async ({
                 from: 'universities',
                 localField: 'universityId',
                 foreignField: '_id',
-                as: 'universities'
+                as: 'university'
             }
+        },
+        {
+            $unwind: '$university'
+        },
+        {
+            $lookup: {
+                from: 'provinces',
+                localField: 'university.provinceId',
+                foreignField: '_id',
+                as: 'university.province'
+            }
+        },
+        {
+            $unwind: '$university.province'
         },
         {
             $sort: {
@@ -323,8 +339,11 @@ export const getProgramById = async ({
                     from: 'universities',
                     localField: 'universityId',
                     foreignField: '_id',
-                    as: 'universities'
+                    as: 'university'
                 }
+            },
+            {
+                $unwind: '$university'
             }
         ]).toArray();
     } catch (e) {
