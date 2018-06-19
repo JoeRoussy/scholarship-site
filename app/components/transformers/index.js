@@ -6,15 +6,16 @@
 
 export const transformProgramForOutput = program => {
     const {
-        universities: [
-            {
-                name: universityName,
-                _id: uId,
-                latitude,
-                longitude,
-                link
-            }
-        ],
+        university: {
+            name: universityName,
+            _id: uId,
+            latitude,
+            longitude,
+            link,
+            province: {
+                name: provinceName
+            } = {}
+        } = {},
         universityId,
         language,
         ...programProps
@@ -26,7 +27,8 @@ export const transformProgramForOutput = program => {
             name: universityName,
             latitude,
             longitude,
-            link
+            link,
+            province: provinceName
         },
         ...programProps
     };

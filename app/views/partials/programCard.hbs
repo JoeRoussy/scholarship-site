@@ -8,7 +8,8 @@
         name,
         university: {
             _id,
-            name
+            name,
+            province
         },
         internationalTuition,
         domesticTuition,
@@ -25,6 +26,7 @@
     </div>
     <div class="content">
         <div class="ui sub header">{{ program.university.name }}</div>
+        <div class="ui sub header basic">{{ program.university.province }}</div>
         <div class="text">{{ program.minimumAverage }}</div>
         <div class="text">{{ program.length }}</div>
     </div>
