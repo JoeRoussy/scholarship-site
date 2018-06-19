@@ -122,7 +122,7 @@ export const findAndUpdate = async ({
     }
 };
 
-export const deleteOne = asnyc({
+export const deleteOne = async({
     collection = required('collection'),
     query = required('query')
 }) => {
