@@ -8,7 +8,10 @@
     "cards": {
         "tuitionInfomation": "Tuition",
         "domestic": "Domestic:",
-        "international": "International:"
+        "international": "International:",
+        "saveProgram": "Save",
+        "unSaveProgram": "Forget",
+        "moreInfo": "Details"
     },
     "noResults": {
         "heading": "We could not find any programs for that search",

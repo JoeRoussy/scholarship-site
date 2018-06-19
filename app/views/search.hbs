@@ -16,7 +16,10 @@
     <div class="ui container">
         <div class="ui link cards centered">
             {{#each programs}}
-                {{> programCard @root.page.cards program=this}}
+                {{>
+                    programCard
+                    @root.page.cards
+                    program=this}}
             {{else}}
                 {{#if overQuota}}
                     <div class="ui warning icon message">

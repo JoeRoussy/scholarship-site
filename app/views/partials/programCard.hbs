@@ -3,6 +3,8 @@
     tuitionInformation,
     domestic,
     international,
+    saveProgram,
+    moreInfo,
     program: {
         _id,
         name,
@@ -14,8 +16,9 @@
         internationalTuition,
         domesticTuition,
         length,
-        notes
-    }
+        notes,
+        isFavorite
+    },
 --}}
 
 <div class="ui card programCard" data-program-link="/programs/{{ program._id }}">
@@ -41,4 +44,23 @@
             <span>{{{formatCurrencyFlat program.internationalTuition @root.selectedUserLanguage}}}</span>
         </div>
     </div>
+    {{#if @root.user}}
+        <div class="ui two buttons">
+            {{#if program.isFavorite}}
+                <div class="ui bottom attached basic red button">
+                    <i class="delete icon"></i>
+                    {{ unSaveProgram }}
+                </div>
+            {{else}}
+                <div class="ui bottom attached basic green button">
+                    <i class="star icon"></i>
+                    {{ saveProgram }}
+                </div>
+            {{/if}}
+            <div class="ui bottom attached basic blue button">
+                <i class="list alternate icon"></i>
+                {{ moreInfo }}
+            </div>
+        </div>
+    {{/if}}
 </div>
