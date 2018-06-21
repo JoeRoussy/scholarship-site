@@ -516,7 +516,7 @@ export const addFavoriteProgram = ({
     }
 
     // Make sure we got a program id to associate as the favorite
-    const {
+    let {
         programId
     } = req.body;
 
@@ -597,7 +597,7 @@ export const removeFavoriteProgram = ({
         });
     }
 
-    const {
+    let {
         programId
     } = req.params;
 

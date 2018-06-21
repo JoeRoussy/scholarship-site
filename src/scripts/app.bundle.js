@@ -15,6 +15,7 @@ import promoWinner from './component/promo-winner-draw-controller';
 import graphConfig from './component/graph-config';
 import setTextAsHref from './component/set-text-as-href';
 import deleteProfileHandler from './component/delete-profile-handler';
+import favoriteProgramHander from './component/favorite-program-handler';
 
 
 // Component Init
@@ -35,3 +36,4 @@ promoWinner();
 graphConfig();
 setTextAsHref();
 deleteProfileHandler();
+favoriteProgramHander();

@@ -47,12 +47,19 @@
     {{#if @root.user}}
         <div class="ui two buttons">
             {{#if program.isFavorite}}
-                <div class="ui bottom attached basic red button">
+                <div class="ui bottom attached basic red button"
+                    data-delete-favorite-program-button=""
+                    data-program-id="{{ program._id }}"
+                >
                     <i class="delete icon"></i>
                     {{ unSaveProgram }}
                 </div>
             {{else}}
-                <div class="ui bottom attached basic green button">
+                <div
+                    class="ui bottom attached basic green button"
+                    data-add-favorite-program-button=""
+                    data-program-id="{{ program._id }}"
+                >
                     <i class="star icon"></i>
                     {{ saveProgram }}
                 </div>

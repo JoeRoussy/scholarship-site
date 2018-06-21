@@ -4,6 +4,7 @@
   "description": "A site for scholarships",
   "main": "app/index.js",
   "dependencies": {
+    "axios": "0.18.0",
     "bcrypt": "1.0.3",
     "bluebird": "3.5.0",
     "body-parser": "1.18.0",
