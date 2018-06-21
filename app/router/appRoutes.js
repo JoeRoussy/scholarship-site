@@ -78,7 +78,8 @@ export default ({
         ]);
 
     app.get('/programs/:programId', programDetails({
-        programsCollection: db.collection('programs')
+        programsCollection: db.collection('programs'),
+        favoriteProgramsCollection: db.collection('favoritePrograms')
     }));
 
     app.route('/scholarship-application')

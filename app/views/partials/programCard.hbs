@@ -16,8 +16,7 @@
         internationalTuition,
         domesticTuition,
         length,
-        notes,
-        isFavorite
+        notes
     },
 --}}
 
@@ -44,30 +43,4 @@
             <span>{{{formatCurrencyFlat program.internationalTuition @root.selectedUserLanguage}}}</span>
         </div>
     </div>
-    {{#if @root.user}}
-        <div class="ui two buttons">
-            {{#if program.isFavorite}}
-                <div class="ui bottom attached basic red button"
-                    data-delete-favorite-program-button=""
-                    data-program-id="{{ program._id }}"
-                >
-                    <i class="delete icon"></i>
-                    {{ unSaveProgram }}
-                </div>
-            {{else}}
-                <div
-                    class="ui bottom attached basic green button"
-                    data-add-favorite-program-button=""
-                    data-program-id="{{ program._id }}"
-                >
-                    <i class="star icon"></i>
-                    {{ saveProgram }}
-                </div>
-            {{/if}}
-            <div class="ui bottom attached basic blue button">
-                <i class="list alternate icon"></i>
-                {{ moreInfo }}
-            </div>
-        </div>
-    {{/if}}
 </div>

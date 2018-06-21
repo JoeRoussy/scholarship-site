@@ -20,9 +20,13 @@ export default () => {
                 programId
             })
                 .then(() => {
-                    //showSuccess('Program Saved', 'See your saved programs in your profile');
-                    console.log('Success');
-                    // TODO: reload current page with a success query parameter
+                    // Pase the QS into an object
+                    let urlObj = url.parse(window.location.href, true);
+
+                    urlObj.query.programSaveSuccess = true;
+                    urlObj.search = null;
+
+                    window.location.href = url.format(urlObj);
                 })
                 .catch(() => {
                     showError('Error', 'That program could not be saved. Please try again later');

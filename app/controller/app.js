@@ -6,11 +6,12 @@ import {
     getCurrentReferralInformation,
     populateMembershipInformation,
     updateUser,
-    editPassword as editUserPassword
+    editPassword as editUserPassword,
+    getSingleFavoriteProgram
 } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
-import { print, sortByKey, required, redirectToError, isMember } from '../components/custom-utils';
+import { print, sortByKey, required, redirectToError, isMember, convertToObjectId } from '../components/custom-utils';
 import config from '../config';
 import eol from 'eol';
 
@@ -189,23 +190,51 @@ export const contact = (req, res) => {
 };
 
 export const programDetails = ({
-    programsCollection = required('programsCollection')
-}) => coroutine(function* (req, res) {
+    programsCollection = required('programsCollection'),
+    favoriteProgramsCollection = required('favoriteProgramsCollection')
+}) => coroutine(function* (req, res, next) {
     const {
         programId
     } = req.params;
 
     if (programId && !ObjectId.isValid(programId)) {
-        // TODO: Render error
+        return next('Invalid program id');
     }
 
-    const program = yield getProgramById({
-        programsCollection,
-        id: programId
-    });
+    let program;
+
+    try {
+        program = yield getProgramById({
+            programsCollection,
+            id: convertToObjectId(programId)
+        });
+    } catch (e) {
+        // TODO: Add logging
+        return next(e);
+    }
 
     if (!program) {
-        // TODO: Render error
+        return next('Could not find program');
+    }
+
+    if (!req.user) {
+        // This program cannot be a favorite
+        res.locals.isFavorite = false;
+    } else {
+        // We need to see if this is a favorite
+        try {
+            const possibleFavorite = yield getSingleFavoriteProgram({
+                favoriteProgramsCollection,
+                userId: req.user._id,
+                programId: convertToObjectId(programId)
+            });
+
+            res.locals.isFavorite = !!possibleFavorite;
+        } catch (e) {
+            // TODO: Add logging
+
+            return next(e);
+        }
     }
 
     res.locals.program = transformProgramForOutput(program);

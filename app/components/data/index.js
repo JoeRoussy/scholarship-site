@@ -614,7 +614,7 @@ export const getCurrentReferralPromos = async({
 
 // Returns all the promos with information about how may users are eligible for that promotion
 export const getAllReferralPromos = async({
-    referralPromosCollection = requried('referralPromosCollection')
+    referralPromosCollection = required('referralPromosCollection')
 }) => {
     let promos = [];
 
@@ -724,7 +724,7 @@ export const getAllReferralPromos = async({
 export const getCurrentReferralInformation = async({
     userId = required('userId'),
     referralsCollection = required('referralsCollection'),
-    referralPromosCollection = requried('referralPromosCollection')
+    referralPromosCollection = required('referralPromosCollection')
 }) => {
     let currentPromos = [];
     let referrals = [];
@@ -1309,5 +1309,17 @@ export const getScholarshipApplicationsInPastTimeFrame = async({
     }
 
     return applications;
+}
+
+// Returns a promise
+export const getSingleFavoriteProgram = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    userId = required('userId'),
+    programId = required('programId')
+}) => {
+    return favoriteProgramsCollection.findOne({
+        userId,
+        programId
+    });
 }
 

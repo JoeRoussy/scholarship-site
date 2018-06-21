@@ -13,7 +13,8 @@ import {
     getScholarshipApplicationsWithFilter,
     getWinnerForPromo,
     deleteUser,
-    getPersonalData as getPersonalDataForUser
+    getPersonalData as getPersonalDataForUser,
+    getSingleFavoriteProgram
 } from '../components/data';
 import {
     transformProgramForOutput,
