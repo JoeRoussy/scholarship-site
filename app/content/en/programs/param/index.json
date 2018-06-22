@@ -11,5 +11,7 @@
         "toefl": "TOEFL:",
         "rank": "Rank:",
         "note": "Note:"
-    }
+    },
+    "addFavorite": "Add to Favorites",
+    "removeFavorite": "Remove From Favorites"
 }

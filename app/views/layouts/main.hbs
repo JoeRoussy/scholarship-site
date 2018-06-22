@@ -53,21 +53,20 @@
         {{#if queryParams.paypalSuccess}}
             {{> notification page.notifications.paypalSuccess}}
         {{/if}}
-
         {{#if queryParams.searchError}}
             {{> notification page.notifications.searchError}}
         {{/if}}
-
         {{#if queryParams.profileDeleteSuccess}}
             {{> notification page.notifications.profileDeleteSuccess}}
         {{/if}}
-
         {{#if queryParams.profileUpdated}}
             {{> notification page.notifications.profileUpdated}}
         {{/if}}
-
         {{#if queryParams.passwordEditSucces}}
             {{> notification page.notifications.passwordEditSucces}}
+        {{/if}}
+        {{#if queryParams.programFavoriteSaveSuccess}}
+            {{> notification page.notifications.programFavoriteSaveSuccess}}
         {{/if}}
 
         {{#if page.login}}

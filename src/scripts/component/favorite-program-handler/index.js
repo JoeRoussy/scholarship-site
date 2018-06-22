@@ -23,7 +23,7 @@ export default () => {
                     // Pase the QS into an object
                     let urlObj = url.parse(window.location.href, true);
 
-                    urlObj.query.programSaveSuccess = true;
+                    urlObj.query.programFavoriteSaveSuccess = true;
                     urlObj.search = null;
 
                     window.location.href = url.format(urlObj);
