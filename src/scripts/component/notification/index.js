@@ -23,8 +23,8 @@ export default () => {
         const title = element.attr('data-heading');
         const message = element.attr('data-body');
 
-        if (!(title && message && type)) {
-            console.error('Could not find title or heading for body for notification trigger', element);
+        if (!(title && type)) {
+            console.error('Could not find title or type for notification trigger', element);
 
             return;
         }

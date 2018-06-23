@@ -68,6 +68,9 @@
         {{#if queryParams.programFavoriteSaveSuccess}}
             {{> notification page.notifications.programFavoriteSaveSuccess}}
         {{/if}}
+        {{#if queryParams.programFavoriteDeleteSuccess}}
+            {{> notification page.notifications.programFavoriteDeleteSuccess}}
+        {{/if}}
 
         {{#if page.login}}
             {{> modals/login page.login}}

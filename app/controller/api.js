@@ -599,7 +599,7 @@ export const removeFavoriteProgram = ({
     }
 
     let {
-        programId
+        id: programId
     } = req.params;
 
     if (!programId) {
