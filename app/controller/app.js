@@ -7,7 +7,8 @@ import {
     populateMembershipInformation,
     updateUser,
     editPassword as editUserPassword,
-    getSingleFavoriteProgram
+    getSingleFavoriteProgram,
+    getFavoriteProgramsForUser
 } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
@@ -104,6 +105,50 @@ export const search = ({
     } else if (name) {
         res.locals.searchInfo.name = name;
     }
+
+    return next();
+});
+
+export const markFavorites = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
+}) => coroutine(function* (req, res, next){
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        // No need to continue
+        return next();
+    }
+
+    let favorites = null;
+
+    try {
+        favorites = yield getFavoriteProgramsForUser({
+            favoriteProgramsCollection,
+            userId: user._id
+        });
+    } catch (e) {
+        logger.error(e, 'Error finding favorite programs for user');
+    }
+
+    if (!favorites.length) {
+        // No need to continue
+        return next();
+    }
+
+    // Use strings so functions don't break on check equality of ids without using the custom function
+    const favoriteIds = favorites.map(favorite => favorite.programId.toString());
+
+    res.locals.programs = res.locals.programs.map(program => {
+        const isFavorite = favoriteIds.includes(program._id.toString())
+
+        return {
+            ...program,
+            isFavorite
+        };
+    });
 
     return next();
 });

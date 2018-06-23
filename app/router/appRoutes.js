@@ -14,7 +14,8 @@ import {
     processEditProfile,
     editPassword,
     processEditPassword,
-    privacyPolicy
+    privacyPolicy,
+    markFavorites
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
@@ -65,6 +66,15 @@ export default ({
                 provincesCollection: db.collection('provinces'),
                 universitiesCollection: db.collection('universities'),
                 programsCollection: db.collection('programs')
+            }),
+            markFavorites({
+                favoriteProgramsCollection: db.collection('favoritePrograms'),
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'search-mark-favorites'
+                    }
+                })
             }),
             setupSearchPagination,
             handleSearchError({

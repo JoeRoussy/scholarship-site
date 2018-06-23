@@ -1323,3 +1323,9 @@ export const getSingleFavoriteProgram = ({
     });
 }
 
+// Returns a promise
+export const getFavoriteProgramsForUser = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    userId = required('userId')
+}) => favoriteProgramsCollection.find({ userId }).toArray();
+
