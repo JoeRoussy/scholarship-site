@@ -614,7 +614,7 @@ export const getCurrentReferralPromos = async({
 
 // Returns all the promos with information about how may users are eligible for that promotion
 export const getAllReferralPromos = async({
-    referralPromosCollection = requried('referralPromosCollection')
+    referralPromosCollection = required('referralPromosCollection')
 }) => {
     let promos = [];
 
@@ -724,7 +724,7 @@ export const getAllReferralPromos = async({
 export const getCurrentReferralInformation = async({
     userId = required('userId'),
     referralsCollection = required('referralsCollection'),
-    referralPromosCollection = requried('referralPromosCollection')
+    referralPromosCollection = required('referralPromosCollection')
 }) => {
     let currentPromos = [];
     let referrals = [];
@@ -1309,5 +1309,79 @@ export const getScholarshipApplicationsInPastTimeFrame = async({
     }
 
     return applications;
+}
+
+// Returns a promise
+export const getSingleFavoriteProgram = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    userId = required('userId'),
+    programId = required('programId')
+}) => {
+    return favoriteProgramsCollection.findOne({
+        userId,
+        programId
+    });
+}
+
+export const getFavoriteProgramsForUser = async({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    userId = required('userId')
+}) => {
+    let results = null;
+
+    try {
+        results = await favoriteProgramsCollection.aggregate([
+            {
+                $match: {
+                    userId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'programs',
+                    localField: 'programId',
+                    foreignField: '_id',
+                    as: 'program'
+                }
+            },
+            {
+                $unwind: '$program'
+            },
+            {
+                $lookup: {
+                    from: 'universities',
+                    localField: 'program.universityId',
+                    foreignField: '_id',
+                    as: 'program.university'
+                }
+            },
+            {
+                $unwind: '$program.university'
+            },
+            {
+                $lookup: {
+                    from: 'provinces',
+                    localField: 'program.university.provinceId',
+                    foreignField: '_id',
+                    as: 'program.university.province'
+                }
+            },
+            {
+                $unwind: '$program.university.province'
+            },
+            {
+                $sort: {
+                    'program.name': 1
+                }
+            }
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not find favorite programs for user with id: ${userId}`
+        });
+    }
+
+    return results;
 }
 

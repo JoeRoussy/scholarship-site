@@ -6,11 +6,13 @@ import {
     getCurrentReferralInformation,
     populateMembershipInformation,
     updateUser,
-    editPassword as editUserPassword
+    editPassword as editUserPassword,
+    getSingleFavoriteProgram,
+    getFavoriteProgramsForUser
 } from '../components/data';
 import { ObjectId } from 'mongodb';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
-import { print, sortByKey, required, redirectToError, isMember } from '../components/custom-utils';
+import { print, sortByKey, required, redirectToError, isMember, convertToObjectId } from '../components/custom-utils';
 import config from '../config';
 import eol from 'eol';
 
@@ -107,6 +109,54 @@ export const search = ({
     return next();
 });
 
+export const markFavorites = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
+}) => coroutine(function* (req, res, next){
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        // No need to continue
+        return next();
+    }
+
+    let favorites = null;
+
+    try {
+        favorites = yield getFavoriteProgramsForUser({
+            favoriteProgramsCollection,
+            userId: user._id
+        });
+    } catch (e) {
+        // We cannot recover from this and this is not perfoming a critical action so we'll continue to the
+        // next function but write an error to document what went wrong
+        logger.error(e, 'Error finding favorite programs for user');
+
+        return next();
+    }
+
+    if (!favorites.length) {
+        // No need to continue
+        return next();
+    }
+
+    // Use strings so functions don't break on check equality of ids without using the custom function
+    const favoriteIds = favorites.map(favorite => favorite.programId.toString());
+
+    res.locals.programs = res.locals.programs.map(program => {
+        const isFavorite = favoriteIds.includes(program._id.toString())
+
+        return {
+            ...program,
+            isFavorite
+        };
+    });
+
+    return next();
+});
+
 export const setupSearchPagination = (req, res) => {
     const {
         count = 0,
@@ -189,23 +239,55 @@ export const contact = (req, res) => {
 };
 
 export const programDetails = ({
-    programsCollection = required('programsCollection')
-}) => coroutine(function* (req, res) {
+    programsCollection = required('programsCollection'),
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
+}) => coroutine(function* (req, res, next) {
     const {
         programId
     } = req.params;
 
     if (programId && !ObjectId.isValid(programId)) {
-        // TODO: Render error
+        return next('Invalid program id');
     }
 
-    const program = yield getProgramById({
-        programsCollection,
-        id: programId
-    });
+    let program;
+
+    try {
+        program = yield getProgramById({
+            programsCollection,
+            id: convertToObjectId(programId)
+        });
+    } catch (e) {
+        logger.error(e, `Erorr getting program by id. Program id: ${programId}`);
+
+        return next(e);
+    }
 
     if (!program) {
-        // TODO: Render error
+        logger.warn({ programId }, 'Could not find program with well-formed id');
+
+        return next('Could not find program');
+    }
+
+    if (!req.user) {
+        // This program cannot be a favorite
+        res.locals.isFavorite = false;
+    } else {
+        // We need to see if this is a favorite
+        try {
+            const possibleFavorite = yield getSingleFavoriteProgram({
+                favoriteProgramsCollection,
+                userId: req.user._id,
+                programId: convertToObjectId(programId)
+            });
+
+            res.locals.isFavorite = !!possibleFavorite;
+        } catch (e) {
+            logger.error(e, `Could not find out if this is a favorite program. Program id: ${programId}`);
+
+            return next(e);
+        }
     }
 
     res.locals.program = transformProgramForOutput(program);
@@ -421,7 +503,9 @@ export const processScholarshipApplication = ({
 export const profile = ({
     referralsCollection = required('referralsCollection'),
     referralPromosCollection = required('referralPromosCollection'),
-    transactionsCollection = required('transactionsCollection')
+    transactionsCollection = required('transactionsCollection'),
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'You must pass in a logging instance for this function to use')
 }) => coroutine(function* (req, res) {
     // Make sure there is a current user in req.user
     let {
@@ -442,25 +526,43 @@ export const profile = ({
             referralPromosCollection
         });
     } catch (e) {
-        // Log an error about now we failed to find the referral information about the current promotions
-        console.error(e);
+        logger.error(e, 'Could not find the referral information about the current promotions');
+
         return redirectToError('default', res);
     }
 
+    // Populate member information for the current user
     try {
         user = yield populateMembershipInformation({
             user,
             transactionsCollection
         });
     }  catch (e) {
-        // Log an error about not being able to populate user with membership information
-        console.error(e);
+        logger.error(e, 'Could not populate user with membership information');
+
+        return redirectToError('default', res);
+    }
+
+    // Get list of favorite programs
+    let favoritePrograms = [];
+
+    try {
+        favoritePrograms = yield getFavoriteProgramsForUser({
+            favoriteProgramsCollection,
+            userId: user._id
+        });
+    } catch (e) {
+        logger.error(e, 'Error finding favorite programs');
+
         return redirectToError('default', res);
     }
 
     // Need to assign the new user to locals along with the currentPromos
     res.locals.user = user;
     res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
+    res.locals.favoritePrograms = favoritePrograms
+            .map(fp => fp.program)
+            .map(transformProgramForOutput);
 
     return res.render('profile/index');
 });

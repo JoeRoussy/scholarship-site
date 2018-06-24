@@ -13,7 +13,8 @@ import {
     getScholarshipApplicationsWithFilter,
     getWinnerForPromo,
     deleteUser,
-    getPersonalData as getPersonalDataForUser
+    getPersonalData as getPersonalDataForUser,
+    getSingleFavoriteProgram
 } from '../components/data';
 import {
     transformProgramForOutput,
@@ -23,7 +24,7 @@ import {
  } from '../components/transformers';
 import { ObjectId } from 'mongodb';
 import { wrap as coroutine } from 'co';
-import { findAndUpdate } from '../components/db/service';
+import { findAndUpdate, insert, deleteOne } from '../components/db/service';
 import config from '../config';
 
 const {
@@ -496,5 +497,142 @@ export const getPersonalData = ({
                 return next(e);
             }
         });
+    });
+});
+
+export const addFavoriteProgram = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => coroutine(function* (req, res) {
+    // Make sure there is a user signed in
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.status(403).json({
+            error: true,
+            message: 'No user logged in.'
+        });
+    }
+
+    // Make sure we got a program id to associate as the favorite
+    let {
+        programId
+    } = req.body;
+
+    if (!programId) {
+        return res.status(400).json({
+            error: true,
+            message: 'You need to pass a programId to favorite.'
+        });
+    }
+
+    // Make sure there this program is not already favorited
+    const userId = user._id;
+    programId = convertToObjectId(programId);
+
+    let currentFavorite = null;
+
+    try {
+        currentFavorite = yield getSingleFavoriteProgram({
+            favoriteProgramsCollection,
+            userId,
+            programId
+        });
+    } catch (e) {
+        logger.error(e, `Error getting potential duplicate favorite. User id: ${userId}, program id: ${programId}`);
+
+        return res.status(500).json({
+            error: true,
+            message: 'Internal error.'
+        });
+    }
+
+    if (currentFavorite) {
+        return res.status(400).json({
+            error: true,
+            message: 'You have already favorited this program.'
+        });
+    }
+
+    // Now that we know this is not a dupe, insert the new favorite.
+    let favoriteDocument = null;
+
+    try {
+        favoriteDocument = yield insert({
+            collection: favoriteProgramsCollection,
+            document: {
+                userId,
+                programId
+            },
+            returnInsertedDocument: true
+        });
+    } catch (e) {
+        logger.error(e, `Error saving new favorite. User id: ${userId}, program id: ${programId}`);
+
+        return res.status(500).json({
+            error: true,
+            message: 'Internal error.'
+        });
+    }
+
+    return res.json({
+        message: 'Favorite added',
+        favoriteProgram: favoriteDocument
+    });
+});
+
+export const removeFavoriteProgram = ({
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'you must pass a logger for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.status(403).json({
+            error: true,
+            message: 'No user logged in.'
+        });
+    }
+
+    let {
+        id: programId
+    } = req.params;
+
+    if (!programId) {
+        return res.status(400).json({
+            error: true,
+            message: 'Missing programId request parameter'
+        });
+    }
+
+    let deletedDocument = null;
+    const userId = user._id;
+    programId = convertToObjectId(programId);
+
+    try {
+        deletedDocument = yield deleteOne({
+            collection: favoriteProgramsCollection,
+            query: {
+                userId,
+                programId
+            }
+        });
+    } catch (e) {
+        logger.error(e, `Error deleting favorite. User id: ${userId}, program id: ${programId}`);
+
+        return res.status(500).json({
+            error: true,
+            message: 'Could not delete favorite program'
+        });
+    }
+
+
+    return res.json({
+        message: 'Deleted favorite program',
+        favoriteProgram: deletedDocument
     });
 });

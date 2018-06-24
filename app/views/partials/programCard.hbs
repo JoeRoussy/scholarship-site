@@ -3,6 +3,8 @@
     tuitionInformation,
     domestic,
     international,
+    saveProgram,
+    moreInfo,
     program: {
         _id,
         name,
@@ -15,11 +17,16 @@
         domesticTuition,
         length,
         notes
-    }
+    },
 --}}
 
 <div class="ui card programCard" data-program-link="/programs/{{ program._id }}">
     <div class="content heading">
+        {{#if program.isFavorite}}
+            <div class="right floated">
+                <i class="yellow star icon"></i>
+            </div>
+        {{/if}}
         <div class="header">
             {{ program.name }}
         </div>

@@ -24,6 +24,16 @@
             "heading": "Password changed",
             "body": "Your password has been changed. Please log in with your new password",
             "type": "success"
+        },
+        "programFavoriteSaveSuccess": {
+            "heading": "Program saved to favorites",
+            "body": "See your saved programs in your profile",
+            "type": "success"
+        },
+        "programFavoriteDeleteSuccess": {
+            "heading": "Program removed from favorites",
+            "body": "",
+            "type": "success"
         }
     }
 }

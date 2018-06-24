@@ -49,6 +49,27 @@
                 </p>
             {{/if}}
         </div>
+        <div class="favoriteButtonWrapper">
+            {{#if isFavorite}}
+                <button
+                    class="ui red button"
+                    data-remove-favorite-program-button=""
+                    data-program-id={{ program._id }}
+                >
+                    <i class="icon ban"></i>
+                    {{ page.removeFavorite }}
+                </button>
+            {{else}}
+                <button
+                    class="ui green button"
+                    data-add-favorite-program-button=""
+                    data-program-id={{ program._id }}
+                >
+                    <i class="icon star"></i>
+                    {{ page.addFavorite }}
+                </button>
+            {{/if}}
+        </div>
     </div>
     <div class="mapsSection">
         <div id="programMap" class="map"></div>

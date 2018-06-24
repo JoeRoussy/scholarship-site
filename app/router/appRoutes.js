@@ -14,7 +14,8 @@ import {
     processEditProfile,
     editPassword,
     processEditPassword,
-    privacyPolicy
+    privacyPolicy,
+    markFavorites
 } from '../controller/app.js';
 import { required } from '../components/custom-utils';
 import { getChildLogger } from '../components/log-factory';
@@ -66,6 +67,15 @@ export default ({
                 universitiesCollection: db.collection('universities'),
                 programsCollection: db.collection('programs')
             }),
+            markFavorites({
+                favoriteProgramsCollection: db.collection('favoritePrograms'),
+                logger: getChildLogger({
+                    baseLogger: Logger,
+                    additionalFields: {
+                        module: 'search-mark-favorites'
+                    }
+                })
+            }),
             setupSearchPagination,
             handleSearchError({
                 logger: getChildLogger({
@@ -78,7 +88,14 @@ export default ({
         ]);
 
     app.get('/programs/:programId', programDetails({
-        programsCollection: db.collection('programs')
+        programsCollection: db.collection('programs'),
+        favoriteProgramsCollection: db.collection('favoritePrograms'),
+        logger: getChildLogger({
+            baseLogger: Logger,
+            additionalFields: {
+                module: 'program-details'
+            }
+        })
     }));
 
     app.route('/scholarship-application')
@@ -98,7 +115,14 @@ export default ({
         usersCollection: db.collection('users'),
         referralsCollection: db.collection('referrals'),
         referralPromosCollection: db.collection('referralPromos'),
-        transactionsCollection: db.collection('transactions')
+        transactionsCollection: db.collection('transactions'),
+        favoriteProgramsCollection: db.collection('favoritePrograms'),
+        logger: getChildLogger({
+            baseLogger: Logger,
+            additionalFields: {
+                module: 'profile-index'
+            }
+        })
     }));
 
     app.route('/profile/edit')

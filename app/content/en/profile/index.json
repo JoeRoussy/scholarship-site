@@ -10,7 +10,8 @@
         "promos": "Referral Promotions",
         "referralLink": "Referral Link:",
         "referrals": "Your Referrals",
-        "personalData": "Your Data"
+        "personalData": "Your Data",
+        "favoritePrograms": "Your Saved Programs"
     },
     "to": "to",
     "referralLink": {
@@ -40,5 +41,13 @@
             "We want to be clear about what data we store and how we use it, which is why we allow our users to download all the data we have associated with them. For more information, see our <a href=\"/privacy-policy\">Privacy Policy</a>."
         ],
         "button": "Download Your Data"
+    },
+    "programCards": {
+        "tuitionInfomation": "Tuition",
+        "domestic": "Domestic:",
+        "international": "International:",
+        "saveProgram": "Save",
+        "unSaveProgram": "Forget",
+        "moreInfo": "Details"
     }
 }
