@@ -265,6 +265,8 @@ export const programDetails = ({
     }
 
     if (!program) {
+        logger.warn({ programId }, 'Could not find program with well-formed id');
+
         return next('Could not find program');
     }
 
