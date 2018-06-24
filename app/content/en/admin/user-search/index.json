@@ -23,6 +23,7 @@
     },
     "submit": "Search",
     "userTitle": "List of Users",
+    "userCount": "Showing <b>{value}</b> user(s)",
     "userListDescription": "Sorted by date of registration",
     "joinedAt": "Joined on:",
     "noResults": "Your search returned no results.",
