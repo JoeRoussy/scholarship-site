@@ -52,7 +52,7 @@ export const applications = ({
 }) => coroutine(function* (req, res) {
 
     const {
-        userId,
+        name,
         startDate,
         endDate
     } = req.query;
@@ -62,7 +62,7 @@ export const applications = ({
     try {
         scholarshipApplications = yield getScholarshipApplicationsWithFilter({
             scholarshipApplicationsCollection: applicationsCollection,
-            userId,
+            name,
             afterDate: startDate ? new Date(parseInt(startDate)) : null,
             beforeDate: endDate ? new Date(parseInt(endDate)) : null
         });

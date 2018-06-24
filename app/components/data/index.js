@@ -538,15 +538,11 @@ export const populateMembershipInformation = async({
 // Get Scholarship Applications, must pass in javascript date objects
 export const getScholarshipApplicationsWithFilter = async({
     scholarshipApplicationsCollection = required('scholarshipApplicationsCollection'),
-    userId,
+    name,
     afterDate,
     beforeDate
 }) => {
     const filters = {};
-
-    if (userId) {
-        filters.userId = convertToObjectId(userId);
-    }
 
     if (afterDate) {
         filters.createdAt = {
@@ -568,21 +564,38 @@ export const getScholarshipApplicationsWithFilter = async({
         }
     }
 
-    try {
-        return await scholarshipApplicationsCollection.aggregate([
-            {
-                $match: filters
-            },
-            {
-                $lookup: {
-                    from: 'users',
-                    localField: 'userId',
-                    foreignField: '_id',
-                    as: 'users'
+    let aggregationOperators = [
+        {
+            $match: filters
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'user'
+            }
+        },
+        {
+            $unwind: '$user'
+        }
+    ];
+
+    if (name) {
+        aggregationOperators.push({
+            $match: {
+                name: {
+                    $regex: getRegex(name),
+                    $options: 'i'
                 }
             }
-        ]).toArray();
+        })
+    }
+
+    try {
+        return await scholarshipApplicationsCollection.aggregate(aggregationOperators).toArray();
     } catch (e) {
+        console.log(e)
         throw new RuntimeError({
             msg: 'Error getting users',
             err: e
