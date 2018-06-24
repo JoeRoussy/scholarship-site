@@ -25,6 +25,9 @@
                 </div>
             </div>
         </form>
+        {{#if applications.length}}
+            <p class="countDescription">{{{inlineInterpolate page.resultCount applications.length}}}</p>
+        {{/if}}
         <div class="applications">
             {{#each applications}}
                 {{#with this}}

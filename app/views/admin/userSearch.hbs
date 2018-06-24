@@ -40,6 +40,9 @@
         <div class="userListSection">
             <h2 class="heading">{{ page.userTitle }}</h2>
             <p class="userListDescription">{{ page.userListDescription }}</p>
+            {{#if users.length}}
+                <p class="userListDescription">{{{inlineInterpolate page.userCount users.length}}}</p>
+            {{/if}}
             <div class="userListWrapper ui cards centered">
                 {{#each users}}
                     <div class="ui card">
