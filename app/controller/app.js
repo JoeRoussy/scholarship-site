@@ -130,7 +130,11 @@ export const markFavorites = ({
             userId: user._id
         });
     } catch (e) {
+        // We cannot recover from this and this is not perfoming a critical action so we'll continue to the
+        // next function but write an error to document what went wrong
         logger.error(e, 'Error finding favorite programs for user');
+
+        return next();
     }
 
     if (!favorites.length) {
