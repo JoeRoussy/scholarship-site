@@ -1,7 +1,7 @@
 import { required, print } from '../../custom-utils';
 
 // This module lets all the underlying errors bubble up.
-// TODO: Is this really a good idea. Should normalize the error still.
+// TODO: This is not a good idea. Should normalize the error still.
 
 const addDate = (doc) => ({
     ...doc,
