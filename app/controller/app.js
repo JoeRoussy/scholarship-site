@@ -240,7 +240,8 @@ export const contact = (req, res) => {
 
 export const programDetails = ({
     programsCollection = required('programsCollection'),
-    favoriteProgramsCollection = required('favoriteProgramsCollection')
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'You must pass a logging instance for this function to use')
 }) => coroutine(function* (req, res, next) {
     const {
         programId
@@ -258,7 +259,8 @@ export const programDetails = ({
             id: convertToObjectId(programId)
         });
     } catch (e) {
-        // TODO: Add logging
+        logger.error(e, `Erorr getting program by id. Program id: ${programId}`);
+
         return next(e);
     }
 
@@ -280,7 +282,7 @@ export const programDetails = ({
 
             res.locals.isFavorite = !!possibleFavorite;
         } catch (e) {
-            // TODO: Add logging
+            logger.error(e, `Could not find out if this is a favorite program. Program id: ${programId}`);
 
             return next(e);
         }

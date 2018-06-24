@@ -89,7 +89,13 @@ export default ({
 
     app.get('/programs/:programId', programDetails({
         programsCollection: db.collection('programs'),
-        favoriteProgramsCollection: db.collection('favoritePrograms')
+        favoriteProgramsCollection: db.collection('favoritePrograms'),
+        logger: getChildLogger({
+            baseLogger: Logger,
+            additionalFields: {
+                module: 'program-details'
+            }
+        })
     }));
 
     app.route('/scholarship-application')
