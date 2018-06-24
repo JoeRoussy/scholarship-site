@@ -2,6 +2,7 @@
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Scholarship Applications",
+    "resultCount": "Showing <b>{value}</b> application(s)",
     "calendar": {
         "start": {
             "id": "scholarshipApplicationListCalendarStart",
