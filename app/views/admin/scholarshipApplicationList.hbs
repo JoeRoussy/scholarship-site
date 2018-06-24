@@ -23,11 +23,12 @@
                         {{#with page.searchBar}}
                             <div class="field first">
                                 <label>{{ label }}</label>
-                                <div class="ui right icon input">
+                                <div id="applicationsListingNameSearch" class="ui right icon input">
                                     <input 
                                         name="{{ name }}"
                                         placeholder="{{ placeholder }}"
                                         type="{{ type }}" 
+                                        value="{{lookup @root.queryParams name}}"
                                     >
                                     <i class="search icon"></i>
                                 </div>
