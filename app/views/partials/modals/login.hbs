@@ -58,6 +58,11 @@
             <div class="field">
                 <input class="ui submit button green" type="submit" value="{{ form.inputs.submit.text }}">
             </div>
+            <div class="forgotPasswordWrapper">
+                {{#with forgotPassword}}
+                    <a href="{{ href }}">{{ text }}</a>
+                {{/with }}
+            </div>
         </form>
         <div class="ui horizontal divider">
             Or
