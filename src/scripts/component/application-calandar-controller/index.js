@@ -15,6 +15,7 @@ export const init = () => {
 
         const startDate = applicationCallbacksController.getStartDate();
         const endDate = applicationCallbacksController.getEndDate();
+        const name = nameInput.val();
 
         if (startDate) {
             url.query.startDate = +startDate;
@@ -28,8 +29,10 @@ export const init = () => {
             delete url.query.endDate;
         }
 
-        if (!nameInput.val()) {
-            delete url.query.userId;
+        if (name) {
+            url.query.name = name;
+        } else {
+            delete url.query.name;
         }
 
         // Build the query string based on the value of url.query
