@@ -33,7 +33,10 @@
     },
     "searchBar": {
         "id": "applicationsListingNameSearch",
-        "placeholder": "Filter By Name"
+        "name": "name",
+        "placeholder": "Filter By Name",
+        "type": "text",
+        "label": "Search applications by name:"
     },
     "noResultsText": "Could not find any applications"
 }

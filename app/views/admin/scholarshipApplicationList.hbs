@@ -20,7 +20,19 @@
                         </div>
                     </div>
                     <div class="sixteen wide tablet eight wide computer column">
-                        {{> searchBar page.searchBar value=populatedQueryObjects.user.name}}
+                        {{#with page.searchBar}}
+                            <div class="field first">
+                                <label>{{ label }}</label>
+                                <div class="ui right icon input">
+                                    <input 
+                                        name="{{ name }}"
+                                        placeholder="{{ placeholder }}"
+                                        type="{{ type }}" 
+                                    >
+                                    <i class="search icon"></i>
+                                </div>
+                            </div>
+                        {{/with}}
                     </div>
                 </div>
             </div>
