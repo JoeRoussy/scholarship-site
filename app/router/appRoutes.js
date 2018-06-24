@@ -109,7 +109,14 @@ export default ({
         usersCollection: db.collection('users'),
         referralsCollection: db.collection('referrals'),
         referralPromosCollection: db.collection('referralPromos'),
-        transactionsCollection: db.collection('transactions')
+        transactionsCollection: db.collection('transactions'),
+        favoriteProgramsCollection: db.collection('favoritePrograms'),
+        logger: getChildLogger({
+            baseLogger: Logger,
+            additionalFields: {
+                module: 'profile-index'
+            }
+        })
     }));
 
     app.route('/profile/edit')

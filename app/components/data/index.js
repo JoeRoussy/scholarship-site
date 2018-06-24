@@ -1323,9 +1323,65 @@ export const getSingleFavoriteProgram = ({
     });
 }
 
-// Returns a promise
-export const getFavoriteProgramsForUser = ({
+export const getFavoriteProgramsForUser = async({
     favoriteProgramsCollection = required('favoriteProgramsCollection'),
     userId = required('userId')
-}) => favoriteProgramsCollection.find({ userId }).toArray();
+}) => {
+    let results = null;
+
+    try {
+        results = await favoriteProgramsCollection.aggregate([
+            {
+                $match: {
+                    userId
+                }
+            },
+            {
+                $lookup: {
+                    from: 'programs',
+                    localField: 'programId',
+                    foreignField: '_id',
+                    as: 'program'
+                }
+            },
+            {
+                $unwind: '$program'
+            },
+            {
+                $lookup: {
+                    from: 'universities',
+                    localField: 'program.universityId',
+                    foreignField: '_id',
+                    as: 'program.university'
+                }
+            },
+            {
+                $unwind: '$program.university'
+            },
+            {
+                $lookup: {
+                    from: 'provinces',
+                    localField: 'program.university.provinceId',
+                    foreignField: '_id',
+                    as: 'program.university.province'
+                }
+            },
+            {
+                $unwind: '$program.university.province'
+            },
+            {
+                $sort: {
+                    'program.name': 1
+                }
+            }
+        ]).toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Could not find favorite programs for user with id: ${userId}`
+        });
+    }
+
+    return results;
+}
 

@@ -495,7 +495,9 @@ export const processScholarshipApplication = ({
 export const profile = ({
     referralsCollection = required('referralsCollection'),
     referralPromosCollection = required('referralPromosCollection'),
-    transactionsCollection = required('transactionsCollection')
+    transactionsCollection = required('transactionsCollection'),
+    favoriteProgramsCollection = required('favoriteProgramsCollection'),
+    logger = required('logger', 'You must pass in a logging instance for this function to use')
 }) => coroutine(function* (req, res) {
     // Make sure there is a current user in req.user
     let {
@@ -516,25 +518,43 @@ export const profile = ({
             referralPromosCollection
         });
     } catch (e) {
-        // Log an error about now we failed to find the referral information about the current promotions
-        console.error(e);
+        logger.error(e, 'Could not find the referral information about the current promotions');
+
         return redirectToError('default', res);
     }
 
+    // Populate member information for the current user
     try {
         user = yield populateMembershipInformation({
             user,
             transactionsCollection
         });
     }  catch (e) {
-        // Log an error about not being able to populate user with membership information
-        console.error(e);
+        logger.error(e, 'Could not populate user with membership information');
+
+        return redirectToError('default', res);
+    }
+
+    // Get list of favorite programs
+    let favoritePrograms = [];
+
+    try {
+        favoritePrograms = yield getFavoriteProgramsForUser({
+            favoriteProgramsCollection,
+            userId: user._id
+        });
+    } catch (e) {
+        logger.error(e, 'Error finding favorite programs');
+
         return redirectToError('default', res);
     }
 
     // Need to assign the new user to locals along with the currentPromos
     res.locals.user = user;
     res.locals.currentPromos = currentPromos.map(transformPromoForOutput);
+    res.locals.favoritePrograms = favoritePrograms
+            .map(fp => fp.program)
+            .map(transformProgramForOutput);
 
     return res.render('profile/index');
 });

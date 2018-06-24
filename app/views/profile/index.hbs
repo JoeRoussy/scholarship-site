@@ -42,6 +42,16 @@
                 </div>
             {{/if}}
         </div>
+        {{#if favoritePrograms.length}}
+            <div class="favoritePrograms">
+                <h2>{{ page.headings.favoritePrograms }}</h2>
+                <div class="ui link cards centered">
+                    {{#each favoritePrograms}}
+                        {{> programCard @root.page.programCards program=this}}
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
         {{#if currentPromos.length}}
             <div class="promosData">
                 <h2>{{ page.headings.promos }}</h2>
