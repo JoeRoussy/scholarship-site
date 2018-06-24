@@ -1,0 +1,49 @@
+{{> navigation page.navigation}}
+
+<div class="passwordResetIndexSection rootSection">
+    <div class="ui container">
+        <h1 class="ui heading">{{ page.heading }}</h1>
+        <p>{{ page.body }}</p>
+        <form
+            class="ui form{{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
+            method="post"
+            data-validate-form
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    {{#with page.errorMessage}}
+                        <div class="header">
+                            <span>{{ heading }}</span>
+                        </div>
+                        <p>{{{ body }}}</p>
+                    {{/with}}
+                </div>
+            {{/if}}
+            {{#if requestSuccess}}
+                <div class="ui success message">
+                    {{#with page.successMessage}}
+                        <div class="header">
+                            <span>{{ heading }}</span>
+                        </div>
+                        <p>{{interpolate body request}}</p>
+                    {{/with}}
+                </div>
+            {{/if}}
+            <div class="field">
+                {{#with page.emailInput}}
+                    <label>{{ label }}</label>
+                    <input
+                        placeholder="{{ placeholder }}"
+                        name="{{ name }}"
+                        data-validate="{{ validationType }}"
+                        data-error-element-id="{{ errorElement.id }}"
+                    >
+                    <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
+                {{/with}}
+            </div>
+            <div class="field">
+                <input class="ui submit button green" type="submit" value="{{ page.submit }}">
+            </div>
+        </form>
+    </div>
+</div>

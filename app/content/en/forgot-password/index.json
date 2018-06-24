@@ -1,0 +1,25 @@
+{
+    "title": "Canada Higher Education House",
+    "description": "A site for researching and applying for scholarships in canada",
+    "heading": "Password Reset",
+    "body": "Enter the email you signed up with. We will send you an email with instructions on how to reset your password.",
+    "emailInput": {
+        "label": "Email",
+        "placeholder": "Email",
+        "name": "email",
+        "validationType": "email",
+        "errorElement": {
+            "id": "forgotPasswordEmailInputError",
+            "text": "Please enter a valid email"
+        }
+    },
+    "submit": "Submit",
+    "errorMessage": {
+        "heading": "Error",
+        "body": "Something went weong processing your request. Please try again later or <a href=\"/contact\">contact us</a>."
+    },
+    "successMessage": {
+        "heading": "We have received your prequest",
+        "body": "We will send an email to {email} with instructions on how to reset your password."
+    }
+}
