@@ -18,6 +18,10 @@
         "heading": "Error",
         "body": "Something went weong processing your request. Please try again later or <a href=\"/contact\">contact us</a>."
     },
+    "invalidEmailMessage": {
+        "heading": "Invalid email",
+        "body": "We could not find a user with that email."
+    },
     "successMessage": {
         "heading": "We have received your prequest",
         "body": "We will send an email to {email} with instructions on how to reset your password."

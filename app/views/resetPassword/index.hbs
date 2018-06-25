@@ -11,12 +11,21 @@
         >
             {{#if formHandlingError}}
                 <div class="ui error message">
-                    {{#with page.errorMessage}}
-                        <div class="header">
-                            <span>{{ heading }}</span>
-                        </div>
-                        <p>{{{ body }}}</p>
-                    {{/with}}
+                    {{#if invalidEmail}}
+                        {{#with page.invalidEmailMessage}}
+                            <div class="header">
+                                <span>{{ heading }}</span>
+                            </div>
+                            <p>{{{ body }}}</p>
+                        {{/with}}
+                    {{else}}
+                        {{#with page.errorMessage}}
+                            <div class="header">
+                                <span>{{ heading }}</span>
+                            </div>
+                            <p>{{{ body }}}</p>
+                        {{/with}}
+                    {{/if}}
                 </div>
             {{/if}}
             {{#if requestSuccess}}
@@ -25,7 +34,7 @@
                         <div class="header">
                             <span>{{ heading }}</span>
                         </div>
-                        <p>{{interpolate body request}}</p>
+                        <p>{{interpolate body @root.request}}</p>
                     {{/with}}
                 </div>
             {{/if}}
