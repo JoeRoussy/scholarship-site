@@ -1,7 +1,9 @@
 import { wrap as coroutine } from 'co';
 
-import { required } from '../components/custom-utils';
+import { required, convertToObjectId } from '../components/custom-utils';
 import { getUserByEmail, getPasswordResetLink, getPasswordResetRequestByUrlIdentifier } from '../components/data';
+import { generateHash } from '../components/authentication';
+import { findAndUpdate } from '../components/db/service';
 import { getPasswordResetMailMessage, sendMessage as sendMailMessage } from '../components/mail-sender';
 
 export const index = (req, res) => res.render('resetPassword/index');
@@ -136,12 +138,92 @@ export const processExecute = ({
     passwordResetRequestsCollection = required('passwordResetRequestsCollection'),
     usersCollection = required('usersCollection'),
     logger = required('logger', 'you must pass in a logging instance for this function to use')
-}) => coroutine(function* (req, res) {
-    // Get the password and userId out of the form body
+}) => coroutine(function* (req, res, next) {
+    const {
+        password,
+        urlIdentifier,
+        userId
+    } = req.body;
+
+    if (!password || !urlIdentifier || !userId) {
+        logger.warn({ body: req.body }, 'Incomplete request body');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Make sure there is an active password update for this user under the given code
+    let passwordResetDocument = null;
+
+    try {
+        passwordResetDocument = yield getPasswordResetRequestByUrlIdentifier({
+            passwordResetRequestsCollection,
+            urlIdentifier
+        });
+    } catch (e) {
+        logger.error(e, `Error getting password reset request document for urlIdentifier: ${urlIdentifier}`);
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    if (!passwordResetDocument && passwordResetDocument.userId.toString() !== userId) {
+        logger.warn({ urlIdentifier, userId }, 'Attempted to process invalid password reset submission');
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
 
     // Save update the given user with the new password
+    const newPassword = yield generateHash(password);
+    let currentUser = null;
 
-    // If things do bad, set local form error and reutrn next()
 
-    // Otherwise redirect to the homepage with a Qs that triggers a notification
+    try {
+        currentUser = yield findAndUpdate({
+            collection: usersCollection,
+            query: {
+                userId: convertToObjectId(userId)
+            },
+            update: {
+                password: newPassword
+            }
+        });
+    } catch (e) {
+        logger.error(e, `Error saving new password for user with id: ${userId}`);
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Update the password reset document as expired
+    try {
+        yield findAndUpdate({
+            collection: passwordResetRequestsCollection,
+            query: {
+                urlIdentifier,
+                userId: convertToObjectId(userId)
+            },
+            update: {
+                expired: true
+            }
+        });
+    } catch (e) {
+        logger.error(e, `Error marking password reset as expried with urlIdentifier: ${urlIdentifier}`);
+        res.locals.formHandlingError = true;
+
+        return next();
+    }
+
+    // Log the user in
+    req.login(currentUser, err => {
+        if (err) {
+            logger.error(err, `Error login in user after updating password. User id: ${userId}`);
+            res.locals.formHandlingError = true;
+
+            return next();
+        }
+
+        return res.redirect('/?passwordResetSuccess=true');
+    });
 });
