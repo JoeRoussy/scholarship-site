@@ -4,7 +4,9 @@ import { getChildLogger } from '../components/log-factory';
 import { required } from '../components/custom-utils';
 import {
     index,
-    processInitialRequest
+    processInitialRequest,
+    execute,
+    processExecute
 } from '../controller/passwordReset';
 
 export default ({
@@ -28,6 +30,38 @@ export default ({
                 })
             }),
             index
+        ]);
+
+    router.route('/execute')
+        .get(execute({
+            passwordResetRequestsCollection: db.collection('passwordResetRequests'),
+            logger: getChildLogger({
+                baseLogger,
+                additionalFields: {
+                    module: 'password-reset-execute-index'
+                }
+            })
+        }))
+        .post([
+            processExecute({
+                passwordResetRequestsCollection: db.collection('passwordResetRequests'),
+                usersCollection: db.collection('users'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'password-reset-initial-request'
+                    }
+                })
+            }),
+            execute({
+                passwordResetRequestsCollection: db.collection('passwordResetRequests'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'password-reset-execute-index'
+                    }
+                })
+            })
         ]);
 
     app.use('/forgot-password', router);

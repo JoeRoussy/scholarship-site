@@ -1,0 +1,55 @@
+{{> navigation page.navigation}}
+
+<div class="passwordResetFormSection rootSection">
+    <div class="ui container">
+        <h1 class="heading">{{ page.heading }}</h1>
+        <p class="description">{{ page.body }}</p>
+        <form
+            class="ui form {{#if formHandlingError}} error{{/if}}"
+            method="post"
+            data-validate-form
+        >
+            {{#if formHandlingError}}
+                <div class="ui error message">
+                    <div class="header">
+                        <span>{{ page.errorMessage.heading }}</span>
+                    </div>
+                    <p>{{ page.errorMessage.body }}</p>
+                </div>
+            {{/if}}
+            <div class="field">
+                {{#with page.passwordInput}}
+                    <label>{{ label }}</label>
+                    <input
+                        id="{{ id }}"
+                        type="{{ type }}"
+                        name="{{ name }}"
+                        placeholder="{{ placeholder }}"
+                        data-validate="{{ validationType }}"
+                        data-error-element-id="{{ errorElement.id }}"
+                    >
+                    <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
+                {{/with}}
+            </div>
+            <div class="field">
+                {{#with page.passwordConfirmInput}}
+                    <label>{{ label }}</label>
+                    <input
+                        type="{{ type }}"
+                        name="{{ name }}"
+                        placeholder="{{ placeholder }}"
+                        data-validate="{{ validationType }}"
+                        data-error-element-id="{{ errorElement.id }}"
+                        data-validation-target-id="{{ @root.page.passwordInput.id }}"
+                    >
+                    <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
+                {{/with}}
+            </div>
+            <input type="hidden" name="userId" value="{{ userId }}">
+            <input type="hidden" name="urlIdentifier" value="{{ urlIdentifier }}">
+            <div class="field">
+                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
+            </div>
+        </form>
+    </div>
+</div>

@@ -1431,5 +1431,28 @@ export const getPasswordResetLink = async({
         });
     }
 
-    return `${HOST}/password-reset/execute?code=${urlIdentifier}`;
+    return `${HOST}/forgot-password/execute?code=${urlIdentifier}`;
 }
+
+export const getPasswordResetRequestByUrlIdentifier = async({
+    passwordResetRequestsCollection = required('passwordResetRequestsCollection'),
+    urlIdentifier = required('urlIdentifier')
+}) => {
+    let result = null;
+
+    try {
+        result = await passwordResetRequestsCollection.findOne({
+            urlIdentifier,
+            expired: {
+                $ne: true
+            }
+        });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Error finding password reset document with urlIdentifier: ${urlIdentifier}`
+        });
+    }
+
+    return result;
+};
