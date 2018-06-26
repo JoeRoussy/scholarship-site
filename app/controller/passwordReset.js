@@ -20,7 +20,6 @@ export const processInitialRequest = ({
 
     if (!email) {
         logger.warn('Trying to process with no email');
-
         res.locals.formHandlingError = true;
 
         return next();
