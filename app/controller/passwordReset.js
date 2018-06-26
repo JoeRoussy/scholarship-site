@@ -75,6 +75,8 @@ export const processInitialRequest = ({
         passwordResetLink
     });
 
+    // We are not yielding because sending emails takes too long. We write an error
+    // if we can't send the reset email.
     sendMailMessage({
         to: email,
         message: passwordResetMailMessage,
@@ -173,7 +175,7 @@ export const processExecute = ({
         return next();
     }
 
-    // Save update the given user with the new password
+    // Update the user with the new password
     const newPassword = yield generateHash(password);
     let currentUser = null;
 
