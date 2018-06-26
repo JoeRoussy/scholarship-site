@@ -44,6 +44,10 @@
                 }
             }
         },
+        "forgotPassword": {
+            "href": "/forgot-password",
+            "text": "Forgot password?"
+        },
         "dimmer": {
             "id": "loginModalDimmer",
             "loader": true,

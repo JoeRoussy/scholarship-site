@@ -1,4 +1,6 @@
 import moment from 'moment';
+
+import config from '../../config';
 import { insert, findAndUpdate } from '../db/service';
 import {
     required,
@@ -10,7 +12,15 @@ import {
 } from '../custom-utils';
 import { free } from '../populate-session';
 import { generateHash } from '../authentication';
-import { get as getHash } from '../hash';
+import { get as getHash, getUnique as getUniqueHash } from '../hash';
+
+const {
+    host: HOST
+} = config;
+
+if (!HOST) {
+    throw new Error('Missing HOST config parameter');
+}
 
 // NOTE: Functions in this module will return verbose data and the caller can clean it if they wish
 
@@ -1398,3 +1408,51 @@ export const getFavoriteProgramsForUser = async({
     return results;
 }
 
+// Generates a password reset link and saves a document associating the user with that link
+export const getPasswordResetLink = async({
+    passwordResetRequestsCollection = required('passwordResetRequestsCollection'),
+    user = required('user')
+}) => {
+    const urlIdentifier = await getUniqueHash({ input: user });
+
+    try {
+        await insert({
+            collection: passwordResetRequestsCollection,
+            document: {
+                userId: user._id,
+                urlIdentifier,
+                expired: false
+            }
+        });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Error inserting password reset document for user with id: ${user._id}`
+        });
+    }
+
+    return `${HOST}/forgot-password/execute?code=${urlIdentifier}`;
+}
+
+export const getPasswordResetRequestByUrlIdentifier = async({
+    passwordResetRequestsCollection = required('passwordResetRequestsCollection'),
+    urlIdentifier = required('urlIdentifier')
+}) => {
+    let result = null;
+
+    try {
+        result = await passwordResetRequestsCollection.findOne({
+            urlIdentifier,
+            expired: {
+                $ne: true
+            }
+        });
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: `Error finding password reset document with urlIdentifier: ${urlIdentifier}`
+        });
+    }
+
+    return result;
+};

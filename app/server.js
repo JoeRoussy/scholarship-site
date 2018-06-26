@@ -17,6 +17,7 @@ import authRouteConfig from './router/authRoutes.js';
 import memberRouteConfig from './router/membershipRoutes.js';
 import adminRouteConfig from './router/adminRoutes.js';
 import notFoundRouteConfig from './router/errorRoutes.js';
+import passwordResetRouteConfig from './router/passwordReset.js';
 import { errorHandler } from './controller/app.js';
 import { getLogger, getChildLogger } from './components/log-factory';
 import dbConfig from './components/db/config';
@@ -148,6 +149,11 @@ dbConfig()
             baseLogger: Logger
         });
         adminRouteConfig({
+            app,
+            db,
+            baseLogger: Logger
+        });
+        passwordResetRouteConfig({
             app,
             db,
             baseLogger: Logger

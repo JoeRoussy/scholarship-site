@@ -34,6 +34,11 @@
             "heading": "Program removed from favorites",
             "body": "",
             "type": "success"
+        },
+        "passwordResetSuccess": {
+            "heading": "Password Reset",
+            "body": "You are now logged in. Use your new password from now on.",
+            "type": "success"
         }
     }
 }

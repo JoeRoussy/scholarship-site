@@ -12,6 +12,14 @@ const TEMPLATE_EXTENSION = '.hbs';
 const DEFAULT_LAYOUT = 'main';
 const TEMPLATE_PARTIALS = 'app/components/mail-sender/templates/partials';
 
+const {
+    host: HOST
+} = config;
+
+if (!HOST) {
+    throw new Error('Missing HOST config element');
+}
+
 const helpers = {
     md(text) {
         if (!text) {
@@ -35,7 +43,7 @@ const helpers = {
 };
 
 const defaultContext = {
-    rootUrl: 'http://165.227.40.182:3000'
+    rootUrl: HOST
 };
 
 export const getContactMailMessage = ({
@@ -91,7 +99,18 @@ export const getApplicationConfirmationMailMessage = ({
         application
     },
     template: 'scholarshipApplicationConfirmation'
-})
+});
+
+export const getPasswordResetMailMessage = ({
+    user,
+    passwordResetLink
+}) => ({
+    context: {
+        name: user.name,
+        passwordResetLink
+    },
+    template: 'passwordReset'
+});
 
 // This function can take a plaintext message or a message containing an hbs template
 // and a context to render that in
