@@ -178,12 +178,11 @@ export const processExecute = ({
     const newPassword = yield generateHash(password);
     let currentUser = null;
 
-
     try {
         currentUser = yield findAndUpdate({
             collection: usersCollection,
             query: {
-                userId: convertToObjectId(userId)
+                _id: convertToObjectId(userId)
             },
             update: {
                 password: newPassword
