@@ -7,8 +7,12 @@ const {
 
 export default () => {
     // NOTE: These private vars will be updates as the user selects universities and provinces from the results
-    let selectedUniversity = null;
-    let selectedProvince = null;
+    const {
+        queryParams
+    } = window.globals;
+
+    let selectedUniversity = queryParams.universityId;
+    let selectedProvince = queryParams.province;
 
     // NOTE: For the searches, we use the id as the item 
     $('#searchUniversityFilter').search({
@@ -78,14 +82,23 @@ export default () => {
 
         if (selectedUniversity) {
             urlObj.query.universityId = selectedUniversity;
+        } else {
+            // Need to make sure this is deleted if it was there before
+            delete urlObj.query.universityId;
         }
 
         if (selectedProvince) {
             urlObj.query.province = selectedProvince;
+        } else {
+            // Need to make sure this is deleted if it was there before
+            delete urlObj.query.province;
         }
 
         if (selectedName) {
             urlObj.query.name = selectedName;
+        } else {
+            // Need to make sure this is deleted if it was there before
+            delete urlObj.query.name;
         }
 
         window.location.href = url.format(urlObj);
