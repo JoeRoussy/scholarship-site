@@ -3,30 +3,33 @@
 <div class="searchResults">
     <h1 class="ui heading">{{ page.heading }}</h1>
     <div class="ui container">
-        <div id="" class="ui centered grid">
+        <div id="" class="ui stackable centered grid">
             <div class="three column row">
-                <div class="column">
+                <div class="center aligned column">
                     {{> searchBar
                         id='searchUniversityFilter'
                         placeholder=@root.page.placeholders.university
                         hide=false
                         value=searchInfo.university
+                        customClasses="center aligned"
                     }}
                 </div>
-                <div class="column">
+                <div class="center aligned column">
                     {{> searchBar
                         id='searchProvinceFilter'
                         placeholder=@root.page.placeholders.province
                         hide=false
                         value=searchInfo.province
+                        customClasses="center aligned"
                     }}
                 </div>
-                <div class="column">
+                <div class="center aligned column">
                     {{> searchBar
                         id='searchNameFilter'
                         placeholder=@root.page.placeholders.name
                         hide=false
                         value=searchInfo.name
+                        customClasses="center aligned"
                     }}
                 </div>
             </div>
