@@ -6,11 +6,11 @@ const {
 } = window.globals.page.errorMessages;
 
 export default () => {
-    // NOTE: These private vars will be updates as the user selects universities and provinces from the results
     const {
         queryParams
     } = window.globals;
 
+    // NOTE: These private vars will be updates as the user selects universities and provinces from the results
     let selectedUniversity = queryParams.universityId;
     let selectedProvince = queryParams.province;
 
