@@ -2,9 +2,6 @@
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Your Programs",
-    "provinceSearchHeading": "Programs in: _{province}_",
-    "universitySearchHeading": "Programs at: _{university}_",
-    "nameSearchHeading": "Programs involving: _{name}_",
     "placeholders": {
         "university": "Filter by university",
         "province": "Filter by province",
