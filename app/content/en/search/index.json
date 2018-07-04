@@ -5,6 +5,12 @@
     "provinceSearchHeading": "Programs in: _{province}_",
     "universitySearchHeading": "Programs at: _{university}_",
     "nameSearchHeading": "Programs involving: _{name}_",
+    "placeholders": {
+        "university": "Filter by university",
+        "province": "Filter by province",
+        "name": "Filter by program name"
+    },
+    "filterSubmit": "Filter",
     "cards": {
         "tuitionInfomation": "Tuition",
         "domestic": "Domestic:",
