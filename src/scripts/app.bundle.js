@@ -15,6 +15,7 @@ import graphConfig from './component/graph-config';
 import setTextAsHref from './component/set-text-as-href';
 import deleteProfileHandler from './component/delete-profile-handler';
 import favoriteProgramHander from './component/favorite-program-handler';
+import searchFilters from './component/search-filters';
 
 
 // Component Init
@@ -35,3 +36,4 @@ graphConfig();
 setTextAsHref();
 deleteProfileHandler();
 favoriteProgramHander();
+searchFilters();

@@ -1,4 +1,6 @@
 import { wrap as coroutine } from 'co';
+import { ObjectId } from 'mongodb';
+
 import {
     getProgramsWithFilter,
     getProgramById,
@@ -10,7 +12,7 @@ import {
     getSingleFavoriteProgram,
     getFavoriteProgramsForUser
 } from '../components/data';
-import { ObjectId } from 'mongodb';
+import { getById } from '../components/db/service';
 import { transformProgramForOutput, transformPromoForOutput } from '../components/transformers';
 import { print, sortByKey, required, redirectToError, isMember, convertToObjectId } from '../components/custom-utils';
 import config from '../config';
@@ -95,14 +97,32 @@ export const search = ({
             .sort(sortByKey('name'));
 
     // Send info about the search to the front end for display purposes
-    const [ firstProgram ] = res.locals.programs;
     res.locals.searchInfo = {};
 
     if (universityId) {
-        res.locals.searchInfo.university = firstProgram.university.name;
-    } else if (province) {
+        let university;
+
+        try {
+            university = yield getById({
+                collection: universitiesCollection,
+                id: convertToObjectId(universityId)
+            });
+        } catch (e) {
+            // TODO: Render error
+            console.error(e)
+        }
+
+        if (university) {
+            res.locals.searchInfo.university = university.name;
+        }
+
+    }
+
+    if (province) {
         res.locals.searchInfo.province = province;
-    } else if (name) {
+    }
+
+    if (name) {
         res.locals.searchInfo.name = name;
     }
 

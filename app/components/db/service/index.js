@@ -1,4 +1,4 @@
-import { required, print } from '../../custom-utils';
+import { required, print, convertToObjectId } from '../../custom-utils';
 
 // This module lets all the underlying errors bubble up.
 // TODO: This is not a good idea. Should normalize the error still.
@@ -134,6 +134,11 @@ export const deleteOne = async({
 
     return result.value;
 }
+
+export const getById = async({
+    collection = required('collection'),
+    id = required('id')
+}) => collection.findOne({ _id: convertToObjectId(id) })
 
 // Since the callbacks for findOneAndUpdate and updateMany have a different structure, encapsulate the complexity
 // of verification in these two functions

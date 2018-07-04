@@ -31,6 +31,20 @@
             margin-top: 50px;
         }
 
+        .ui.centered.grid {
+            margin-bottom: 25px;
+            
+            .three.column.row {
+                .center.aligned.column {
+                    .center.aligned.ui.search {
+                        >.results {
+                             left: 25%;
+                        }
+                    }
+                }
+            }
+        }
+
         .ui.link.cards {
             .card:hover {
                 box-shadow: 0 5px 20px 0 #BCBDBD, 0 0 0 1px #D4D4D5;

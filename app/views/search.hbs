@@ -2,18 +2,41 @@
 
 <div class="searchResults">
     <h1 class="ui heading">{{ page.heading }}</h1>
-
-    {{#if searchInfo.university}}
-        <h2 class="ui heading">{{{md (interpolate page.universitySearchHeading searchInfo) true}}}</h2>
-    {{/if}}
-    {{#if searchInfo.province}}
-        <h2 class="ui heading">{{{md (interpolate page.provinceSearchHeading searchInfo) true}}}</h2>
-    {{/if}}
-    {{#if searchInfo.name}}
-        <h2 class="ui heading">{{{md (interpolate page.nameSearchHeading searchInfo) true}}}</h2>
-    {{/if}}
-
     <div class="ui container">
+        <div id="" class="ui stackable centered grid">
+            <div class="three column row">
+                <div class="center aligned column">
+                    {{> searchBar
+                        id='searchUniversityFilter'
+                        placeholder=@root.page.placeholders.university
+                        hide=false
+                        value=searchInfo.university
+                        customClasses="center aligned"
+                    }}
+                </div>
+                <div class="center aligned column">
+                    {{> searchBar
+                        id='searchProvinceFilter'
+                        placeholder=@root.page.placeholders.province
+                        hide=false
+                        value=searchInfo.province
+                        customClasses="center aligned"
+                    }}
+                </div>
+                <div class="center aligned column">
+                    {{> searchBar
+                        id='searchNameFilter'
+                        placeholder=@root.page.placeholders.name
+                        hide=false
+                        value=searchInfo.name
+                        customClasses="center aligned"
+                    }}
+                </div>
+            </div>
+            <div class="row">
+                <button id="searchFilterSubmit" class="ui green button">{{ page.filterSubmit }}</button>
+            </div>
+        </div>
         <div class="ui link cards centered">
             {{#each programs}}
                 {{>
