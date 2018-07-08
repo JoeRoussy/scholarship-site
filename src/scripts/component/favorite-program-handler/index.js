@@ -31,7 +31,7 @@ export default () => {
                     window.location.href = url.format(urlObj);
                 })
                 .catch(() => {
-                    showError('Error', 'That program could not be saved. Please try again later');
+                    showError('Error', 'You must be logged in to save programs to favorites. If the issue persists send us an email at admin@canadahighereducationhouse.ca');
                 });
         });
     });
