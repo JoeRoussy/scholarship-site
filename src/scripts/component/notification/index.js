@@ -45,13 +45,10 @@ export default () => {
     });
 };
 
-export const showError = (title, message, preventDrag) => {
-    const drag = !preventDrag;
-
+export const showError = (title, message) => {
     iziToast.error({
         title,
         message,
-        drag,
         ...defaultPositioning
     });
 }
