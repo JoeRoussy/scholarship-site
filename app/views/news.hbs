@@ -12,6 +12,11 @@
                     {{#with link}}
                         <p><a href="{{ href }}" target="_blank">{{ title }}</a></p>
                     {{/with}}
+                    {{#if youtubeLink}}
+                        {{#with youtubeLink}}
+                            <p><a href="{{ href }}" target="_blank">{{ title }}</a></p>
+                        {{/with}}
+                    {{/if}}
                 </div>
             {{/with}}
         {{/each}}
