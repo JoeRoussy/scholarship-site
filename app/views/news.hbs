@@ -3,7 +3,6 @@
 <div class="newsSection rootSection">
     <div class="ui container">
         <h1>{{ page.heading }}</h1>
-        <p class="heading">{{ page.subheading }}</p>
         {{#each page.articles}}
             {{#with this}}
                 <div class="ui raised segment{{#if first}} first{{/if}}">
