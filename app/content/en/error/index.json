@@ -9,7 +9,7 @@
         "paypalAccept": "Something went wrong processing your paypal payment",
         "paypalNotLoggedIn": "It seems like you are no longer logged in",
         "nonMemberScholarshipApplication": "It seems like you are not a member",
-        "facebookLogin": "Error loggin in with facebook"
+        "facebookLogin": "Error logging in with facebook"
     },
     "descriptions": {
         "default": "Please try your action again, if the problem persists, please [contact us](/contact).",
