@@ -3,9 +3,19 @@
     transition: max-height 0.3s ease-in-out;
     border: none;
     overflow: hidden;
+    flex-direction: column;
+
+    @media screen and (min-width: $navBreakpoint) {
+        flex-direction: row;
+    }
 
     .item {
+        width: 100% !important; // Overriding for stackable menu breakpoint
         padding: 0.92em 1.8em;
+
+        @media screen and (min-width: $navBreakpoint) {
+            width: auto !important;
+        }
 
         &:not(.noHover):not(.subMenuParent) {
             cursor: pointer;
@@ -22,6 +32,18 @@
             &:hover {
                 text-decoration: none;
                 color: #1e70bf;
+            }
+        }
+
+        &:before {
+            // Override for stackable menu breakpoint
+            top: 0;
+            width: 100%;
+            height: 1px;
+
+            @media screen and (min-width: $navBreakpoint) {
+                width: 1px;
+                height: 100%;
             }
         }
 
@@ -67,7 +89,7 @@
         color: white;
         font-size: 1.5em;
 
-        @media screen and (min-width: $uiTabletWidth) {
+        @media screen and (min-width: $navBreakpoint) {
             display: none;
         }
     }
@@ -76,15 +98,13 @@
         max-height: 410px;
 
         .authItem.subMenuParent {
-            display: block;
-
             .vertical.borderless.menu {
                 
                 .item.link, .item.buttonParent {
                     padding-left: 0;
                     justify-content: left;
 
-                    @media screen and (min-width: $uiTabletWidth) {
+                    @media screen and (min-width: $navBreakpoint) {
                         padding-left: 1.8em;
                         justify-content: center;
                     }
