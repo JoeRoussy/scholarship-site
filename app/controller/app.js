@@ -191,7 +191,13 @@ export const setupSearchPagination = (req, res) => {
         // TODO: Something has gone wrong
     }
 
-    const lastPage = Math.floor(count / resultsPerPage);
+    let lastPage = Math.floor(count / resultsPerPage);
+
+    if (count % resultsPerPage == 0) {
+        // If this is the case, all the results will fit on the page before the last page we just computed
+        --lastPage;
+    }
+
     const rangeLow = page * resultsPerPage + 1;
     const rangeHigh = lastPage == page ? count : rangeLow + resultsPerPage - 1;
 
