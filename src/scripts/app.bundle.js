@@ -23,7 +23,11 @@ heroSearch();
 searchResults();
 navigation();
 pagination();
-modal();
+modal({
+    idsToOpenOnLoad: [
+        'checkCaslModal'
+    ]
+});
 passwordToggle();
 formValidation();
 pageDimmer();

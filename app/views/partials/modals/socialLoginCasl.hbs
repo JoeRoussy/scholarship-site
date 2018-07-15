@@ -1,0 +1,26 @@
+<div id="{{ id }}" class="ui modal small withLogoHeading">
+    <i class="close icon"></i>
+    <div class="imageWrapper">
+        <img src="{{ image.src }}" alt="{{ image.alt }}">
+    </div>
+    <div class="header">
+        <span>{{ header }}</span>
+    </div>
+    <div class="content">
+        <p>{{{ body }}}</p>
+    </div>
+    <div class="actions">
+        <div
+            class="ui red deny button"
+            data-deny-casl-button=""
+        >
+            {{ deny }}
+        </div>
+        <div
+            class="ui green button"
+            data-agree-to-casl-button=""
+        >
+            {{ accept }}
+        </div>
+    </div>
+</div>
