@@ -9,7 +9,8 @@ import {
     deleteProfile,
     getPersonalData,
     addFavoriteProgram,
-    removeFavoriteProgram
+    removeFavoriteProgram,
+    setCasl
 } from '../controller/api.js';
 import { isAdmin } from '../controller/admin.js';
 import { getChildLogger } from '../components/log-factory';
@@ -106,6 +107,28 @@ export default ({
             baseLogger,
             additionalFields: {
                 module: 'api-users-add-favorite-program'
+            }
+        })
+    }));
+
+    router.post('/users/me/acceptCasl', setCasl({
+        usersCollection: db.collection('users'),
+        value: true,
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-users-set-casl-true'
+            }
+        })
+    }));
+
+    router.post('/users/me/rejectCasl', setCasl({
+        usersCollection: db.collection('users'),
+        value: false,
+        logger: getChildLogger({
+            baseLogger,
+            additionalFields: {
+                module: 'api-users-set-casl-false'
             }
         })
     }));

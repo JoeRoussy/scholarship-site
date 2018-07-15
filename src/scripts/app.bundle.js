@@ -16,6 +16,7 @@ import setTextAsHref from './component/set-text-as-href';
 import deleteProfileHandler from './component/delete-profile-handler';
 import favoriteProgramHander from './component/favorite-program-handler';
 import searchFilters from './component/search-filters';
+import setCaslHelper from './component/set-casl-helper';
 
 
 // Component Init
@@ -41,3 +42,4 @@ setTextAsHref();
 deleteProfileHandler();
 favoriteProgramHander();
 searchFilters();
+setCaslHelper();
