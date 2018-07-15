@@ -79,6 +79,7 @@ export default () => {
         // NOTE: Passing true means we can parse the QS into an object
         let urlObj = url.parse(window.location.href, true);
         urlObj.search = null;
+        delete urlObj.query.page; // Make sure we start at page 1
 
         if (selectedUniversity) {
             urlObj.query.universityId = selectedUniversity;
