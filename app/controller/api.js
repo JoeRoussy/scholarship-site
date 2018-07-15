@@ -636,3 +636,44 @@ export const removeFavoriteProgram = ({
         favoriteProgram: deletedDocument
     });
 });
+
+export const setCasl = ({
+    usersCollection = required('usersCollection'),
+    value = required('value'),
+    logger = required('logger', 'You need to pass a logger for this function to use')
+}) => coroutine(function* (req, res) {
+    const {
+        user
+    } = req;
+
+    if (!user) {
+        return res.status(403).json({
+            error: true,
+            message: 'No user logged in.'
+        });
+    }
+
+    try {
+        yield findAndUpdate({
+            collection: usersCollection,
+            query: {
+                _id: convertToObjectId(user._id)
+            },
+            update: {
+                caslConfirmation: value
+            }
+        });
+    } catch (e) {
+        logger.error(e, `Error setting caslConfirmation to ${value} for user with id: ${user._id}`);
+
+        return res.status(500).json({
+            error: true,
+            message: 'Could not set caslConfirmation'
+        });
+    }
+
+    return res.json({
+        success: true,
+        message: `Casl consent set to: ${value}`
+    });
+});

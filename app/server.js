@@ -30,6 +30,7 @@ import exchangeRatePopulation from './components/exchange-rate-population';
 import pricingPopulation from './components/pricing-population';
 import { sendMessage as sendMailMessage, getSignUpMailMessage } from './components/mail-sender';
 import { sendWelcomeMessageToExternalLoginUser } from './controller/auth';
+import setCaslCheck from './components/set-check-for-casl';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -134,6 +135,7 @@ dbConfig()
                 }
             })
         }));
+        app.use(setCaslCheck);
         appRouteConfig({
             app,
             db

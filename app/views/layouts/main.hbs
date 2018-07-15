@@ -87,6 +87,9 @@
         {{#if page.deleteProfileModal}}
             {{> modals/deleteProfile page.deleteProfileModal}}
         {{/if}}
+        {{#if checkCasl}}
+            {{> modals/setCasl page.checkCasl}}
+        {{/if}}
 
         {{> backEndGlobalImport}}
 

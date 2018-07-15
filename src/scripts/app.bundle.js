@@ -16,6 +16,7 @@ import setTextAsHref from './component/set-text-as-href';
 import deleteProfileHandler from './component/delete-profile-handler';
 import favoriteProgramHander from './component/favorite-program-handler';
 import searchFilters from './component/search-filters';
+import setCaslHelper from './component/set-casl-helper';
 
 
 // Component Init
@@ -23,7 +24,11 @@ heroSearch();
 searchResults();
 navigation();
 pagination();
-modal();
+modal({
+    idsToOpenOnLoad: [
+        'checkCaslModal'
+    ]
+});
 passwordToggle();
 formValidation();
 pageDimmer();
@@ -37,3 +42,4 @@ setTextAsHref();
 deleteProfileHandler();
 favoriteProgramHander();
 searchFilters();
+setCaslHelper();

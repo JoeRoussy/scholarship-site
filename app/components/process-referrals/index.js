@@ -3,7 +3,7 @@ import { wrap as coroutine } from 'co';
 import { required } from '../custom-utils';
 import { processReferrals } from '../data';
 
-// Processes a referral if "checkForReferral" is in the qs.
+// Processes a referral if "socialLogin" is in the qs.
 // If it is present, we assume the current user is the referre and the refId in the session is the referrer.
 // This function logs any errors under warn calls the next middleware is the referral cannot be processes
 const middleware = ({
@@ -13,7 +13,7 @@ const middleware = ({
     logger = required('logger', 'You must pass a logging instance into this function')
 }) => coroutine(function* (req, res, next) {
     // First see if we are told to process a referral in the qs
-    if (!req.query.checkForReferral) {
+    if (!req.query.socialLogin) {
         return next();
     }
 
