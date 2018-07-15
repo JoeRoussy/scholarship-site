@@ -3,7 +3,6 @@ import config from '../config';
 import { insert as saveToDb, findAndUpdate } from '../components/db/service';
 import {
     required,
-    buildUrl,
     print,
     convertToObjectId,
     redirectToError
@@ -70,8 +69,8 @@ export const processMembership = ({
     const {
         redirects: {
             membership: {
-                return: returnPath,
-                cancel: cancelPath
+                return: returnUrl,
+                cancel: cancelUrl
             } = {}
         } = {}
     } = config.paypal;
@@ -109,8 +108,8 @@ export const processMembership = ({
 
     const paypalRedirect = yield paypalCheckout({
             transactions: [ paypalTransaction ],
-            returnUrl: buildUrl(req, returnPath),
-            cancelUrl: buildUrl(req, cancelPath),
+            returnUrl: returnUrl,
+            cancelUrl: cancelUrl,
             experienceProfileId: paypalCheckoutExperienceId
         })
             .then(response => {
@@ -185,16 +184,21 @@ export const membershipAccept = ({
     }
 
     const {
-        unconfirmedTransactionId
-    } = req.session.membershipPayment;
+        session: {
+            membershipPayment: {
+                unconfirmedTransactionId
+            } = {}
+        } = {},
+        user: {
+            _id: userId
+        } = {}
+    } = req;
 
     if (!unconfirmedTransactionId) {
         logger.error({ session: req.session }, 'Could not find unconfirmed transaction id in session');
 
         return redirectToError('paypalAccept', res);
     }
-
-    const userId = req.user._id;
 
     if (!userId) {
         logger.error('Could not find an id for a logged in user when trying to confirm a paypal payment');
