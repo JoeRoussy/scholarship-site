@@ -13,6 +13,7 @@ export default ({
 
     router.get('/buy', processMembership({
         transactionsCollection: db.collection('transactions'),
+        paypalTokensCollection: db.collection('paypalTokens'),
         logger: getChildLogger({
             baseLogger,
             additionalFields: {
@@ -24,6 +25,7 @@ export default ({
     router.get('/success', membershipAccept({
         transactionsCollection: db.collection('transactions'),
         usersCollection: db.collection('users'),
+        paypalTokensCollection: db.collection('paypalTokens'),
         sendMailMessage,
         getSignUpMailMessage,
         getMembershipAfterSignUpMailMessage,
