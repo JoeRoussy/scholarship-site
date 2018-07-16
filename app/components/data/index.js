@@ -1456,3 +1456,39 @@ export const getPasswordResetRequestByUrlIdentifier = async({
 
     return result;
 };
+
+// NOTE: This function does not normalize error
+// TODO: Change this when we introduce the better error wrapper
+export const findCurrentPaypalAccessToken = async({
+    paypalTokensCollection = required('paypalTokensCollection')
+}) => {
+    const now = new Date(moment().toISOString());
+
+    return paypalTokensCollection.findOne({
+        expires: {
+            $gt: now
+        }
+    });
+}
+
+// NOTE: This function does not normalize error
+// TODO: Change this when we introduce the better error wrapper
+export const savePaypalAccessToken = async({
+    paypalTokensCollection = required('paypalTokensCollection'),
+    token = required('token'),
+    expires = required('expires'),
+    expiryBuffer = 60
+}) => {
+    const expiryDate = new Date(moment().add(expires - expiryBuffer, 'seconds').toISOString());
+
+    await insert({
+        collection: paypalTokensCollection,
+        document: {
+            token,
+            expires: expiryDate
+        }
+    });
+
+    return token;
+}
+

@@ -19,6 +19,7 @@ import { free } from '../components/populate-session';
 // Process paypal payment for memberships
 export const processMembership = ({
     transactionsCollection = required('transactionsCollection'),
+    paypalTokensCollection = required('paypalTokensCollection'),
     logger = required('logger', 'You must pass a logging instance')
 }) => coroutine(function* (req, res) {
     // See if there is a checkout experience that we can use
@@ -26,7 +27,7 @@ export const processMembership = ({
     let paypalCheckoutExperienceId;
 
     try {
-        paypalCheckoutExperiences = yield getCheckoutExperiences();
+        paypalCheckoutExperiences = yield getCheckoutExperiences({ paypalTokensCollection });
     } catch (e) {
         logger.error({err: e}, 'Error getting checkout experiences for paypal');
 
@@ -41,7 +42,7 @@ export const processMembership = ({
     } else {
         // We need to make a new checkout experience and then reference that id
         try {
-            const experienceCreationResponse = yield createCheckoutExperienceWithNoShipping();
+            const experienceCreationResponse = yield createCheckoutExperienceWithNoShipping({ paypalTokensCollection });
 
             paypalCheckoutExperienceId = experienceCreationResponse.id;
         } catch (e) {
@@ -110,7 +111,8 @@ export const processMembership = ({
             transactions: [ paypalTransaction ],
             returnUrl: returnUrl,
             cancelUrl: cancelUrl,
-            experienceProfileId: paypalCheckoutExperienceId
+            experienceProfileId: paypalCheckoutExperienceId,
+            paypalTokensCollection
         })
             .then(response => {
                 const {
@@ -166,6 +168,7 @@ export const processMembership = ({
 
 export const membershipAccept = ({
     transactionsCollection = required('transactionsCollection'),
+    paypalTokensCollection = required('paypalTokensCollection'),
     usersCollection = required('usersCollection'),
     logger = required('logger', 'You must pass a logging instance'),
     sendMailMessage = required('sendMailMessage'),
@@ -211,7 +214,8 @@ export const membershipAccept = ({
     try {
         paypalAcceptResponse = yield paypalAccept({
             paymentId,
-            payerId
+            payerId,
+            paypalTokensCollection
         });
     } catch (e) {
         logger.error({ err: e }, 'Error during paypal accept call');
