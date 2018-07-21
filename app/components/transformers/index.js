@@ -102,3 +102,12 @@ export const transformPromoForOutput = promo => {
         ...promoProps
     };
 }
+
+export const transformForUserDownload = data => {
+    const  {
+        password,
+        ...dataProps
+    } = data;
+
+    return dataProps;
+}
