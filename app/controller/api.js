@@ -480,9 +480,9 @@ export const getPersonalData = ({
 
     fs.writeFile(filePath, fileContents, (err) => {
         if (err) {
-            logger.error(e, `Error writting data for user with id: ${user._id}`)
+            logger.error(err, `Error writting data for user with id: ${user._id}`)
         
-            return next(e);
+            return next(err);
         }
 
         // Send the file as a response
