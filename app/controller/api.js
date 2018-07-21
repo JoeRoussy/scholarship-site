@@ -20,7 +20,8 @@ import {
     transformProgramForOutput,
     transformUniversityForOutput,
     transformUserForOutput,
-    transformScholarshipApplicationForOutput
+    transformScholarshipApplicationForOutput,
+    transformForUserDownload
  } from '../components/transformers';
 import { ObjectId } from 'mongodb';
 import { wrap as coroutine } from 'co';
@@ -29,13 +30,13 @@ import config from '../config';
 
 const {
     files: {
-        userDataRelativePath: USER_DATA_FILES_RELATIVE_PATH,
+        userDataAbsolutePath: USER_DATA_FILES_ABSOLUTE_PATH,
         userDataFileName: USER_DATA_FILE_NAME
     } = {}
 } = config;
 
-if (!USER_DATA_FILES_RELATIVE_PATH || !USER_DATA_FILE_NAME) {
-    throw new Error('Missing config element: files.userDataRelativePath');
+if (!USER_DATA_FILES_ABSOLUTE_PATH || !USER_DATA_FILE_NAME) {
+    throw new Error('Missing config elements');
 }
 
 
@@ -474,9 +475,12 @@ export const getPersonalData = ({
         return next(e);
     }
 
+    // Format the data for download
+    const formattedUserData = transformForUserDownload(userData);
+
     // Write the file on disk
-    const filePath = `${process.cwd()}${USER_DATA_FILES_RELATIVE_PATH}${user._id}.json`;
-    const fileContents = JSON.stringify(userData, null, 4);
+    const filePath = `${USER_DATA_FILES_ABSOLUTE_PATH}${user._id}.json`;
+    const fileContents = JSON.stringify(formattedUserData, null, 4);
 
     fs.writeFile(filePath, fileContents, (err) => {
         if (err) {
