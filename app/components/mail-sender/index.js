@@ -67,13 +67,15 @@ export const getSignUpMailMessage = ({
 }) => {
     const {
         name,
-        isMember
+        isMember,
+        refId
     } = user;
 
     return {
         context: {
             name,
             isMember,
+            refId,
             preheader: 'Thank you for joining the Canada Higher Education House!'
         },
         template: 'signUp'
@@ -85,6 +87,7 @@ export const getMembershipAfterSignUpMailMessage = ({
 }) => ({
     context: {
         name: user.name,
+        refId: user.refId,
         preheader: 'Thank you for upgrading to a full membership!'
     },
     template: 'membershipAfterSignUp'
