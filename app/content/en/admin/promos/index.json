@@ -11,7 +11,7 @@
     "numberEligible": "**{numberEligible}** users have the required number of referrals for this promotion",
     "threashold": "**{threashold}** referrals are required to be eligible for this promotion",
     "mutlipleContendersText": "The following users are tied for first:",
-    "singleContenderText": "The following winner is in the lead:",
+    "singleContenderText": "The following user is in the lead:",
     "findWinnerButton": {
         "singleWinnerText": "Assign Winner",
         "multipleWinnerText": "Draw Winner",
