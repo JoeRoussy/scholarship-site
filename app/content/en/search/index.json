@@ -2,6 +2,7 @@
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Your Programs",
+    "instructions": "Click on one of the cards for more information on the program.",
     "placeholders": {
         "university": "Filter by university",
         "province": "Filter by province",

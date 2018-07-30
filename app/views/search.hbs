@@ -37,6 +37,9 @@
                 <button id="searchFilterSubmit" class="ui green button">{{ page.filterSubmit }}</button>
             </div>
         </div>
+        {{#if programs.length}}
+            <p class="instructions">{{ page.instructions }}</p>
+        {{/if}}
         <div class="ui link cards centered">
             {{#each programs}}
                 {{>
