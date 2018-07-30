@@ -34,5 +34,6 @@
             "notSignedIn": "<a href=\"#\" data-modal=\"signUpModal\">Join</a> or <a href=\"#\" data-modal=\"loginModal\">sign in</a> and become a member to access more results",
             "isSignedIn": "<a href=\"#\" data-modal=\"membershipModal\">Become a member</a> to access more results"
         }
-    }
+    },
+    "footnote": "Tuition figures are for the 2017-18 academic year."
 }
