@@ -1,7 +1,14 @@
 .promo {
     .promoInformation {
+        cursor: pointer;
+        
         .heading {
             text-align: center;
+        }
+
+        .featuredHeading {
+            text-align: center;
+            color: #1EBC30; // Green
         }
 
         .dateRange {

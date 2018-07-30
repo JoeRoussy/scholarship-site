@@ -2,6 +2,7 @@
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
     "heading": "Referral Promotions",
+    "isFeaturedText": "Currently Featured",
     "newPromo": {
         "href": "/admin/promos/new",
         "text": "Create Promo"

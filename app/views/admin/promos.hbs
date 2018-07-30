@@ -6,9 +6,12 @@
         <div class="promosWrapper">
             {{#each promos}}
                 {{#with this}}
-                    <div class="ui raised segment promo" data-promo-link="/admin/promos/{{ this._id }}">
+                    <div class="ui raised segment promo" data-promo-link="/admin/promos/{{ _id }}">
                         <div class="promoInformation">
                             <h2 class="heading name">{{ name }}</h2>
+                            {{#if isFeatured}}
+                                <h3 class="featuredHeading">{{ @root.page.isFeaturedText }}</h3>
+                            {{/if}}
                             <h3 class="heading dateRange">{{{formatDate startDate}}} {{ @root.page.to }} {{{formatDate endDate}}}</h3>
                             {{#unless winner}}
                                 <p class="description">{{{md (interpolate @root.page.threashold this) true}}}</p>

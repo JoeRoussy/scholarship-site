@@ -659,6 +659,7 @@ export const getAllReferralPromos = async({
                     endDate: 1,
                     createdAt: 1,
                     threashold: 1,
+                    isFeatured: 1,
                     winner: { $arrayElemAt: [ '$winners', 0 ] }
                 }
             },
