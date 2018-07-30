@@ -155,7 +155,8 @@ export const processCreatePromo = ({
         name,
         startDate: startDateAsNum,
         endDate: endDateAsNum,
-        threashold
+        threashold,
+        isFeatured
     } = req.body;
 
     if (!name || !startDateAsNum || !endDateAsNum || !threashold) {
@@ -173,7 +174,8 @@ export const processCreatePromo = ({
                 startDate: new Date(parseInt(startDateAsNum)),
                 endDate: new Date(parseInt(endDateAsNum)),
                 eligibleUsers: [],
-                threashold: +threashold
+                threashold: +threashold,
+                isFeatured: !!isFeatured
             }
         });
     } catch (e) {
