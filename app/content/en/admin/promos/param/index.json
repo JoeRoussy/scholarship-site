@@ -6,6 +6,10 @@
         "heading": "Success",
         "body": "The program has been updated"
     },
+    "errorMessage": {
+        "heading": "Error",
+        "body": "The program could not be updated"
+    },
     "nameInput": {
         "label": "Name:",
         "name": "name",

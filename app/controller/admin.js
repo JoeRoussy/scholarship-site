@@ -2,7 +2,7 @@ import Bluebird from 'bluebird';
 
 import { wrap as coroutine } from 'co';
 import { required, redirectToError, print, sortByDate, convertToObjectId } from '../components/custom-utils';
-import { insertInDb } from '../components/db/service';
+import { insertInDb, findAndUpdate } from '../components/db/service';
 import { transformUserForOutput } from '../components/transformers';
 import config from '../config';
 import { formatForUserRegistraction, formatForScholarshipApplications } from '../components/graph-data-formatting';
@@ -388,6 +388,54 @@ export const editPromo = ({
     referralPromosCollection = required('referralPromosCollection'),
     logger = required('logger', 'You must pass in a logging instance for this function to use')
 }) => coroutine(function* (req, res, next) {
+    const {
+        name,
+        startDate: startDateAsNum,
+        endDate: endDateAsNum,
+        threashold,
+        isFeatured
+    } = req.body;
 
+    const {
+        id: promoId
+    } = req.params;
+
+    if (!promoId) {
+        logger.warn('Did not find promo id in params');
+
+        return res.redirect('/');
+    }
+
+    if (!name || !startDateAsNum || !endDateAsNum || !threashold) {
+        res.locals.formHandlingError = true;
+        logger.error(req.body, 'Missing required fields from form body');
+
+        return next();
+    }
+
+    try {
+        yield findAndUpdate({
+            collection: referralPromosCollection,
+            query: {
+                _id: convertToObjectId(promoId)
+            },
+            update: {
+                name,
+                startDate: new Date(parseInt(startDateAsNum)),
+                endDate: new Date(parseInt(endDateAsNum)),
+                threashold: +threashold,
+                isFeatured: !!isFeatured
+            }
+        });
+    } catch (e) {
+        res.locals.formHandlingError = true;
+        logger.error(e, 'Could not update promo');
+
+        return next();
+    }
+
+    res.locals.requestSuccess = true
+
+    return next();
 });
 
