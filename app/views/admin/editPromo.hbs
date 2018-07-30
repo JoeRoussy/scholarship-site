@@ -3,68 +3,6 @@
 <div class="createPromo rootSection">
     <div class="ui container">
         <h1>{{ page.heading }}</h1>
-        <form
-            id="promoEditForm"
-            class="ui form {{#if formHandlingError}} error{{/if}}{{#if requestSuccess}} success{{/if}}"
-            method="post"
-            data-validate-form
-        >
-            {{#if formHandlingError}}
-                <div class="ui error message">
-                    <div class="header">
-                        <span>{{ page.errorMessage.heading }}</span>
-                    </div>
-                    <p>{{ page.errorMessage.body }}</p>
-                </div>
-            {{/if}}
-            {{#if requestSuccess}}
-                <div class="ui success message">
-                    <div class="header">
-                        <span>{{ page.successMessage.heading }}</span>
-                    </div>
-                    <p>{{ page.successMessage.body }}</p>
-                </div>
-            {{/if}}
-            <div class="field">
-                {{> standardFormInput page.nameInput value=promo.name}}
-            </div>
-            <div class="field">
-                {{#with page.startInput}}
-                    {{> datePicker datePickerElement}}
-                    <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
-                {{/with}}
-            </div>
-            <div class="field">
-                {{#with page.endInput}}
-                    {{> datePicker datePickerElement}}
-                    <span id="{{ errorElement.id }}" class="formErrorMessage">{{ errorElement.text }}</span>
-                {{/with}}
-            </div>
-            <div class="field">
-                {{> standardFormInput page.threasholdInput value=promo.threashold}}
-            </div>
-            <div class="field">
-                <div class="ui checkbox">
-                    <input
-                        id="{{ page.isFeaturedInput.id }}"
-                        type="{{ page.isFeaturedInput.type }}"
-                        name="{{ page.isFeaturedInput.name }}"
-                        {{#if promo.isFeaturedInput}}checked{{/if}}
-                    >
-                    <label for="{{ page.isFeaturedInput.id }}">
-                        {{ page.isFeaturedInput.label }}
-                    </label>
-                </div>
-            </div>
-            {{#with page.hiddenStartInput}}
-                <input id="{{ id }}" type="hidden" name="{{ name }}" value="{{ promo.start }}">
-            {{/with}}
-            {{#with page.hiddenEndInput}}
-                <input id="{{ id }}" type="hidden" name="{{ name }}" value="{{ promo.end }}">
-            {{/with}}
-            <div class="field">
-                <input class="ui submit button green" type="submit" name="" value="{{ page.submit }}">
-            </div>
-        </form>
+        {{> promoForm page=page}}
     </div>
 </div>

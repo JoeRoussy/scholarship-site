@@ -76,5 +76,11 @@
         "id": "hiddenCreatePromoEndDate",
         "name": "endDate"
     },
+    "isFeaturedInput": {
+        "id": "promoIsFeaturedInput",
+        "type": "checkbox",
+        "name": "isFeatured",
+        "label": "Set as featured promo (will show up at top of site for those who have joined)"
+    },
     "submit": "Submit"
 }
