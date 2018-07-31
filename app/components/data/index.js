@@ -1500,14 +1500,14 @@ export const getFeaturedPromo = async({
 
     try {
         const now = moment().startOf('day');
-        const dbNow = new Date(now.toISOString()) 
+        const dbNow = new Date(now.toISOString())
 
         featuredPromos = await referralPromosCollection.find({
-            start: {
-                $gte: dbNow
-            },
-            end: {
+            startDate: {
                 $lte: dbNow
+            },
+            endDate: {
+                $gte: dbNow
             },
             isFeatured: true
         })
