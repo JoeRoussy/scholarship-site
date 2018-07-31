@@ -659,6 +659,7 @@ export const getAllReferralPromos = async({
                     endDate: 1,
                     createdAt: 1,
                     threashold: 1,
+                    isFeatured: 1,
                     winner: { $arrayElemAt: [ '$winners', 0 ] }
                 }
             },
@@ -1492,3 +1493,34 @@ export const savePaypalAccessToken = async({
     return token;
 }
 
+export const getFeaturedPromo = async({
+    referralPromosCollection = required('referralPromosCollection')
+}) => {
+    let featuredPromos = null;
+
+    try {
+        const now = moment().startOf('day');
+        const dbNow = new Date(now.toISOString())
+
+        featuredPromos = await referralPromosCollection.find({
+            startDate: {
+                $lte: dbNow
+            },
+            endDate: {
+                $gte: dbNow
+            },
+            isFeatured: true
+        })
+            .sort({
+                createdAt: 1
+            })
+            .toArray();
+    } catch (e) {
+        throw new RuntimeError({
+            err: e,
+            msg: 'Error finding current featured promos'
+        });
+    }
+
+    return featuredPromos.pop();
+}

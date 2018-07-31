@@ -12,7 +12,9 @@ import {
     populateUsersInPromo,
     userSearch,
     processUserSearch,
-    userAnalytics
+    userAnalytics,
+    editPromo,
+    viewPromo
 } from '../controller/admin.js';
 
 export default ({
@@ -119,6 +121,41 @@ export default ({
                 })
             }),
             createPromo
+        ]);
+
+    router.route('/promos/:id')
+        .get([
+            isAdmin,
+            viewPromo({
+                referralPromosCollection: db.collection('referralPromos'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'admin-view-promo'
+                    }
+                })
+            })
+        ])
+        .post([
+            isAdmin,
+            editPromo({
+                referralPromosCollection: db.collection('referralPromos'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'admin-edit-promo'
+                    }
+                })
+            }),
+            viewPromo({
+                referralPromosCollection: db.collection('referralPromos'),
+                logger: getChildLogger({
+                    baseLogger,
+                    additionalFields: {
+                        module: 'admin-view-promo'
+                    }
+                })
+            })
         ]);
 
     app.use('/admin', router);

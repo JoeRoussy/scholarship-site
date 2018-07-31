@@ -1,8 +1,8 @@
 import Bluebird from 'bluebird';
 
 import { wrap as coroutine } from 'co';
-import { required, redirectToError, print, sortByDate } from '../components/custom-utils';
-import { insertInDb } from '../components/db/service';
+import { required, redirectToError, print, sortByDate, convertToObjectId } from '../components/custom-utils';
+import { insertInDb, findAndUpdate } from '../components/db/service';
 import { transformUserForOutput } from '../components/transformers';
 import config from '../config';
 import { formatForUserRegistraction, formatForScholarshipApplications } from '../components/graph-data-formatting';
@@ -155,7 +155,8 @@ export const processCreatePromo = ({
         name,
         startDate: startDateAsNum,
         endDate: endDateAsNum,
-        threashold
+        threashold,
+        isFeatured
     } = req.body;
 
     if (!name || !startDateAsNum || !endDateAsNum || !threashold) {
@@ -173,7 +174,8 @@ export const processCreatePromo = ({
                 startDate: new Date(parseInt(startDateAsNum)),
                 endDate: new Date(parseInt(endDateAsNum)),
                 eligibleUsers: [],
-                threashold: +threashold
+                threashold: +threashold,
+                isFeatured: !!isFeatured
             }
         });
     } catch (e) {
@@ -349,3 +351,91 @@ export const userAnalytics = ({
 
     return res.render('admin/analytics');
 });
+
+export const viewPromo = ({
+    referralPromosCollection = required('referralPromosCollection'),
+    logger = required('logger', 'You must pass in a logging instance for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        id: promoId
+    } = req.params;
+
+    if (!promoId) {
+        logger.warn('Did not get promo id for viewing promo');
+
+        return res.redirect('/');
+    }
+
+    let currentPromo = null;
+
+    try {
+        currentPromo = yield getDocById({
+            collection: referralPromosCollection,
+            id: convertToObjectId(promoId)
+        });
+    } catch (e) {
+        logger.error(e, 'Error getting current promo');
+
+        return next(e);
+    }
+
+    res.locals.promo = currentPromo;
+
+    return res.render('admin/editPromo', res.locals);
+});
+
+export const editPromo = ({
+    referralPromosCollection = required('referralPromosCollection'),
+    logger = required('logger', 'You must pass in a logging instance for this function to use')
+}) => coroutine(function* (req, res, next) {
+    const {
+        name,
+        startDate: startDateAsNum,
+        endDate: endDateAsNum,
+        threashold,
+        isFeatured
+    } = req.body;
+
+    const {
+        id: promoId
+    } = req.params;
+
+    if (!promoId) {
+        logger.warn('Did not find promo id in params');
+
+        return res.redirect('/');
+    }
+
+    if (!name || !startDateAsNum || !endDateAsNum || !threashold) {
+        res.locals.formHandlingError = true;
+        logger.error(req.body, 'Missing required fields from form body');
+
+        return next();
+    }
+
+    try {
+        yield findAndUpdate({
+            collection: referralPromosCollection,
+            query: {
+                _id: convertToObjectId(promoId)
+            },
+            update: {
+                name,
+                startDate: new Date(parseInt(startDateAsNum)),
+                endDate: new Date(parseInt(endDateAsNum)),
+                threashold: +threashold,
+                isFeatured: !!isFeatured
+            }
+        });
+    } catch (e) {
+        res.locals.formHandlingError = true;
+        logger.error(e, 'Could not update promo');
+
+        return next();
+    }
+
+    res.locals.requestSuccess = true
+
+    return next();
+});
+

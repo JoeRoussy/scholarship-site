@@ -1,14 +1,14 @@
 {
     "title": "Canada Higher Education House",
     "description": "A site for researching and applying for scholarships in canada",
-    "heading": "Create Referral Program",
-    "errorMessage": {
-        "heading": "Something went wrong",
-        "body": "Could not create promo, please try again."
-    },
+    "heading": "Edit Promo",
     "successMessage": {
-        "heading": "Promo created!",
-        "body": ""
+        "heading": "Success",
+        "body": "The program has been updated"
+    },
+    "errorMessage": {
+        "heading": "Error",
+        "body": "The program could not be updated"
     },
     "nameInput": {
         "label": "Name:",

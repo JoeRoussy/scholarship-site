@@ -17,6 +17,8 @@ import deleteProfileHandler from './component/delete-profile-handler';
 import favoriteProgramHander from './component/favorite-program-handler';
 import searchFilters from './component/search-filters';
 import setCaslHelper from './component/set-casl-helper';
+import promoClickHelper from './component/promo-click-helper';
+import closeTargetHelper from './component/close-target-helper';
 
 
 // Component Init
@@ -43,3 +45,5 @@ deleteProfileHandler();
 favoriteProgramHander();
 searchFilters();
 setCaslHelper();
+promoClickHelper();
+closeTargetHelper();

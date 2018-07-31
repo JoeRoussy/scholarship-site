@@ -31,6 +31,7 @@ import pricingPopulation from './components/pricing-population';
 import { sendMessage as sendMailMessage, getSignUpMailMessage } from './components/mail-sender';
 import { sendWelcomeMessageToExternalLoginUser } from './controller/auth';
 import setCaslCheck from './components/set-check-for-casl';
+import configureFeaturedPromo from './components/configure-featured-promo';
 
 const app = express();
 const MongoStore = connectMongo(session); // mongodb session store
@@ -136,6 +137,15 @@ dbConfig()
             })
         }));
         app.use(setCaslCheck);
+        app.use(configureFeaturedPromo({
+            referralPromosCollection: db.collection('referralPromos'),
+            logger: getChildLogger({
+                baseLogger: Logger,
+                additionalFields: {
+                    module: 'configure-featured-promo'
+                }
+            })
+        }));
         appRouteConfig({
             app,
             db

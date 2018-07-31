@@ -6,6 +6,7 @@ footer.footer {
 
         .mainLogo {
             max-width: 250px;
+            margin: auto;
         }
 
         .row {
@@ -20,6 +21,15 @@ footer.footer {
                     text-decoration: none;
                 }
             }
+        }
+    }
+
+    .promoBanner:not(.closed) ~ & {
+        // Need to make space for the promo banner at the bottom of the page
+        padding-bottom: 200px;
+
+        @media screen and (min-width: $laptopWidth) {
+            padding-bottom: 125px;
         }
     }
 }

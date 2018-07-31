@@ -1,0 +1,6 @@
+{{#cond @root.featuredPromo '&&' @root.refId}}
+    <div id="promoBanner" class="promoBanner">
+        <i class="close icon" data-close-target="promoBanner"></i>
+        <p>{{inlineInterpolate bannerTextStart @root.featuredPromo.name}} {{{inlineInterpolate bannerLink @root.refId}}} {{ bannerTextEnd }}</p>
+    </div>
+{{/cond}}
