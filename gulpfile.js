@@ -27,6 +27,7 @@ const frontEndScriptsGlob = './src/scripts/**/*.js';
 const stylesGlob = './src/styles/**/*.scss';
 const vendorStylesGlob = './src/styles/vendor/**/*.css';
 const imagesGlob = './src/images/**/*';
+const filesGlob = './src/files/**/*';
 const appGlob = './app/**';
 const serverPublicFolderPath = './public';
 
@@ -121,6 +122,13 @@ gulp.task('image', function() {
         .pipe(gulp.dest('./public/images'));
 });
 
+// Random file processing
+gulp.task('file', function() {
+    return gulp.src(filesGlob)
+        .pipe(newer('./public/files'))
+        .pipe(gulp.dest('./public'));
+});
+
 // Watch front end files and recomepile on any changes
 gulp.task('watch', () => {
     gulp.watch(frontEndScriptsGlob, ['scripts']);
@@ -148,11 +156,11 @@ gulp.task('semanticBuild', semanticBuild);
 
 // Build task for dev (is default)
 gulp.task('default', () => {
-    runSequence(['vendorStyles', 'styles', 'scripts', 'image', 'watch'], 'nodemon');
+    runSequence(['vendorStyles', 'styles', 'scripts', 'image', 'file', 'watch'], 'nodemon');
 });
 
 // Build task for production
 gulp.task('production', () => {
     isDev = false;
-    runSequence(['vendorStyles', 'styles', 'scripts', 'image', 'semanticBuild']);
+    runSequence(['vendorStyles', 'styles', 'scripts', 'image', 'file', 'semanticBuild']);
 });
